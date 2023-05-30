@@ -36,6 +36,11 @@
 
         <!-- Main CSS-->
         <link href="assets/css/theme.css" rel="stylesheet" media="all">
+        <style>
+            input:focus {
+                outline: none !important;
+            }
+        </style>
     </head>
     <body>
         <header class="header-desktop">

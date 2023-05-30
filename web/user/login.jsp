@@ -87,8 +87,8 @@
                         <form action="home" method="post">
                             <div class="text-center mb-3">
                                 <p>Sign in with:</p>
-                                <button type="button" class="login-with-google-btn align-items-center">Google
-                                </button>
+                                <a type="button" style="text-decoration: none" href="https://accounts.google.com/o/oauth2/auth?scope=email%20profile%20openid&openid.realm&include_granted_scopes=true&redirect_uri=http://localhost:8080/SWP_Project/login-google&response_type=code&client_id=645992422441-5f4gr9kv1gv4escg73k2td90c7oque7t.apps.googleusercontent.com&approval_prompt=force" class="login-with-google-btn align-items-center">Google
+                                </a>
                             </div>
 
                             <p class="text-center">or:</p>

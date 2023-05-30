@@ -16,6 +16,14 @@
         <servlet-name>ChangeStatusUserController</servlet-name>
         <servlet-class>controller.admin.user.ChangeStatusUserController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LoginGoogleController</servlet-name>
+        <servlet-class>controller.LoginGoogleController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserDetailController</servlet-name>
+        <servlet-class>controller.admin.user.UserDetailController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeController</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -31,6 +39,14 @@
     <servlet-mapping>
         <servlet-name>ChangeStatusUserController</servlet-name>
         <url-pattern>/admin/change-status</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginGoogleController</servlet-name>
+        <url-pattern>/login-google</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserDetailController</servlet-name>
+        <url-pattern>/admin/user-detail</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
