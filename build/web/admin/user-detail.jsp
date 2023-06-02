@@ -31,6 +31,7 @@
                             <div class="card">
 
                                 <form action="" method="post" class="form-horizontal">
+                                    <input name="aid" value="${aid}" hidden=""/>
                                     <div class="card-header">
                                         <h3>User Manager</h3>
                                     </div>
@@ -60,11 +61,10 @@
                                                     <label for="firstName" class=" form-control-label">Role <i class="text-danger">*</i> </label>
                                                 </div>
                                                 <div class="col col-sm">
-                                                    <select class="form-control">
-                                                        <option class="form-control">123</option>
-                                                        <option class="form-control">123</option>
-                                                        <option class="form-control">123</option>
-
+                                                    <select class="form-control" name="role">
+                                                        <c:forEach items="${roleList}" var="lr">
+                                                            <option class="form-control" value="${lr.rid}">${lr.roleName}</option>
+                                                        </c:forEach>
                                                     </select>
                                                 </div>
                                             </div>
@@ -83,24 +83,24 @@
                                                     <label for="firstName" class=" form-control-label">Email <i class="text-danger">*</i> </label>
                                                 </div>
                                                 <div class="col col-sm">
-                                                    <input type="text" id="firstName" name="input" class="input form-control" required="" value="${user.email}" readonly=""/>
+                                                    <input type="text" id="firstName" name="email" class="input form-control" required="" value="${user.email}" ${type == 'edit'?'readonly':''}/>
                                                 </div>
                                             </div>
 
                                             <c:if test="${type == 'add'}">
                                                 <div class="col-12 col-md-6 row">
                                                     <div class="col col-sm-3">
-                                                        <label for="firstName" class=" form-control-label">Password <i class="text-danger">*</i> </label>
+                                                        <label for="password" class=" form-control-label">Password <i class="text-danger">*</i> </label>
                                                     </div>
                                                     <div class="col col-sm">
-                                                        <input type="text" id="firstName" name="input" class="input form-control" required="" >
+                                                        <input type="password" id="password" name="password" class="input form-control" required="" >
                                                     </div>
                                                 </div>
                                             </c:if>
                                         </div>
                                     </div>
                                     <div class="card-footer d-flex flex-row-reverse">
-                                        <button type="submit" class="btn btn-success mx-3">
+                                        <button type="submit" name="type" value="${type}" class="btn btn-success mx-3">
                                             <i class="fa fa-dot-circle-o"></i> ${type == 'add'?'Create':'Update'}
                                         </button>
                                         <button type="reset" class="btn btn-danger">

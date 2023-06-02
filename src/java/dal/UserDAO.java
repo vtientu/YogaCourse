@@ -60,7 +60,7 @@ public class UserDAO extends DBContext {
         }
         return null;
     }
-    
+
     public Account loginWithAccountGoogle(String email) {
         try {
             String sql = "SELECT [AccountID]\n"
@@ -79,7 +79,6 @@ public class UserDAO extends DBContext {
                     + "  ON a.RoleId = r.RoleID\n"
                     + "  WHERE a.Email = ? AND a.Active = 1";
             PreparedStatement st = connection.prepareStatement(sql);
-            Common c = new Common();
             st.setString(1, email);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
@@ -219,24 +218,33 @@ public class UserDAO extends DBContext {
         }
         return list;
     }
-    
+
     public int getCountUserList(String keySearch, String status) {
         try {
 
             String sql = "SELECT COUNT(AccountID)\n"
                     + " FROM account a ";
 
-            if (keySearch != null && keySearch.length() > 0) {
-                sql += " WHERE (a.Firstname LIKE ? OR a.[Email] LIKE ? OR a.Lastname LIKE ? OR a.Phone = ?) ";
+            if (keySearch != null) {
+                sql += " WHERE (a.Firstname LIKE ? OR a.[Email] LIKE ? OR a.Lastname LIKE ? OR a.Phone = ?)";
+                System.out.println("Where keysearch");
             }
 
-            if (keySearch != null && keySearch.length() > 0 && status != null && status.length() > 0) {
+            if (keySearch != null && status != null) {
                 sql += " AND a.Active = " + status;
-            } else if ((keySearch == null || keySearch.length() == 0) && status != null) {
+                System.out.println("And a.active");
+            } else if (keySearch == null && status != null) {
                 sql += " WHERE a.Active = " + status;
+                System.out.println("Where a.active");
             }
 
             PreparedStatement st = connection.prepareStatement(sql);
+            if (keySearch != null && keySearch.length() > 0) {
+                st.setString(1, "%" + keySearch + "%");
+                st.setString(2, "%" + keySearch + "%");
+                st.setString(3, "%" + keySearch + "%");
+                st.setString(4, "%" + keySearch + "%");
+            }
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 return rs.getInt(1);
@@ -246,7 +254,7 @@ public class UserDAO extends DBContext {
         }
         return -1;
     }
-    
+
     public boolean changeStatus(int aid) {
         try {
             String sql = " UPDATE account\n"
@@ -262,53 +270,79 @@ public class UserDAO extends DBContext {
         }
         return false;
     }
+
     
-    public Account getAccountByAid(int aid) {
+
+    public boolean updateAccount(Account a) {
         try {
-            String sql = "SELECT [AccountID]\n"
-                    + "      ,a.[RoleId]\n"
-                    + "      ,[Firstname]\n"
-                    + "      ,[Lastname]\n"
-                    + "      ,[Avatar]\n"
-                    + "      ,[Gender]\n"
-                    + "      ,[Phone]\n"
-                    + "      ,[Email]\n"
-                    + "      ,[Address]\n"
-                    + "      ,[Password]\n"
-                    + "      ,[Active]\n"
-                    + "	  ,r.[RoleName]\n"
-                    + "  FROM [dbo].[Account] a INNER JOIN [Role] r\n"
-                    + "  ON a.RoleId = r.RoleID\n"
-                    + "  WHERE [AccountID] = ?";
+            String sql = "UPDATE [dbo].[Account]\n"
+                    + "   SET [RoleId] = ?\n"
+                    + "      ,[Firstname] = ?\n"
+                    + "      ,[Lastname] = ?\n"
+                    + "      ,[Phone] = ?\n"
+                    + " WHERE [AccountID] = ?";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, a.getRole().getRid());
+            st.setString(2, a.getFirstName());
+            st.setString(3, a.getLastName());
+            st.setString(4, a.getPhone());
+            st.setInt(5, a.getAid());
+            st.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("updateAccount -> " + e);
+        }
+        return false;
+    }
+
+    public boolean createAccount(Account a) {
+        try {
+            String sql = "INSERT INTO [dbo].[Account]\n"
+                    + "           ([RoleId]\n"
+                    + "           ,[Firstname]\n"
+                    + "           ,[Lastname]\n"
+                    + "           ,[Phone]"
+                    + "           ,[Email]\n"
+                    + "           ,[Password])\n"
+                    + "     VALUES\n"
+                    + "           (?, ?, ?, ?, ?, ?)";
             PreparedStatement st = connection.prepareStatement(sql);
             Common c = new Common();
-            st.setInt(1, aid);
+            st.setInt(1, a.getRole().getRid());
+            st.setString(2, a.getFirstName());
+            st.setString(3, a.getLastName());
+            st.setString(4, a.getPhone());
+            st.setString(5, a.getEmail());
+            st.setString(6, c.convertPassToMD5(a.getPassword()));
+            st.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("createAccount -> " + e);
+        }
+        return false;
+    }
+
+    public ArrayList<Role> getRoleList() {
+        ArrayList<Role> list = new ArrayList<>();
+        try {
+            String sql = "SELECT [RoleID]\n"
+                    + "      ,[RoleName]\n"
+                    + "  FROM [dbo].[Role]";
+            PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                Role role = new Role(rs.getInt("RoleId"), rs.getString("RoleName"));
-                Account acc = new Account();
-                acc.setAid(rs.getInt("AccountID"));
-                acc.setFirstName(rs.getString("FirstName"));
-                acc.setLastName(rs.getString("LastName"));
-                acc.setAvatar(rs.getString("Avatar"));
-                acc.setGender(rs.getInt("Gender"));
-                acc.setPhone(rs.getString("Phone"));
-                acc.setEmail(rs.getString("Email"));
-                acc.setAddress(rs.getString("Address"));
-                acc.setPassword(rs.getString("Password"));
-                acc.setActive(rs.getBoolean("Active"));
-                acc.setRole(role);
-                return acc;
+            while (rs.next()) {
+                Role role = new Role(rs.getInt(1), rs.getString(2));
+                list.add(role);
             }
         } catch (SQLException e) {
-            System.out.println("getAccountByAid -> " + e);
+            System.out.println("getRoleList -> " + e);
         }
-        return null;
+        return list;
     }
-    
+
     public static void main(String[] args) {
         UserDAO udao = new UserDAO();
         ArrayList<Account> list = udao.getUserList("", 1, 10, "1");
-        System.out.println(udao.getCountUserList(null, "1"));
+        System.out.println(udao.getCountUserList("", null));
     }
 }

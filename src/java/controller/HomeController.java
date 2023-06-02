@@ -77,9 +77,11 @@ public class HomeController extends HttpServlet {
                 case "logout":
                     HttpSession session = request.getSession();
                     session.removeAttribute("account");
+                    request.setAttribute("page", "home");
                     response.sendRedirect("home");
                     break;
                 default:
+                    request.setAttribute("page", "home");
                     request.getRequestDispatcher("user/home.jsp").forward(request, response);
             }
         } catch (ServletException | IOException e) {

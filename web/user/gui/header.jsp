@@ -79,13 +79,11 @@
 
                 <div class="collapse navbar-collapse justify-content-between " style="flex-grow: 0" id="navbarCollapse">
                     <div class="navbar-nav ml-auto">
-                        <a href="index.html" class="nav-item nav-link active">Home</a>
-                        <a href="about.html" class="nav-item nav-link">About</a>
-                        <a href="service.html" class="nav-item nav-link">Service</a>
-                        <a href="price.html" class="nav-item nav-link">Price</a>
-                        <a href="class.html" class="nav-item nav-link">Class</a>
-                        <a href="team.html" class="nav-item nav-link">Trainer</a>
-                        <a href="portfolio.html" class="nav-item nav-link">Pose</a>
+                        <a href="home" class="nav-item nav-link ${page == 'home'?'active':''}">Home</a>
+                        <a href="about.html" class="nav-item nav-link ${page == 'about'?'active':''}">About</a>
+                        <a href="price.html" class="nav-item nav-link ${page == 'price'?'active':''}" >Price</a>
+                        <a href="class" class="nav-item nav-link ${page == 'class'?'active':''}" >Class</a>
+                        <a href="team.html" class="nav-item nav-link ${page == 'trainer'?'active':''}">Trainer</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">${account == null?'Login':account.displayName}</a>
                             <div class="dropdown-menu">

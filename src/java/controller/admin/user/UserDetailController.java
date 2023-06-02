@@ -4,6 +4,7 @@
  */
 package controller.admin.user;
 
+import dal.CommonDAO;
 import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,7 +13,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 import module.Account;
+import module.Role;
 
 /**
  *
@@ -71,17 +74,21 @@ public class UserDetailController extends HttpServlet {
                     if (type == null) {
                         response.sendRedirect("user-manager");
                     } else {
+                        UserDAO udao = new UserDAO();
+                        ArrayList<Role> roleList = udao.getRoleList();
                         switch (type) {
                             case "add":
+                                request.setAttribute("roleList", roleList);
                                 request.setAttribute("type", type);
                                 request.getRequestDispatcher("user-detail.jsp").forward(request, response);
                                 break;
                             case "edit":
-                                UserDAO udao = new UserDAO();
                                 String aid_raw = request.getParameter("aid");
                                 if (aid_raw != null) {
                                     int aid = Integer.parseInt(aid_raw);
-                                    Account acc = udao.getAccountByAid(aid);
+                                    CommonDAO cdao = new CommonDAO();
+                                    Account acc = cdao.getAccountByAid(aid);
+                                    request.setAttribute("roleList", roleList);
                                     request.setAttribute("user", acc);
                                     request.setAttribute("type", type);
                                     request.getRequestDispatcher("user-detail.jsp").forward(request, response);
@@ -112,7 +119,62 @@ public class UserDetailController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            String type = request.getParameter("type");
+            String firstName = request.getParameter("firstName");
+            String lastName = request.getParameter("lastName");
+            String rid_raw = request.getParameter("role");
+            String phone = request.getParameter("phone");
+            String email = request.getParameter("email");
+            int rid = Integer.parseInt(rid_raw);
+
+            HttpSession session = request.getSession();
+
+            if (rid_raw == null || phone == null || email == null) {
+                session.setAttribute("message", "Must fill in the fields!");
+                session.setAttribute("messageColor", "red");
+            }
+
+            Account acc = new Account();
+            acc.setFirstName(firstName);
+            acc.setLastName(lastName);
+            acc.setRole(new Role(rid, null));
+            acc.setPhone(phone);
+            acc.setEmail(email);
+
+            UserDAO udao = new UserDAO();
+
+            if (type.equals("edit")) {
+                String aid_raw = request.getParameter("aid");
+                int aid = Integer.parseInt(aid_raw);
+                acc.setAid(aid);
+                if (udao.updateAccount(acc)) {
+                    session.setAttribute("message", "Update account success!");
+                    session.setAttribute("messageColor", "green");
+                } else {
+                    session.setAttribute("message", "Update account fail!");
+                    session.setAttribute("messageColor", "red");
+                }
+            } else if (type.equals("add")) {
+                String password = request.getParameter("password");
+                if (password == null) {
+                    session.setAttribute("message", "Must fill in the fields!");
+                    session.setAttribute("messageColor", "red");
+                } else {
+                    acc.setPassword(password);
+                }
+                if (udao.createAccount(acc)) {
+                    session.setAttribute("message", "Create new account success!");
+                    session.setAttribute("messageColor", "green");
+                } else {
+                    session.setAttribute("message", "Create new account fail!");
+                    session.setAttribute("messageColor", "red");
+                }
+            }
+            response.sendRedirect("user-manager");
+        } catch (NumberFormatException e) {
+            System.out.println("DoPost -> AdminUserDetail: " + e);
+        }
     }
 
     /**

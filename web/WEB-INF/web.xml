@@ -24,6 +24,10 @@
         <servlet-name>UserDetailController</servlet-name>
         <servlet-class>controller.admin.user.UserDetailController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ClassController</servlet-name>
+        <servlet-class>controller.common.ClassController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeController</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -48,9 +52,16 @@
         <servlet-name>UserDetailController</servlet-name>
         <url-pattern>/admin/user-detail</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ClassController</servlet-name>
+        <url-pattern>/class</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
+    <welcome-file-list>
+        <welcome-file>user/home.jsp</welcome-file>
+    </welcome-file-list>
 </web-app>

@@ -7,7 +7,7 @@
     </head>
 
     <body>
-        
+
 
         <!-- Page Header Start -->
         <div class="page-header">
@@ -36,135 +36,83 @@
                 <div class="row">
                     <div class="col-12">
                         <ul id="class-filter">
-                            <li data-filter="*" class="filter-active">All Classes</li>
-                            <li data-filter=".filter-1">Body Balance</li>
-                            <li data-filter=".filter-2">Hatha Yoga</li>
-                            <li data-filter=".filter-3">Children Yoga</li>
-                            <li data-filter=".filter-4">Yoga Dance</li>
+                            <li class="${cid == 0?'filter-active':''}" onclick="ChangeCategory(0)" >All Classes</li>
+                                <c:forEach items="${listCate}" var="lcate">
+                                <li class="${lcate.categoryID == cid?'filter-active':''}" onclick="ChangeCategory(${lcate.categoryID})" >${lcate.categoryName}</li>
+                                </c:forEach>
                         </ul>
                     </div>
                 </div>
-                <div class="row class-container">
-                    <div class="col-lg-4 col-md-6 col-sm-12 class-item filter-1 wow fadeInUp" data-wow-delay="0.0s">
-                        <div class="class-wrap">
-                            <div class="class-img">
-                                <img src="img/class-1.jpg" alt="Image">
-                            </div>
-                            <div class="class-text">
-                                <div class="class-teacher">
-                                    <img src="img/teacher-1.png" alt="Image">
-                                    <h3>Elise Moran</h3>
-                                    <a href="">+</a>
+                <c:if test="${listClass.size() > 0}">
+                    <div class="row class-container">
+                        <c:forEach items="${listClass}" var="listc">
+                            <div class="col-lg-4 col-md-6 col-sm-12 class-item filter-1 wow fadeInUp" data-wow-delay="1s">
+                                <div class="class-wrap">
+                                    <div class="class-img">
+                                        <img src="user/assets/img/class-1.jpg" alt="Image">
+                                    </div>
+                                    <div class="class-text">
+                                        <div class="class-teacher">
+                                            <img src="user/assets/img/teacher-1.png" alt="Image">
+                                            <h3>${listc.trainer.displayName}</h3>
+                                            <a href="">+</a>
+                                        </div>
+                                        <h2>${listc.className}</h2>
+                                        <div class="class-meta">
+                                            <p><i class="far fa-calendar-alt"></i>Sun, Tue, Thu</p>
+                                            <p><i class="far fa-clock"></i>9:00 - 10:00</p>
+                                        </div>
+                                    </div>
                                 </div>
-                                <h2>Pilates Yoga</h2>
-                                <div class="class-meta">
-                                    <p><i class="far fa-calendar-alt"></i>Sun, Tue, Thu</p>
-                                    <p><i class="far fa-clock"></i>9:00 - 10:00</p>
-                                </div>
                             </div>
-                        </div>
+                        </c:forEach>
                     </div>
-                    <div class="col-lg-4 col-md-6 col-sm-12 class-item filter-2 wow fadeInUp" data-wow-delay="0.2s">
-                        <div class="class-wrap">
-                            <div class="class-img">
-                                <img src="img/class-2.jpg" alt="Image">
-                            </div>
-                            <div class="class-text">
-                                <div class="class-teacher">
-                                    <img src="img/teacher-2.png" alt="Image">
-                                    <h3>Kate Glover</h3>
-                                    <a href="">+</a>
-                                </div>
-                                <h2>Iyengar Yoga</h2>
-                                <div class="class-meta">
-                                    <p><i class="far fa-calendar-alt"></i>Sun, Tue, Thu</p>
-                                    <p><i class="far fa-clock"></i>9:00 - 10:00</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-12 class-item filter-3 wow fadeInUp" data-wow-delay="0.4s">
-                        <div class="class-wrap">
-                            <div class="class-img">
-                                <img src="img/class-3.jpg" alt="Image">
-                            </div>
-                            <div class="class-text">
-                                <div class="class-teacher">
-                                    <img src="img/teacher-3.png" alt="Image">
-                                    <h3>Elina Ekman</h3>
-                                    <a href="">+</a>
-                                </div>
-                                <h2>Ashtanga yoga</h2>
-                                <div class="class-meta">
-                                    <p><i class="far fa-calendar-alt"></i>Sun, Tue, Thu</p>
-                                    <p><i class="far fa-clock"></i>9:00 - 10:00</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-12 class-item filter-4 wow fadeInUp" data-wow-delay="0.6s">
-                        <div class="class-wrap">
-                            <div class="class-img">
-                                <img src="img/class-4.jpg" alt="Image">
-                            </div>
-                            <div class="class-text">
-                                <div class="class-teacher">
-                                    <img src="img/teacher-4.png" alt="Image">
-                                    <h3>Lilly Fry</h3>
-                                    <a href="">+</a>
-                                </div>
-                                <h2>Hatha Yoga</h2>
-                                <div class="class-meta">
-                                    <p><i class="far fa-calendar-alt"></i>Sun, Tue, Thu</p>
-                                    <p><i class="far fa-clock"></i>9:00 - 10:00</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-12 class-item filter-1 wow fadeInUp" data-wow-delay="0.8s">
-                        <div class="class-wrap">
-                            <div class="class-img">
-                                <img src="img/class-5.jpg" alt="Image">
-                            </div>
-                            <div class="class-text">
-                                <div class="class-teacher">
-                                    <img src="img/teacher-5.png" alt="Image">
-                                    <h3>Olivia Yates</h3>
-                                    <a href="">+</a>
-                                </div>
-                                <h2>Kundalini Yoga</h2>
-                                <div class="class-meta">
-                                    <p><i class="far fa-calendar-alt"></i>Sun, Tue, Thu</p>
-                                    <p><i class="far fa-clock"></i>9:00 - 10:00</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-12 class-item filter-2 wow fadeInUp" data-wow-delay="1s">
-                        <div class="class-wrap">
-                            <div class="class-img">
-                                <img src="img/class-6.jpg" alt="Image">
-                            </div>
-                            <div class="class-text">
-                                <div class="class-teacher">
-                                    <img src="img/teacher-6.png" alt="Image">
-                                    <h3>Millie Harper</h3>
-                                    <a href="">+</a>
-                                </div>
-                                <h2>Vinyasa yoga</h2>
-                                <div class="class-meta">
-                                    <p><i class="far fa-calendar-alt"></i>Sun, Tue, Thu</p>
-                                    <p><i class="far fa-clock"></i>9:00 - 10:00</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    <nav aria-label="Page navigation" class="d-flex justify-content-center wow fadeInUp" data-wow-delay="1s">
+                        <ul class="pagination justify-content-center font-weight-bold">
+                            <li class="page-item">
+                                <c:if test="${pageNo > 1}">
+                                    <button class="page-link" ><i class="fas fa-chevrons-left" onclick="onPage(1, '${cid}')">Start</i></button>
+                                </c:if>
+                            </li>
+                            <li class="page-item">
+                                <c:if test="${pageNo > 1}">
+                                    <button class="page-link" ><i class="fas fa-angle-left" onclick="onPage('${pageNo - 1}', '${cid}')"></i></button>
+                                    </c:if>
+                            </li>
+                            <c:forEach var="page" begin="1" end="${totalPages}">
+                                <li aria-current="page" class="page-item ${pageNo == page? 'active' :''}">
+                                    <c:choose>
+                                        <c:when test="${page == pageNo}">
+                                            <button class="page-link page-number">${page}</button>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <button class="page-link page-number" onclick="onPage('${page}', '${cid}')">${page}</button>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </li>
+                            </c:forEach>
+                            <li class="page-item">
+                                <c:if test="${not empty listClass && pageNo != totalPages}">
+                                    <button class="page-link" onclick="onPage(${pageNo+1}, '${cid}')"><i class="fas fa-angle-right"></i>
+                                    </button>
+                                </c:if>
+                            </li>
+                            <li class="page-item">
+                                <c:if test="${not empty listClass && pageNo != totalPages}">
+                                    <button class="page-link" onclick="onPage('${totalPages}', '${cid}')"><i class="fas fa-angles-right">End</i></button>
+                                </c:if>
+                            </li>
+                        </ul>
+                    </nav>
+                </c:if>
+                <c:if test="${listClass.size() == 0}">
+                    <h2 class="text-center">List Class is empty.</h2>
+                </c:if>
             </div>
         </div>
         <!-- Class End -->
-        
-        
+
+
         <!-- Discount Start -->
         <div class="discount wow zoomIn" data-wow-delay="0.1s" style="margin-bottom: 90px;">
             <div class="container">
@@ -185,6 +133,15 @@
 
         <!-- Footer Start -->
         <%@include file="gui/footer.jsp" %>
+        <script>
+            function onPage(pageNo, cid) {
+                window.location.href = `class?pageNo=` + pageNo + `&&cid=` + cid;
+            }
+
+            function ChangeCategory(cateID) {
+                window.location.href = `class?cid=` + cateID;
+            }
+        </script>
         <!-- Footer End -->
 
         <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>

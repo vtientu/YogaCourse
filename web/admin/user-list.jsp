@@ -42,7 +42,7 @@
                                         </div>
                                         <div class="col-sm-12 col-md-6">
                                             <div class="input-group" style="position: relative;width: 75%;margin-left: auto;margin-bottom: 15px;">
-                                                <input class="form-control" name="keySearch" id="textSearch" value="${search}" type="text" placeholder="Search for result" style="margin-left:-2%;background: #cfcfcf;border-radius: 20px;padding: 10px 20px;"/>
+                                                <input class="form-control" name="search" id="textSearch" value="${search}" type="text" placeholder="Search for result" style="margin-left:-2%;background: #cfcfcf;border-radius: 20px;padding: 10px 20px;"/>
                                                 <div class="input-group-append" style="position: absolute;right: 0;z-index: 10;">
                                                     <button class="btn btn-secondary"  type="button" onclick="search()">
                                                         <i class="fa fa-search"></i>
@@ -165,13 +165,12 @@
         <%@include file="gui/footer.jsp" %>
         <script>
                                                         function changeUrl(select) {
-                                                            const pageNo = "${pageNo}";
-                                                            const searchValue = document.getElementById("textSearch").value;
+                                                            const searchValue = "${search}";
                                                             var url = select.value;
-                                                            if (search === '') {
-                                                                window.location.href = "user-manager?status=" + url + "&pageNo=" + pageNo;
+                                                            if (searchValue.length === 0) {
+                                                                window.location.href = "user-manager?status=" + url;
                                                             } else {
-                                                                window.location.href = "user-manager?status=" + url + `&search=` + searchValue + "&pageNo=" + pageNo;
+                                                                window.location.href = "user-manager?status=" + url + `&search=` + searchValue;
                                                             }
                                                         }
 
@@ -187,22 +186,20 @@
                                                             }
                                                         });
 
-                                                        function onPage(pageNo, search) {
-                                                            if (search === '') {
-                                                                window.location.href = `user-manager?pageNo=` + pageNo + `&status=${action}`;
+                                                        function onPage(pageNo, search, active) {
+                                                            if (search.length === 0) {
+                                                                window.location.href = `user-manager?pageNo=` + pageNo + `&status=` + active;
                                                             } else {
-                                                                window.location.href = `user-manager?pageNo=` + pageNo + `&status=${action}` + `&search=` + search;
+                                                                window.location.href = `user-manager?pageNo=` + pageNo + `&status=` + active + `&search=` + search;
                                                             }
                                                         }
 
                                                         function search() {
-                                                            const pageNo = "${pageNo}";
-                                                            const sid = "${syid}";
                                                             const searchValue = document.getElementById("textSearch").value;
-                                                            if (searchValue === '') {
-                                                                window.location.href = `user-manager?status=${action}`;
+                                                            if (searchValue.length === 0) {
+                                                                window.location.href = `user-manager?status=${active}`;
                                                             } else
-                                                                window.location.href = `user-manager?status=${action}` + `&search=` + searchValue;
+                                                                window.location.href = `user-manager?status=${active}` + `&search=` + searchValue;
                                                         }
         </script>
     </body>
