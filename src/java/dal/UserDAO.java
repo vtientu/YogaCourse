@@ -254,7 +254,95 @@ public class UserDAO extends DBContext {
         }
         return -1;
     }
+    
+    public ArrayList<Account> getTrainerList(String keySearch, int pageNo, int numberOfPage) {
+        ArrayList<Account> list = new ArrayList<>();
+        try {
+            String sql = "SELECT [AccountID]\n"
+                    + "      ,a.[RoleId]\n"
+                    + "      ,[Firstname]\n"
+                    + "      ,[Lastname]\n"
+                    + "      ,[Avatar]\n"
+                    + "      ,[Gender]\n"
+                    + "      ,[Phone]\n"
+                    + "      ,[Email]\n"
+                    + "      ,[Address]\n"
+                    + "      ,[Password]\n"
+                    + "      ,[Active]\n"
+                    + "	  ,r.[RoleName]\n"
+                    + "  FROM [dbo].[Account] a INNER JOIN [Role] r\n"
+                    + "  ON a.RoleId = r.RoleID\n WHERE a.[RoleId] = 2 ";
+            if (keySearch != null) {
+                sql += " AND (a.Firstname LIKE ? OR a.[Email] LIKE ? OR a.Lastname LIKE ?)";
+            }
 
+            sql += " ORDER BY a.AccountID ASC OFFSET " + ((pageNo - 1) * numberOfPage) + " ROWS\n"
+                    + "FETCH NEXT " + numberOfPage + " ROWS ONLY ;";
+
+            PreparedStatement st = connection.prepareStatement(sql);
+            if (keySearch != null) {
+                st.setString(1, "%" + keySearch + "%");
+                st.setString(2, "%" + keySearch + "%");
+                st.setString(3, "%" + keySearch + "%");
+            }
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                Role role = new Role(rs.getInt("RoleId"), rs.getString("RoleName"));
+                Account acc = new Account();
+                acc.setAid(rs.getInt("AccountID"));
+                acc.setFirstName(rs.getString("FirstName"));
+                acc.setLastName(rs.getString("LastName"));
+                acc.setAvatar(rs.getString("Avatar"));
+                acc.setGender(rs.getInt("Gender"));
+                acc.setPhone(rs.getString("Phone"));
+                acc.setEmail(rs.getString("Email"));
+                acc.setAddress(rs.getString("Address"));
+                acc.setPassword(rs.getString("Password"));
+                acc.setActive(rs.getBoolean("Active"));
+                acc.setRole(role);
+                list.add(acc);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("getTrainerList(): " + e);
+        }
+        return list;
+    }
+
+    public int getCountTrainerList(String keySearch) {
+        try {
+
+            String sql = "SELECT COUNT(a.AccountID)\n"
+                    + " FROM account a WHERE a.[RoleId] = 2 ";
+
+            if (keySearch != null && keySearch.length() > 0) {
+                sql += " AND (a.Firstname LIKE ? OR a.[Email] LIKE ? OR a.Lastname LIKE ? ) ";
+            }
+
+            
+            PreparedStatement st = connection.prepareStatement(sql);
+            if (keySearch != null && keySearch.length() > 0) {
+                st.setString(1, "%" + keySearch + "%");
+                st.setString(2, "%" + keySearch + "%");
+                st.setString(3, "%" + keySearch + "%");
+            }
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println("getCountTrainerList -> " + e);
+        }
+        return -1;
+    }
+    
+    public static void main(String[] args) {
+        UserDAO udao = new UserDAO();
+        System.out.println(udao.getCountTrainerList(null));
+        
+    }
+    
     public boolean changeStatus(int aid) {
         try {
             String sql = " UPDATE account\n"
@@ -338,11 +426,5 @@ public class UserDAO extends DBContext {
             System.out.println("getRoleList -> " + e);
         }
         return list;
-    }
-
-    public static void main(String[] args) {
-        UserDAO udao = new UserDAO();
-        ArrayList<Account> list = udao.getUserList("", 1, 10, "1");
-        System.out.println(udao.getCountUserList("", null));
     }
 }

@@ -6,26 +6,29 @@ package module;
 
 import java.sql.Time;
 
+
 /**
  *
  * @author admin
  */
 public class Lession {
     private int lessionID;
-    private Time timeStart;
-    private Time timeEnd;
-    private int dayOfWeek;
-    private Room room;
+    private int lessionName;
+    private Time startTime;
+    private Time endTime;
+    private String lessionDescription;
+    private String lessionContent;
 
     public Lession() {
     }
 
-    public Lession(int lessionID, Time timeStart, Time timeEnd, int dayOfWeek, Room room) {
+    public Lession(int lessionID, int lessionName, Time startTime, Time endTime, String lessionDescription, String lessionContent) {
         this.lessionID = lessionID;
-        this.timeStart = timeStart;
-        this.timeEnd = timeEnd;
-        this.dayOfWeek = dayOfWeek;
-        this.room = room;
+        this.lessionName = lessionName;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.lessionDescription = lessionDescription;
+        this.lessionContent = lessionContent;
     }
 
     public int getLessionID() {
@@ -36,37 +39,46 @@ public class Lession {
         this.lessionID = lessionID;
     }
 
-    public Time getTimeStart() {
-        return timeStart;
+    public int getLessionName() {
+        return lessionName;
     }
 
-    public void setTimeStart(Time timeStart) {
-        this.timeStart = timeStart;
+    public void setLessionName(int lessionName) {
+        this.lessionName = lessionName;
     }
 
-    public Time getTimeEnd() {
-        return timeEnd;
+    public Time getStartTime() {
+        return startTime;
     }
 
-    public void setTimeEnd(Time timeEnd) {
-        this.timeEnd = timeEnd;
+    public void setStartTime(Time startTime) {
+        this.startTime = startTime;
     }
 
-    public int getDayOfWeek() {
-        return dayOfWeek;
+    public Time getEndTime() {
+        return endTime;
     }
 
-    public void setDayOfWeek(int dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
+    public void setEndTime(Time endTime) {
+        this.endTime = endTime;
     }
 
-    public Room getRoom() {
-        return room;
+    public String getLessionDescription() {
+        return lessionDescription;
     }
 
-    public void setRoom(Room room) {
-        this.room = room;
+    public void setLessionDescription(String lessionDescription) {
+        this.lessionDescription = lessionDescription;
     }
+
+    public String getLessionContent() {
+        return lessionContent;
+    }
+
+    public void setLessionContent(String lessionContent) {
+        this.lessionContent = lessionContent;
+    }
+
     
     
 }

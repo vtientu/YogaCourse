@@ -15,36 +15,12 @@ import module.Classes;
 import module.Course;
 import module.Lession;
 import module.Role;
-import module.Room;
 
 /**
  *
  * @author admin
  */
 public class CommonDAO extends DBContext {
-
-    public Room getRoomByID(int roomID) {
-        try {
-            String sql = "SELECT [RoomID]\n"
-                    + "      ,[RoomName]\n"
-                    + "      ,[RoomFloor]\n"
-                    + "  FROM [dbo].[Room]\n"
-                    + "  WHERE [RoomID] = ?";
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, roomID);
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                Room room = new Room();
-                room.setRoomID(rs.getInt(1));
-                room.setRoomName(rs.getString(2));
-                room.setRoomFloor(rs.getString(3));
-                return room;
-            }
-        } catch (SQLException e) {
-            System.out.println("getRoomByID -> " + e);
-        }
-        return null;
-    }
 
     public Category getCategoryByID(int cateID) {
         try {
@@ -198,8 +174,6 @@ public class CommonDAO extends DBContext {
         try {
             String sql = "SELECT [LessionID]\n"
                     + "      ,[RoomID]\n"
-                    + "      ,[timeStart]\n"
-                    + "      ,[timeEnd]\n"
                     + "      ,[DayOfWeek]\n"
                     + "  FROM [dbo].[Lession]\n"
                     + "  WHERE [LessionID] = ?";
@@ -209,10 +183,6 @@ public class CommonDAO extends DBContext {
             if (rs.next()) {
                 Lession lession = new Lession();
                 lession.setLessionID(rs.getInt(1));
-                lession.setTimeStart(rs.getTime(3));
-                lession.setTimeEnd(rs.getTime(4));
-                lession.setDayOfWeek(rs.getInt(5));
-                lession.setRoom(getRoomByID(rs.getInt(2)));
                 return lession;
             }
         } catch (SQLException e) {
@@ -226,8 +196,6 @@ public class CommonDAO extends DBContext {
         try {
             String sql = "SELECT [Lession].[LessionID]\n"
                     + "      ,[Lession].[RoomID]\n"
-                    + "      ,[Lession].[timeStart]\n"
-                    + "      ,[Lession].[timeEnd]\n"
                     + "      ,[Lession].[DayOfWeek]\n"
                     + "  FROM [dbo].[Lession] INNER JOIN [Timetable]\n"
                     + "  ON [Lession].[LessionID] = [Timetable].[LessionID]\n"
@@ -238,10 +206,6 @@ public class CommonDAO extends DBContext {
             while (rs.next()) {
                 Lession lession = new Lession();
                 lession.setLessionID(rs.getInt(1));
-                lession.setTimeStart(rs.getTime(3));
-                lession.setTimeEnd(rs.getTime(4));
-                lession.setDayOfWeek(rs.getInt(5));
-                lession.setRoom(getRoomByID(rs.getInt(2)));
                 list.add(lession);
             }
         } catch (SQLException e) {
@@ -297,8 +261,6 @@ public class CommonDAO extends DBContext {
                     + "      ,[TrainerID]\n"
                     + "      ,[CourseID]\n"
                     + "      ,[ClassName]\n"
-                    + "      ,[StartDate]\n"
-                    + "      ,[EndDate]\n"
                     + "  FROM [dbo].[Class]\n"
                     + "  WHERE [ClassID] = ?";
             PreparedStatement st = connection.prepareStatement(sql);
@@ -308,8 +270,6 @@ public class CommonDAO extends DBContext {
                 Classes clas = new Classes();
                     clas.setClassID(rs.getInt(1));
                     clas.setClassName(rs.getString(4));
-                    clas.setStartDate(rs.getDate(5));
-                    clas.setEndDate(rs.getDate(6));
                     clas.setTrainer(getAccountByAid(rs.getInt(2)));
                     clas.setCourse(getCourseByID(rs.getInt(3)));
                     return clas;

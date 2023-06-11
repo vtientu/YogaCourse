@@ -28,6 +28,18 @@
         <servlet-name>ClassController</servlet-name>
         <servlet-class>controller.common.ClassController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>TrainerController</servlet-name>
+        <servlet-class>controller.common.TrainerController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProfileController</servlet-name>
+        <servlet-class>controller.common.ProfileController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BlogController</servlet-name>
+        <servlet-class>controller.common.BlogController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeController</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -55,6 +67,18 @@
     <servlet-mapping>
         <servlet-name>ClassController</servlet-name>
         <url-pattern>/class</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TrainerController</servlet-name>
+        <url-pattern>/trainer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProfileController</servlet-name>
+        <url-pattern>/profile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BlogController</servlet-name>
+        <url-pattern>/blog</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

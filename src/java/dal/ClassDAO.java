@@ -25,8 +25,6 @@ public class ClassDAO extends DBContext {
                     + "      ,[Class].[TrainerID]\n"
                     + "      ,[Class].[CourseID]\n"
                     + "      ,[Class].[ClassName]\n"
-                    + "      ,[Class].[StartDate]\n"
-                    + "      ,[Class].[EndDate]\n"
                     + "  FROM [dbo].[Class] INNER JOIN [Course]\n"
                     + "  ON [Class].[CourseID] = [Course].[CourseID]\n"
                     + "  INNER JOIN [Category] ON [Course].[CategoryID] = [Category].[CategoryID] ";
@@ -47,8 +45,6 @@ public class ClassDAO extends DBContext {
                 Classes clas = new Classes();
                 clas.setClassID(rs.getInt(1));
                 clas.setClassName(rs.getString(4));
-                clas.setStartDate(rs.getDate(5));
-                clas.setEndDate(rs.getDate(6));
                 clas.setTrainer(cdao.getAccountByAid(rs.getInt(2)));
                 clas.setCourse(cdao.getCourseByID(rs.getInt(3)));
                 list.add(clas);

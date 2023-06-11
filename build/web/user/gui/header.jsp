@@ -80,10 +80,9 @@
                 <div class="collapse navbar-collapse justify-content-between " style="flex-grow: 0" id="navbarCollapse">
                     <div class="navbar-nav ml-auto">
                         <a href="home" class="nav-item nav-link ${page == 'home'?'active':''}">Home</a>
-                        <a href="about.html" class="nav-item nav-link ${page == 'about'?'active':''}">About</a>
-                        <a href="price.html" class="nav-item nav-link ${page == 'price'?'active':''}" >Price</a>
                         <a href="class" class="nav-item nav-link ${page == 'class'?'active':''}" >Class</a>
-                        <a href="team.html" class="nav-item nav-link ${page == 'trainer'?'active':''}">Trainer</a>
+                        <a href="trainer" class="nav-item nav-link ${page == 'trainer'?'active':''}">Trainer</a>
+                        <a href="blog" class="nav-item nav-link ${page == 'blog'?'active':''}" >Blog</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">${account == null?'Login':account.displayName}</a>
                             <div class="dropdown-menu">
@@ -95,7 +94,7 @@
                                     <c:if test="${account.role.rid > 2}">
                                         <a href="admin/user-manager" class="dropdown-item">Dashboard</a>
                                     </c:if>
-                                    <a href="profile?action=profile" class="dropdown-item">Profile</a>
+                                    <a href="profile" class="dropdown-item">Profile</a>
                                     <a href="profile?action=password" class="dropdown-item">Change Password</a>
                                     <a href="home?action=logout" class="dropdown-item">Logout</a>
                                 </c:if>
