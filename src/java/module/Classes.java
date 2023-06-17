@@ -4,6 +4,7 @@
  */
 package module;
 
+import java.sql.Time;
 import java.util.ArrayList;
 
 /**
@@ -13,6 +14,9 @@ import java.util.ArrayList;
 public class Classes {
     private int classID;
     private String className;
+    private Time startTime;
+    private Time endTime;
+    private String dayOfWeek;
     private Account trainer;
     private Course course;
     private ArrayList<Account> listMember;
@@ -23,13 +27,40 @@ public class Classes {
     public Classes() {
     }
 
-    public Classes(int classID, String className, Account trainer, Course course, ArrayList<Account> listMember, ArrayList<Lession> listLession) {
+    public Classes(int classID, String className, Time startTime, Time endTime, String dayOfWeek, Account trainer, Course course, ArrayList<Account> listMember, ArrayList<Lession> listLession) {
         this.classID = classID;
         this.className = className;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.dayOfWeek = dayOfWeek;
         this.trainer = trainer;
         this.course = course;
         this.listMember = listMember;
         this.listLession = listLession;
+    }
+
+    public Time getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Time startTime) {
+        this.startTime = startTime;
+    }
+
+    public Time getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Time endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getDayOfWeek() {
+        return dayOfWeek;
+    }
+
+    public void setDayOfWeek(String dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
     }
 
     public int getClassID() {

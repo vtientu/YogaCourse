@@ -55,13 +55,13 @@
                                         <div class="class-teacher">
                                             <img src="user/assets/img/teacher-1.png" alt="Image">
                                             <h3>${listc.trainer.displayName}</h3>
-                                            <a href="">+</a>
                                         </div>
-                                        <h2>${listc.className}</h2>
+                                            <h2><a style="text-decoration: none" href="class-details?cid=${listc.classID}">${listc.className}</a></h2>
                                         <div class="class-meta">
-                                            <p><i class="far fa-calendar-alt"></i>Sun, Tue, Thu</p>
-                                            <p><i class="far fa-clock"></i>9:00 - 10:00</p>
+                                            <h4>Price: <strong>${listc.course.price}$</strong></h4>
                                         </div>
+                                        <label>Time: ${listc.startTime} - ${listc.endTime}</label><br/>
+                                        <span>Date: <strong>${listc.dayOfWeek}</strong></span>
                                     </div>
                                 </div>
                             </div>

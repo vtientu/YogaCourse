@@ -94,8 +94,8 @@
                                     <c:if test="${account.role.rid > 2}">
                                         <a href="admin/user-manager" class="dropdown-item">Dashboard</a>
                                     </c:if>
-                                    <a href="profile" class="dropdown-item">Profile</a>
-                                    <a href="profile?action=password" class="dropdown-item">Change Password</a>
+                                    <a href="profile?action=profile" class="dropdown-item">Profile</a>
+                                    <a href="profile?action=changepassword" class="dropdown-item">Change Password</a>
                                     <a href="home?action=logout" class="dropdown-item">Logout</a>
                                 </c:if>
                             </div>

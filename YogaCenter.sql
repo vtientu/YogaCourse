@@ -105,6 +105,9 @@ CREATE TABLE [dbo].[Class](
 	[TrainerID] [int] NOT NULL,
 	[CourseID] [int] NOT NULL,
 	[ClassName] [varchar](20) NULL,
+	[StartTime] Time,
+	[EndTime] Time,
+	[DayOfWeek] nvarchar(max),
 	PRIMARY KEY (ClassID),
 	FOREIGN KEY(TrainerID) REFERENCES Account(AccountID),
 	FOREIGN KEY(CourseID) REFERENCES Course(CourseID)
@@ -143,8 +146,6 @@ GO
 CREATE TABLE [dbo].[Lession](
 	[LessionID] [int] IDENTITY(1,1),
 	[LessionName] NVARCHAR(255),
-	[StartTime] Time,
-	[EndTime] Time,
 	[LessionDescription] NVARCHAR(max),
 	[LessionContent] NVARCHAR(max),
 	PRIMARY KEY (LessionID)
@@ -227,15 +228,15 @@ INSERT INTO [dbo].[Course]
            ,[Image]
            ,[Active])
      VALUES
-           (1, 4, 'Yoga Course 1', 9.99, 0.2, 'Yoga Course description', 30, 'yoga_image1.jpg', 1),
-           (2, 4, 'Yoga Course 2', 19.99, 0.1, 'Yoga Course description', 20, 'yoga_image2.jpg', 1),
-           (3, 4, 'Yoga Course 3', 14.99, 0.15, 'Yoga Course description', 25, 'yoga_image3.jpg', 1),
-           (4, 4, 'Yoga Course 4', 24.99, 0.25, 'Yoga Course description', 35, 'yoga_image40.jpg', 1),
-           (1, 4, 'Yoga Course 5', 9.99, 0.2, 'Yoga Course description', 30, 'yoga_image1.jpg', 1),
-           (2, 4, 'Yoga Course 6', 19.99, 0.1, 'Yoga Course description', 20, 'yoga_image2.jpg', 1),
-           (3, 4, 'Yoga Course 7', 14.99, 0.15, 'Yoga Course description', 25, 'yoga_image3.jpg', 1),
-           (4, 4, 'Yoga Course 8', 24.99, 0.25, 'Yoga Course description', 35, 'yoga_image40.jpg', 1),
-           (1, 4, 'Yoga Course 9', 9.99, 0.2, 'Yoga Course description', 30, 'yoga_image1.jpg', 1),
+           (1, 4, 'Gentle Yoga', 9.99, 0.2, 'Gentle yoga classes can include movements done at a slow pace and breathing exercises. It may also include longer holds and even have rest in between poses. Students often find that classes meditative style of yoga practice.', 30, 'user/assets/img/class-1.jpg', 1),
+           (2, 4, 'Hatha Yoga', 19.99, 0.1, 'A branch of yoga which uses physical techniques to try to preserve and channel the vital force or energy. The Sanskrit word literally means "force", alluding to a system of physical techniques', 20, 'user/assets/img/class-2.jpg', 1),
+           (3, 4, 'Ashtanga', 14.99, 0.15, 'A style of yoga as exercise popularised by K. Pattabhi Jois during the twentieth century, often promoted as a dynamic form of classical Indian (hatha) yoga.', 25, 'user/assets/img/class-3.jpg', 1),
+           (4, 4, 'Vinyasa', 24.99, 0.25, 'The vinyasa forms of yoga used as exercise, including Pattabhi Jois 1948 Ashtanga Vinyasa Yoga and its spin-off schools such as Beryl Bender Birchs 1995 Power Yoga and others like Baptiste Yoga, Jivamukti Yoga, Vinyasa Flow Yoga, Power Vinyasa Yoga, and Core Strength Vinyasa Yoga, derive from Krishnamacharyas development of a flowing aerobic style of yoga in the Mysore Palace in the early 20th century', 35, 'user/assets/img/class-4.jpg', 1),
+           (1, 4, 'Yoga Course 5', 9.99, 0.2, 'Yoga Course description', 30, 'user/assets/img/class-5.jpg', 1),
+           (2, 4, 'Yoga Course 6', 19.99, 0.1, 'Yoga Course description', 20, 'user/assets/img/class-6.jpg', 1),
+           (3, 4, 'Yoga Course 7', 14.99, 0.15, 'Yoga Course description', 25, 'user/assets/img/class-1.jpg', 1),
+           (4, 4, 'Yoga Course 8', 24.99, 0.25, 'Yoga Course description', 35, 'user/assets/img/class-1.jpg', 1),
+           (1, 4, 'Yoga Course 9', 9.99, 0.2, 'Yoga Course description', 30, 'user/assets/img/class-1.jpg', 1),
            (2, 4, 'Yoga Course 10', 19.99, 0.1, 'Yoga Course description', 20, 'yoga_image2.jpg', 1),
            (3, 4, 'Yoga Course 11', 14.99, 0.15, 'Yoga Course description', 25, 'yoga_image3.jpg', 1),
            (4, 4, 'Yoga Course 12', 24.99, 0.25, 'Yoga Course description', 35, 'yoga_image40.jpg', 1),
@@ -267,22 +268,19 @@ GO
 INSERT INTO [dbo].[Class]
            ([TrainerID]
            ,[CourseID]
-           ,[ClassName])
+           ,[ClassName]
+           ,[StartTime]
+           ,[EndTime]
+           ,[DayOfWeek])
      VALUES
-           (2, 1, 'Yaga Class 1'),
-		   (2, 1, 'Yaga Class 2'),
-		   (2, 1, 'Yaga Class 3'),
-		   (2, 1, 'Yaga Class 4'),
-		   (2, 1, 'Yaga Class 5'),
-		   (2, 1, 'Yaga Class 6'),
-		   (2, 1, 'Yaga Class 7'),
-		   (2, 1, 'Yaga Class 8'),
-		   (2, 1, 'Yaga Class 9'),
-		   (2, 2, 'Yaga Class 10'),
-		   (2, 2, 'Yaga Class 11'),
-		   (2, 2, 'Yaga Class 12'),
-		   (2, 2, 'Yaga Class 13'),
-		   (2, 2, 'Yaga Class 14')
+           (2, 1, 'Yaga Class 1', '07:30', '9:00', 'Mon Tue Wed Thur Fri'),
+		   (3, 2, 'Yaga Class 2', '09:00', '10:30', 'Mon Tue Wed Thur Fri'),
+		   (4, 3, 'Yaga Class 3', '10:30', '12:00', 'Mon Tue Wed Thur Fri'),
+		   (5, 4, 'Yaga Class 4', '13:00', '14:30', 'Mon Tue Wed Thur Fri'),
+		   (6, 1, 'Yaga Class 5', '14:30', '16:00', 'Mon Tue Wed Thur Fri'),
+		   (7, 2, 'Yaga Class 6', '16:00', '17:30', 'Mon Tue Wed Thur Fri'),
+		   (8, 3, 'Yaga Class 7', '17:30', '19:00', 'Mon Tue Wed Thur Fri'),
+		   (9, 4, 'Yaga Class 8', '19:30', '21:00', 'Mon Tue Wed Thur Fri')
 GO
 
 
@@ -362,3 +360,16 @@ With a separate focus on the front body, back body, & upper body. These full-hou
 This course is designed for all levels including beginners, intermediate, & advanced yoga practitioners. I will walk you step-by-step through each of the poses. Variations are offered to suit all body shapes & abilities. Instructions will allow you to settle into the practice without having to keep watching the screen. You can practice at your own pace in the comfort of your home & can come back to the practice as often as desired.',
 1, 'user/assets/img/blog-4.jpg')
 GO
+
+INSERT INTO [dbo].[Feedback]
+           ([MemberID]
+           ,[CourseID]
+           ,[Rating]
+           ,[Description])
+     VALUES
+           (1, 3, 4, 'Description Feedback 123'),
+		   (2, 3, 1, 'Description Feedback 111'),
+		   (3, 3, 3, 'Description Feedback 222'),
+		   (4, 3, 5, 'Description Feedback 333'),
+		   (5, 3, 1, 'Description Feedback 444'),
+		   (6, 3, 2, 'Description Feedback 555')

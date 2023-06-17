@@ -254,7 +254,7 @@ public class UserDAO extends DBContext {
         }
         return -1;
     }
-    
+
     public ArrayList<Account> getTrainerList(String keySearch, int pageNo, int numberOfPage) {
         ArrayList<Account> list = new ArrayList<>();
         try {
@@ -320,7 +320,6 @@ public class UserDAO extends DBContext {
                 sql += " AND (a.Firstname LIKE ? OR a.[Email] LIKE ? OR a.Lastname LIKE ? ) ";
             }
 
-            
             PreparedStatement st = connection.prepareStatement(sql);
             if (keySearch != null && keySearch.length() > 0) {
                 st.setString(1, "%" + keySearch + "%");
@@ -336,13 +335,66 @@ public class UserDAO extends DBContext {
         }
         return -1;
     }
-    
-    public static void main(String[] args) {
-        UserDAO udao = new UserDAO();
-        System.out.println(udao.getCountTrainerList(null));
-        
+
+    public boolean updateProfile(Account a) {
+        try {
+            String sql = "UPDATE [dbo].[Account]\n"
+                    + "   SET [Firstname] = ?\n"
+                    + "      ,[Lastname] = ?\n"
+                    + "      ,[Avatar] = ?\n"
+                    + "      ,[Gender] = ?\n"
+                    + "      ,[Phone] = ?\n"
+                    + "      ,[Address] = ?\n"
+                    + " WHERE [AccountID] = ?";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, a.getFirstName());
+            st.setString(2, a.getLastName());
+            st.setString(3, a.getAvatar());
+            st.setInt(4, a.getGender());
+            st.setString(5, a.getPhone());
+            st.setString(6, a.getAddress());
+            st.setInt(7, a.getAid());
+            st.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("updateAccount -> " + e);
+        }
+        return false;
+    }
+
+    public boolean changePassword(int aid, String password) {
+        try {
+            String sql = "UPDATE [dbo].[Account]\n"
+                    + "   SET [Password] = ?\n"
+                    + " WHERE [Account].[AccountID] = ?";
+            PreparedStatement st = connection.prepareStatement(sql);
+            Common c = new Common();
+            st.setString(1, c.convertPassToMD5(password));
+            st.setInt(2, aid);
+            st.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("changePassword -> " + e);
+        }
+        return false;
     }
     
+    public boolean changeAvatar(int aid, String avatar) {
+        try {
+            String sql = "UPDATE [dbo].[Account]\n"
+                    + "   SET [Avatar] = ?\n"
+                    + " WHERE [Account].[AccountID] = ?";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, avatar);
+            st.setInt(2, aid);
+            st.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("changeAvatar -> " + e);
+        }
+        return false;
+    }
+
     public boolean changeStatus(int aid) {
         try {
             String sql = " UPDATE account\n"
@@ -358,8 +410,6 @@ public class UserDAO extends DBContext {
         }
         return false;
     }
-
-    
 
     public boolean updateAccount(Account a) {
         try {

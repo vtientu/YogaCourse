@@ -14,19 +14,15 @@ import java.sql.Time;
 public class Lession {
     private int lessionID;
     private int lessionName;
-    private Time startTime;
-    private Time endTime;
     private String lessionDescription;
     private String lessionContent;
 
     public Lession() {
     }
 
-    public Lession(int lessionID, int lessionName, Time startTime, Time endTime, String lessionDescription, String lessionContent) {
+    public Lession(int lessionID, int lessionName, String lessionDescription, String lessionContent) {
         this.lessionID = lessionID;
         this.lessionName = lessionName;
-        this.startTime = startTime;
-        this.endTime = endTime;
         this.lessionDescription = lessionDescription;
         this.lessionContent = lessionContent;
     }
@@ -45,22 +41,6 @@ public class Lession {
 
     public void setLessionName(int lessionName) {
         this.lessionName = lessionName;
-    }
-
-    public Time getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Time startTime) {
-        this.startTime = startTime;
-    }
-
-    public Time getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Time endTime) {
-        this.endTime = endTime;
     }
 
     public String getLessionDescription() {
