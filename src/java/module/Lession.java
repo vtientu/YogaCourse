@@ -13,14 +13,14 @@ import java.sql.Time;
  */
 public class Lession {
     private int lessionID;
-    private int lessionName;
+    private String lessionName;
     private String lessionDescription;
     private String lessionContent;
 
     public Lession() {
     }
 
-    public Lession(int lessionID, int lessionName, String lessionDescription, String lessionContent) {
+    public Lession(int lessionID, String lessionName, String lessionDescription, String lessionContent) {
         this.lessionID = lessionID;
         this.lessionName = lessionName;
         this.lessionDescription = lessionDescription;
@@ -35,13 +35,14 @@ public class Lession {
         this.lessionID = lessionID;
     }
 
-    public int getLessionName() {
+    public String getLessionName() {
         return lessionName;
     }
 
-    public void setLessionName(int lessionName) {
+    public void setLessionName(String lessionName) {
         this.lessionName = lessionName;
     }
+    
 
     public String getLessionDescription() {
         return lessionDescription;

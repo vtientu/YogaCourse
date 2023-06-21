@@ -5,11 +5,11 @@
         <group>
             <file>file:/D:/FPT/SWP391/Yoga/SWP_Project/src/java/dal/ClassDAO.java</file>
             <file>file:/D:/FPT/SWP391/Yoga/SWP_Project/web/user/class-details.jsp</file>
-            <file>file:/D:/FPT/SWP391/Yoga/SWP_Project/web/user/blog-details.jsp</file>
             <file>file:/D:/FPT/SWP391/Yoga/SWP_Project/src/java/controller/common/ClassDetailsController.java</file>
-            <file>file:/D:/FPT/SWP391/Yoga/SWP_Project/web/user/class.jsp</file>
+            <file>file:/D:/FPT/SWP391/Yoga/SWP_Project/src/java/module/Account.java</file>
+            <file>file:/D:/FPT/SWP391/Yoga/SWP_Project/src/java/module/Role.java</file>
             <file>file:/D:/FPT/SWP391/Yoga/SWP_Project/src/java/module/Classes.java</file>
-            <file>file:/D:/FPT/SWP391/Yoga/SWP_Project/src/java/controller/common/ProfileController.java</file>
+            <file>file:/D:/FPT/SWP391/Yoga/SWP_Project/src/java/module/Lession.java</file>
         </group>
     </open-files>
 </project-private>

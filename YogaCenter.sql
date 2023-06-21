@@ -105,6 +105,7 @@ CREATE TABLE [dbo].[Class](
 	[TrainerID] [int] NOT NULL,
 	[CourseID] [int] NOT NULL,
 	[ClassName] [varchar](20) NULL,
+	[LimitMember] int DEFAULT 30,
 	[StartTime] Time,
 	[EndTime] Time,
 	[DayOfWeek] nvarchar(max),
@@ -118,6 +119,7 @@ GO
 CREATE TABLE [dbo].[Enroll](
 	[EnrollID] [int] IDENTITY(1,1),
 	[EnrollDate] Date NULL,
+	[totalPrice] money,
 	[status] [bit] NULL,
 	[AccountID] [int] NOT NULL,
 	[ClassID] [int] NOT NULL,
@@ -126,6 +128,18 @@ CREATE TABLE [dbo].[Enroll](
 	FOREIGN KEY(ClassID) REFERENCES Class(ClassID)
 )
 GO
+
+
+CREATE TABLE [dbo].[Payment] (
+	[PaymentID] [int] IDENTITY(1, 1),
+	[EnrollID] [int],
+	[CardNumber] varchar(20),
+	[Expires] varchar(20),
+	[CardholderName] varchar(100),
+	[CVC] varchar(5),
+	PRIMARY KEY(PaymentID),
+	FOREIGN KEY(EnrollID) REFERENCES Enroll(EnrollID)
+)
 
 
 
@@ -173,6 +187,8 @@ CREATE TABLE Attend(
 	FOREIGN KEY(AccountID) REFERENCES Account(AccountID),
 	FOREIGN KEY(LessionID) REFERENCES Lession(LessionID)
 )
+
+
 
 
 INSERT INTO Role(RoleName) VALUES('Guest'), ('Trainer'), ('Staff'), ('Admin')
@@ -373,3 +389,51 @@ INSERT INTO [dbo].[Feedback]
 		   (4, 3, 5, 'Description Feedback 333'),
 		   (5, 3, 1, 'Description Feedback 444'),
 		   (6, 3, 2, 'Description Feedback 555')
+
+
+
+INSERT INTO [dbo].[Lession]
+           ([LessionName]
+           ,[LessionDescription]
+           ,[LessionContent])
+     VALUES
+           ('Lession 1', 'Descript 1', 'Content 1'),
+		   ('Lession 2', 'Descript 1', 'Content 1'),
+		   ('Lession 3', 'Descript 1', 'Content 1'),
+		   ('Lession 4', 'Descript 1', 'Content 1'),
+		   ('Lession 5', 'Descript 1', 'Content 1'),
+		   ('Lession 6', 'Descript 1', 'Content 1'),
+		   ('Lession 7', 'Descript 1', 'Content 1'),
+		   ('Lession 8', 'Descript 1', 'Content 1'),
+		   ('Lession 9', 'Descript 1', 'Content 1'),
+		   ('Lession 10', 'Descript 1', 'Content 1'),
+		   ('Lession 11', 'Descript 1', 'Content 1')
+GO
+
+INSERT INTO [dbo].[Timetable]
+           ([ClassID]
+           ,[LessionID])
+     VALUES
+           (2, 1),
+		   (2, 2),
+		   (2, 3),
+		   (2, 4),
+		   (2, 5),
+		   (2, 6),
+		   (2, 7),
+		   (2, 8),
+		   (2, 9),
+		   (2, 10),
+		   (2, 11)
+GO
+
+
+INSERT INTO [dbo].[Enroll]
+           ([EnrollDate]
+           ,[totalPrice]
+           ,[status]
+           ,[AccountID]
+           ,[ClassID])
+     VALUES
+           (GETDATE(), 10.0, 1, 1, 2)
+GO

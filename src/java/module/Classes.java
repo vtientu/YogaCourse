@@ -17,6 +17,7 @@ public class Classes {
     private Time startTime;
     private Time endTime;
     private String dayOfWeek;
+    private int limitMember;
     private Account trainer;
     private Course course;
     private ArrayList<Account> listMember;
@@ -27,16 +28,25 @@ public class Classes {
     public Classes() {
     }
 
-    public Classes(int classID, String className, Time startTime, Time endTime, String dayOfWeek, Account trainer, Course course, ArrayList<Account> listMember, ArrayList<Lession> listLession) {
+    public Classes(int classID, String className, Time startTime, Time endTime, String dayOfWeek, int limitMember, Account trainer, Course course, ArrayList<Account> listMember, ArrayList<Lession> listLession) {
         this.classID = classID;
         this.className = className;
         this.startTime = startTime;
         this.endTime = endTime;
         this.dayOfWeek = dayOfWeek;
+        this.limitMember = limitMember;
         this.trainer = trainer;
         this.course = course;
         this.listMember = listMember;
         this.listLession = listLession;
+    }
+
+    public int getLimitMember() {
+        return limitMember;
+    }
+
+    public void setLimitMember(int limitMember) {
+        this.limitMember = limitMember;
     }
 
     public Time getStartTime() {

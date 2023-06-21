@@ -4,6 +4,8 @@
  */
 package module;
 
+import java.text.DecimalFormat;
+
 /**
  *
  * @author admin
@@ -114,6 +116,12 @@ public class Course {
 
     public void setCreateBy(Account createBy) {
         this.createBy = createBy;
+    }
+    
+    public String getPriceDiscount(){
+        DecimalFormat df = new DecimalFormat("#0.00");
+        String formattedNumber = df.format(this.price - (this.price * this.discount));
+        return formattedNumber;
     }
     
     

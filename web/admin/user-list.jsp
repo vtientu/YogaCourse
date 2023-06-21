@@ -73,73 +73,73 @@
                                                             <th style="width: 5%">Active</th>
                                                             <th>Action</th>
                                                         </tr>
-                                                    <c:forEach items="${listUser}" var="item">
-                                                        <tr>
-                                                            <td>${item.aid}</td>
-                                                            <td>
-                                                                ${item.displayName}
-                                                            </td>
-                                                            <td>
-                                                                ${item.email}
-                                                            </td>
-                                                            <td>
-                                                                ${item.phone}
-                                                            </td>
-                                                            <td>
-                                                                ${item.role.roleName}
-                                                            </td>
-                                                            <td>
-                                                                <span class="badge ${item.active == true?'badge-success':'badge-danger'}">
-                                                                    ${item.active == true?'Active':'Inactive'}</span>
-                                                            </td>
+                                                        <c:forEach items="${listUser}" var="item">
+                                                            <tr>
+                                                                <td>${item.aid}</td>
+                                                                <td>
+                                                                    ${item.displayName}
+                                                                </td>
+                                                                <td>
+                                                                    ${item.email}
+                                                                </td>
+                                                                <td>
+                                                                    ${item.phone}
+                                                                </td>
+                                                                <td>
+                                                                    ${item.role.roleName}
+                                                                </td>
+                                                                <td>
+                                                                    <span class="badge ${item.active == true?'badge-success':'badge-danger'}">
+                                                                        ${item.active == true?'Active':'Inactive'}</span>
+                                                                </td>
 
-                                                        <c:if test="${account.aid != item.aid && item.role.rid != 4}">
-                                                            <td>
-                                                                <a class="text-secondary" href="user-detail?type=edit&aid=${item.aid}"><i class="fas fa-pen-square"></i></a>
-                                                                <a href="change-status?aid=${item.aid}" ><i class="ml-3 ${item.active == true?'fas fa-toggle-on text-success':'fas fa-toggle-off text-danger'}" style="cursor: pointer"></i></a>
-                                                            </td>
-                                                        </c:if>
-                                                        <c:if test="${account.aid == item.aid || item.role.rid == 4}">
-                                                            <td></td>
-                                                        </c:if>
-                                                        </tr>
-                                                    </c:forEach>
+                                                                <c:if test="${account.aid != item.aid && item.role.rid != 4}">
+                                                                    <td>
+                                                                        <a class="text-secondary" href="user-detail?type=edit&aid=${item.aid}"><i class="fas fa-pen-square"></i></a>
+                                                                        <a href="change-status?aid=${item.aid}" ><i class="ml-3 ${item.active == true?'fas fa-toggle-on text-success':'fas fa-toggle-off text-danger'}" style="cursor: pointer"></i></a>
+                                                                    </td>
+                                                                </c:if>
+                                                                <c:if test="${account.aid == item.aid || item.role.rid == 4}">
+                                                                    <td></td>
+                                                                </c:if>
+                                                            </tr>
+                                                        </c:forEach>
                                                     </tbody>
                                                 </table>
 
                                                 <ul class="pagination justify-content-center font-weight-bold">
                                                     <li class="page-item">
-                                                    <c:if test="${pageNo > 1}">
-                                                        <button class="page-link" ><i class="fas fa-chevrons-left" onclick="onPage(1, '${search}', '${active}')">Start</i>
-                                                    </c:if>
+                                                        <c:if test="${pageNo > 1}">
+                                                            <button class="page-link" ><i class="fas fa-chevrons-left" onclick="onPage(1, '${search}', '${active}')">Start</i>
+                                                            </c:if>
                                                     </li>
                                                     <li class="page-item">
-                                                    <c:if test="${pageNo > 1}">
-                                                        <button class="page-link" ><i class="fas fa-angle-left" onclick="onPage('${pageNo - 1}', '${search}', '${active}')"></i>
-                                                    </c:if>
+                                                        <c:if test="${pageNo > 1}">
+                                                            <button class="page-link" ><i class="fas fa-angle-left" onclick="onPage('${pageNo - 1}', '${search}', '${active}')"></i>
+                                                            </c:if>
                                                     </li>
                                                     <c:forEach var="page" begin="1" end="${totalPages}">
                                                         <li aria-current="page" class="page-item ${pageNo == page? 'active' :''}">
-                                                        <c:choose>
-                                                            <c:when test="${page == pageNo}">
-                                                                <button class="page-link page-number">${page}</button>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <button class="page-link page-number" onclick="onPage('${page}', '${search}', '${active}')">${page}</button>
-                                                            </c:otherwise>
-                                                        </c:choose>
+                                                            <c:choose>
+                                                                <c:when test="${page == pageNo}">
+                                                                    <button class="page-link page-number">${page}</button>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <button class="page-link page-number" onclick="onPage('${page}', '${search}', '${active}')">${page}</button>
+                                                                </c:otherwise>
+                                                            </c:choose>
                                                         </li>
                                                     </c:forEach>
                                                     <li class="page-item">
-                                                    <c:if test="${not empty listUser && pageNo != totalPages}">
-                                                        <button class="page-link" onclick="onPage(${pageNo+1}, '${search}', '${active}')"><i class="fas fa-angle-right"></i>
-                                                        </button>
-                                                    </c:if>
+                                                        <c:if test="${not empty listUser && pageNo != totalPages}">
+                                                            <button class="page-link" onclick="onPage(${pageNo+1}, '${search}', '${active}')"><i class="fas fa-angle-right"></i>
+                                                            </button>
+                                                        </c:if>
                                                     </li>
                                                     <li class="page-item">
-                                                    <c:if test="${not empty listUser && pageNo != totalPages}">
-                                                        <button class="page-link" onclick="onPage('${totalPages}', '${search}', '${active}')"><i class="fas fa-angles-right">End</i>
-                                                    </c:if>
+                                                        <c:if test="${not empty listUser && pageNo != totalPages}">
+                                                            <button class="page-link" onclick="onPage('${totalPages}', '${search}', '${active}')"><i class="fas fa-angles-right">End</i>
+                                                            </c:if>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -164,43 +164,43 @@
 
         <%@include file="gui/footer.jsp" %>
         <script>
-                                                        function changeUrl(select) {
-                                                            const searchValue = "${search}";
-                                                            var url = select.value;
-                                                            if (searchValue.length === 0) {
-                                                                window.location.href = "user-manager?status=" + url;
-                                                            } else {
-                                                                window.location.href = "user-manager?status=" + url + `&search=` + searchValue;
-                                                            }
-                                                        }
+            function changeUrl(select) {
+                const searchValue = "${search}";
+                var url = select.value;
+                if (searchValue.length === 0) {
+                    window.location.href = "user-manager?status=" + url;
+                } else {
+                    window.location.href = "user-manager?status=" + url + `&search=` + searchValue;
+                }
+            }
 
-                                                        $(document).ready(function () {
-                                                            $(".js-basic-example2").select2({
-                                                                theme: "classic"
-                                                            });
-                                                        });
+            $(document).ready(function () {
+                $(".js-basic-example2").select2({
+                    theme: "classic"
+                });
+            });
 
-                                                        $(document).ready(function () {
-                                                            if (document.getElementById('message').innerHTML !== '') {
-                                                                $('.toast').toast('show');
-                                                            }
-                                                        });
+            $(document).ready(function () {
+                if (document.getElementById('message').innerHTML !== '') {
+                    $('.toast').toast('show');
+                }
+            });
 
-                                                        function onPage(pageNo, search, active) {
-                                                            if (search.length === 0) {
-                                                                window.location.href = `user-manager?pageNo=` + pageNo + `&status=` + active;
-                                                            } else {
-                                                                window.location.href = `user-manager?pageNo=` + pageNo + `&status=` + active + `&search=` + search;
-                                                            }
-                                                        }
+            function onPage(pageNo, search, active) {
+                if (search.length === 0) {
+                    window.location.href = `user-manager?pageNo=` + pageNo + `&status=` + active;
+                } else {
+                    window.location.href = `user-manager?pageNo=` + pageNo + `&status=` + active + `&search=` + search;
+                }
+            }
 
-                                                        function search() {
-                                                            const searchValue = document.getElementById("textSearch").value;
-                                                            if (searchValue.length === 0) {
-                                                                window.location.href = `user-manager?status=${active}`;
-                                                            } else
-                                                                window.location.href = `user-manager?status=${active}` + `&search=` + searchValue;
-                                                        }
+            function search() {
+                const searchValue = document.getElementById("textSearch").value;
+                if (searchValue.length === 0) {
+                    window.location.href = `user-manager?status=${active}`;
+                } else
+                    window.location.href = `user-manager?status=${active}` + `&search=` + searchValue;
+            }
         </script>
     </body>
 

@@ -12,17 +12,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.ArrayList;
 import module.Account;
 import module.Classes;
-import module.Course;
-import module.Feedback;
 
 /**
  *
  * @author admin
  */
-public class ClassDetailsController extends HttpServlet {
+public class CheckoutController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +38,10 @@ public class ClassDetailsController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ClassDetailsController</title>");
+            out.println("<title>Servlet CheckoutController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ClassDetailsController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CheckoutController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -63,31 +60,28 @@ public class ClassDetailsController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            String cid_raw = request.getParameter("cid");
             HttpSession session = request.getSession();
+            String cid_raw = request.getParameter("cid");
             Account a = (Account) session.getAttribute("account");
-            if (cid_raw == null) {
-                response.sendRedirect("home");
-            } else {
+            if (cid_raw != null && a != null) {
                 int cid = Integer.parseInt(cid_raw);
                 ClassDAO cdao = new ClassDAO();
                 Classes clas = cdao.getClassByID(cid);
                 if (clas != null) {
-                    if(a != null) {
-                        boolean checked = cdao.checkAccountMemberInClass(a.getAid(), cid);
-                        request.setAttribute("checkEnroll", checked);
-                    }
-                    request.setAttribute("totalMember", cdao.getTotalMemberInClass(cid));
-                    ArrayList<Feedback> listFeedback = cdao.getFeedbackListByCid(clas.getCourse().getCourseID());
-                    request.setAttribute("listFeed", listFeedback);
-                    request.setAttribute("classModule", clas);
-                    request.getRequestDispatcher("user/class-details.jsp").forward(request, response);
+                    request.setAttribute("classOrder", clas);
+                    request.getRequestDispatcher("user/checkout.jsp").forward(request, response);
                 } else {
                     response.sendRedirect("class");
                 }
+            } else {
+                if (a == null) {
+                    response.sendRedirect("home?action=login");
+                } else if (cid_raw == null) {
+                    response.sendRedirect("class");
+                }
             }
-        } catch (ServletException | IOException | NumberFormatException e) {
-            System.out.println("Class Detail -> doGet: " + e);
+        } catch (ServletException | IOException e) {
+            System.out.println("Checkout -> doGet: " + e);
         }
     }
 
@@ -102,25 +96,7 @@ public class ClassDetailsController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        Account a = (Account) session.getAttribute("account");
-        if(a == null) {
-            response.sendRedirect("home");
-        } else {
-            String cid_raw = request.getParameter("cid");
-            String rate_raw = request.getParameter("rate");
-            String description = request.getParameter("description");
-            String classId_raw = request.getParameter("classId");
-            int cid = Integer.parseInt(cid_raw);
-            int rate = Integer.parseInt(rate_raw);
-            int classId = Integer.parseInt(classId_raw);
-            Course c = new Course();
-            c.setCourseID(cid);
-            Feedback fb = new Feedback(0, rate, description, a, c);
-            ClassDAO cdao = new ClassDAO();
-            cdao.addComment(fb);
-            response.sendRedirect("class-details?cid=" + classId);
-        }
+        processRequest(request, response);
     }
 
     /**

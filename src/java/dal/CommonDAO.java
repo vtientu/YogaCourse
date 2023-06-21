@@ -61,6 +61,32 @@ public class CommonDAO extends DBContext {
         return null;
     }
 
+    public ArrayList<Lession> getLessiontListByClassID(int cid) {
+        ArrayList<Lession> list = new ArrayList<>();
+        try {
+            String sql = "SELECT l.[LessionID]\n"
+                    + "      ,l.[LessionName]\n"
+                    + "      ,l.[LessionDescription]\n"
+                    + "      ,l.[LessionContent]\n"
+                    + "  FROM [dbo].[Lession] l INNER JOIN [Timetable] t ON t.LessionID = l.LessionID\n"
+                    + "  WHERE t.ClassID = ?";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, cid);
+            ResultSet rs = st.executeQuery();
+            while(rs.next()) {
+                Lession l = new Lession();
+                l.setLessionID(rs.getInt(1));
+                l.setLessionName(rs.getString(2));
+                l.setLessionDescription(rs.getString(3));
+                l.setLessionContent(rs.getString(4));
+                list.add(l);
+            }
+        } catch (SQLException e) {
+            System.out.println("getLessiontListByClassID -> " + e);
+        }
+        return list;
+    }
+
     public Account getAccountByAid(int aid) {
         try {
             String sql = "SELECT [AccountID]\n"
@@ -253,30 +279,5 @@ public class CommonDAO extends DBContext {
             System.out.println("getAccountListByCID -> " + e);
         }
         return list;
-    }
-
-    public Classes getClassByCID(int classID) {
-        try {
-            String sql = "SELECT [ClassID]\n"
-                    + "      ,[TrainerID]\n"
-                    + "      ,[CourseID]\n"
-                    + "      ,[ClassName]\n"
-                    + "  FROM [dbo].[Class]\n"
-                    + "  WHERE [ClassID] = ?";
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, classID);
-            ResultSet rs = st.executeQuery();
-            if(rs.next()) {
-                Classes clas = new Classes();
-                    clas.setClassID(rs.getInt(1));
-                    clas.setClassName(rs.getString(4));
-                    clas.setTrainer(getAccountByAid(rs.getInt(2)));
-                    clas.setCourse(getCourseByID(rs.getInt(3)));
-                    return clas;
-            }
-        } catch (SQLException e) {
-            System.out.println("getClassByCID -> " + e);
-        }
-        return null;
     }
 }

@@ -62,7 +62,9 @@ public class ClassController extends HttpServlet {
             throws ServletException, IOException {
         String pageNo_raw = request.getParameter("pageNo");
         String cateID_raw = request.getParameter("cid");
+        String keySearch_raw = request.getParameter("search");
         try {
+            String search = null;
             int numberOfPage = 6;
             int pageNo = 1;
             int cateID = 0;
@@ -71,13 +73,17 @@ public class ClassController extends HttpServlet {
                 pageNo = Integer.parseInt(pageNo_raw);
             }
             
+            if(keySearch_raw != null) {
+                search = keySearch_raw;
+            }
+            
             if(cateID_raw != null) {
                 cateID = Integer.parseInt(cateID_raw);
             }
             
-            int listSize = cdao.getCountClassList(cateID);
+            int listSize = cdao.getCountClassList(cateID, search);
             int totalPage = (int) Math.floor(listSize / numberOfPage + 1);
-            ArrayList<Classes> listClass = cdao.getClassList(cateID, pageNo, numberOfPage);
+            ArrayList<Classes> listClass = cdao.getClassList(cateID, pageNo, numberOfPage, search);
 //                PrintWriter out = response.getWriter();
 //                out.print(listUser.size());
             CategoryDAO cateDAO = new CategoryDAO();
@@ -85,6 +91,7 @@ public class ClassController extends HttpServlet {
             request.setAttribute("totalPages", totalPage);
             request.setAttribute("pageNo", pageNo);
             request.setAttribute("listCate", listCate);
+            request.setAttribute("search", search);
             request.setAttribute("cid", cateID);
             request.setAttribute("listClass", listClass);
             request.setAttribute("page", "class");

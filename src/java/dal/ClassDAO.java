@@ -21,7 +21,7 @@ public class ClassDAO extends DBContext {
 
     CommonDAO cdao = new CommonDAO();
 
-    public ArrayList<Classes> getClassList(int cateID, int pageNo, int numberOfPage) {
+    public ArrayList<Classes> getClassList(int cateID, int pageNo, int numberOfPage, String keySearch) {
         ArrayList<Classes> list = new ArrayList<>();
         try {
             String sql = "SELECT [Class].[ClassID]\n"
@@ -31,20 +31,28 @@ public class ClassDAO extends DBContext {
                     + "      ,[Class].[StartTime]\n"
                     + "      ,[Class].[EndTime]\n"
                     + "      ,[Class].[DayOfWeek]"
+                    + "      ,[Class].[LimitMember]"
                     + "  FROM [dbo].[Class] INNER JOIN [Course]\n"
                     + "  ON [Class].[CourseID] = [Course].[CourseID]\n"
                     + "  INNER JOIN [Category] ON [Course].[CategoryID] = [Category].[CategoryID] ";
 
-            if (cateID != 0) {
-                sql += " WHERE [Category].[CategoryID] = ? ";
+            if (keySearch != null) {
+                sql += " WHERE ([Class].[ClassName] LIKE ?  OR [Course].[CourseName] LIKE ? )";
+            }
+
+            if (cateID != 0 && keySearch != null) {
+                sql += " AND [Category].[CategoryID] = " + cateID;
+            } else if (cateID != 0 && keySearch == null) {
+                sql += " WHERE [Category].[CategoryID] = " + cateID;
             }
 
             sql += " ORDER BY [ClassID] ASC OFFSET " + ((pageNo - 1) * numberOfPage) + " ROWS\n"
                     + "FETCH NEXT " + numberOfPage + " ROWS ONLY ;";
 
             PreparedStatement st = connection.prepareStatement(sql);
-            if (cateID != 0) {
-                st.setInt(1, cateID);
+            if (keySearch != null) {
+                st.setString(1, "%" + keySearch + "%");
+                st.setString(2, "%" + keySearch + "%");
             }
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
@@ -54,6 +62,7 @@ public class ClassDAO extends DBContext {
                 clas.setStartTime(rs.getTime(5));
                 clas.setEndTime(rs.getTime(6));
                 clas.setDayOfWeek(rs.getString(7));
+                clas.setLimitMember(rs.getInt(8));
                 clas.setTrainer(cdao.getAccountByAid(rs.getInt(2)));
                 clas.setCourse(cdao.getCourseByID(rs.getInt(3)));
                 list.add(clas);
@@ -62,6 +71,29 @@ public class ClassDAO extends DBContext {
             System.out.println("getClassByCID -> " + e);
         }
         return list;
+    }
+
+    public boolean checkAccountMemberInClass(int aid, int cid) {
+        try {
+            String sql = "SELECT [EnrollID]\n"
+                    + "      ,[EnrollDate]\n"
+                    + "      ,[totalPrice]\n"
+                    + "      ,[status]\n"
+                    + "      ,[AccountID]\n"
+                    + "      ,[ClassID]\n"
+                    + "  FROM [dbo].[Enroll]\n"
+                    + "  WHERE [AccountID] = ? AND [ClassID] = ?";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, aid);
+            st.setInt(2, cid);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("checkAccountMemberInClass -> " + e);
+        }
+        return false;
     }
 
     public Classes getClassByID(int cid) {
@@ -73,6 +105,7 @@ public class ClassDAO extends DBContext {
                     + "      ,[Class].[StartTime]\n"
                     + "      ,[Class].[EndTime]\n"
                     + "      ,[Class].[DayOfWeek]"
+                    + "      ,[Class].[LimitMember]"
                     + "  FROM [dbo].[Class] INNER JOIN [Course]\n"
                     + "  ON [Class].[CourseID] = [Course].[CourseID]\n"
                     + "  WHERE [Class].[ClassID] = ? ";
@@ -86,8 +119,10 @@ public class ClassDAO extends DBContext {
                 clas.setStartTime(rs.getTime(5));
                 clas.setEndTime(rs.getTime(6));
                 clas.setDayOfWeek(rs.getString(7));
+                clas.setLimitMember(rs.getInt(8));
                 clas.setTrainer(cdao.getAccountByAid(rs.getInt(2)));
                 clas.setCourse(cdao.getCourseByID(rs.getInt(3)));
+                clas.setListLession(cdao.getLessiontListByClassID(cid));
                 return clas;
             }
         } catch (SQLException e) {
@@ -96,18 +131,41 @@ public class ClassDAO extends DBContext {
         return null;
     }
 
-    public int getCountClassList(int cateID) {
+    public int getTotalMemberInClass(int cid) {
+        try {
+            String sql = "SELECT COUNT(EnrollID) FROM Enroll e INNER JOIN Class c ON e.ClassID = c.ClassID WHERE e.ClassID = ?";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, cid);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println("getTotalMemberInClass -> " + e);
+        }
+        return 0;
+    }
+
+    public int getCountClassList(int cateID, String keySearch) {
         try {
             String sql = "SELECT COUNT([Class].[ClassID])\n"
                     + "  FROM [dbo].[Class] INNER JOIN [Course]\n"
                     + "  ON [Class].[CourseID] = [Course].[CourseID]\n"
                     + "  INNER JOIN [Category] ON [Course].[CategoryID] = [Category].[CategoryID] ";
-            if (cateID != 0) {
-                sql += " WHERE [Category].[CategoryID] = ? ";
+            if (keySearch != null) {
+                sql += " WHERE ([Class].[ClassName] LIKE ? OR [Course].[CourseName] LIKE ?)";
             }
+
+            if (cateID != 0 && keySearch != null) {
+                sql += " AND [Category].[CategoryID] = " + cateID;
+            } else if (cateID != 0 && keySearch == null) {
+                sql += " WHERE [Category].[CategoryID] = " + cateID;
+            }
+
             PreparedStatement st = connection.prepareStatement(sql);
-            if (cateID != 0) {
-                st.setInt(1, cateID);
+            if (keySearch != null) {
+                st.setString(1, "%" + keySearch + "%");
+                st.setString(2, "%" + keySearch + "%");
             }
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
@@ -148,8 +206,45 @@ public class ClassDAO extends DBContext {
         return list;
     }
 
+    public boolean checkFeedbackExists(int aid, int cid) {
+        try {
+            String sql = "SELECT [FeedbackID]\n"
+                    + "      ,[MemberID]\n"
+                    + "      ,[CourseID]\n"
+                    + "      ,[Rating]\n"
+                    + "      ,[Description]\n"
+                    + "  FROM [dbo].[Feedback] WHERE [CourseID] = ? AND [MemberID] = ?";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, cid);
+            st.setInt(2, aid);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("checkFeedbackExists -> " + e);
+        }
+        return false;
+    }
+
+    public void deleteFeedback(int aid, int cid) {
+        try {
+            String sql = "DELETE FROM [dbo].[Feedback]\n"
+                    + "      WHERE [MemberID] = ? AND [CourseID] = ?";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, aid);
+            st.setInt(2, cid);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("checkFeedbackExists -> " + e);
+        }
+    }
+
     public boolean addComment(Feedback fb) {
         try {
+            if (checkFeedbackExists(fb.getAccount().getAid(), fb.getCourse().getCourseID())) {
+                deleteFeedback(fb.getAccount().getAid(), fb.getCourse().getCourseID());
+            }
             String sql = "INSERT INTO [dbo].[Feedback]\n"
                     + "           ([MemberID]\n"
                     + "           ,[CourseID]\n"
@@ -170,9 +265,4 @@ public class ClassDAO extends DBContext {
         return false;
     }
 
-    public static void main(String[] args) {
-        ClassDAO cdao = new ClassDAO();
-        ArrayList<Classes> list = cdao.getClassList(9, 1, 6);
-        System.out.println(list.size());
-    }
 }
