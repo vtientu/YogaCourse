@@ -137,6 +137,10 @@
             .text-muted {
                 font-family: 'Poppins', sans-serif;
             }
+
+            input.invalid {
+                border-bottom: 2px solid red;
+            }
         </style>
     </head>
     <body>
@@ -207,46 +211,109 @@
                             </div>
                         </div>
                         <div class="col-12 px-0">
-                            <div class="row bg-light m-0">
-                                <div class="col-12 px-4 my-4">
-                                    <p class="fw-bold">Payment detail</p>
-                                </div>
-                                <div class="col-12 px-4">
-                                    <div class="d-flex  mb-4">
-                                        <span class="">
-                                            <p class="text-muted">Card number</p>
-                                            <input class="form-control" type="text"
-                                                   placeholder="1234 5678 9012 3456">
-                                        </span>
-                                        <div class="w-100 d-flex flex-column align-items-end">
-                                            <p class="text-muted">Expires</p>
-                                            <input class="form-control2" type="text" placeholder="MM/YYYY">
+                            <form action="checkout" id="myForm" method="post">
+                                <input  name="cid" value="${classOrder.classID}" hidden=""/>
+                                <div class="row bg-light m-0">
+                                    <div class="col-12 px-4 my-4">
+                                        <p class="fw-bold">Payment detail</p>
+                                    </div>
+                                    <div class="col-12 px-4">
+                                        <div class="d-flex  mb-4">
+                                            <span class="">
+                                                <p class="text-muted">Card number</p>
+                                                <input class="form-control" type="text"
+                                                       placeholder="1234 5678 9012 3456" name="cardNumber">
+                                            </span>
+                                            <div class="w-100 d-flex flex-column align-items-end">
+                                                <p class="text-muted">Expires</p>
+                                                <input class="form-control2" type="text" placeholder="MM/YYYY" name="expires">
+                                            </div>
+                                        </div>
+                                        <div class="d-flex mb-5">
+                                            <span class="me-5">
+                                                <p class="text-muted">Cardholder name</p>
+                                                <input class="form-control" type="text" 
+                                                       placeholder="Name" name="cardName">
+                                            </span>
+                                            <div class="w-100 d-flex flex-column align-items-end">
+                                                <p class="text-muted">CVC</p>
+                                                <input class="form-control3" type="text" name="cvc" placeholder="XXX">
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="d-flex mb-5">
-                                        <span class="me-5">
-                                            <p class="text-muted">Cardholder name</p>
-                                            <input class="form-control" type="text" 
-                                                   placeholder="Name">
-                                        </span>
-                                        <div class="w-100 d-flex flex-column align-items-end">
-                                            <p class="text-muted">CVC</p>
-                                            <input class="form-control3" type="text" placeholder="XXX">
-                                        </div>
+                                </div>
+                                <div class="row m-0">
+                                    <div class="col-12  mb-4 p-0">
+                                        <button class="btn btn-primary" onclick="return validateInput()">Purchase<span class="fas fa-arrow-right ps-2"></span>
+                                        </button>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row m-0">
-                                <div class="col-12  mb-4 p-0">
-                                    <div class="btn btn-primary">Purchase<span class="fas fa-arrow-right ps-2"></span>
-                                    </div>
-                                </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <script>
+            function validateInput() {
+                var cardNumberInput = document.getElementsByName('cardNumber')[0];
+                var expiresInput = document.getElementsByName('expires')[0];
+                var cardNameInput = document.getElementsByName('cardName')[0];
+                var cvcInput = document.getElementsByName('cvc')[0];
+
+                // Kiểm tra tính hợp lệ của cardNumber (chỉ chấp nhận số và khoảng trắng)
+                var cardNumberRegex = /^\d{12}$/;
+                if (!cardNumberRegex.test(cardNumberInput.value)) {
+                    cardNumberInput.classList.add('invalid');
+                } else {
+                    cardNumberInput.classList.remove('invalid');
+                }
+
+                // Kiểm tra tính hợp lệ của expires (theo định dạng MM/YYYY)
+                var expiresRegex = /^(0[1-9]|1[0-2])\/\d{4}$/;
+                if (!expiresRegex.test(expiresInput.value)) {
+                    expiresInput.classList.add('invalid');
+                } else {
+                    expiresInput.classList.remove('invalid');
+                }
+
+                // Kiểm tra tính hợp lệ của cardName (chỉ chấp nhận chữ cái và khoảng trắng)
+                var cardNameRegex = /^[A-Za-z\s]+$/;
+                if (!cardNameRegex.test(cardNameInput.value)) {
+                    cardNameInput.classList.add('invalid');
+                } else {
+                    cardNameInput.classList.remove('invalid');
+                }
+
+                // Kiểm tra tính hợp lệ của cvc (chỉ chấp nhận 3 chữ số)
+                var cvcRegex = /^\d{3}$/;
+                if (!cvcRegex.test(cvcInput.value)) {
+                    cvcInput.classList.add('invalid');
+                } else {
+                    cvcInput.classList.remove('invalid');
+                }
+
+                // Kiểm tra nếu có ít nhất một trường input bị không hợp lệ
+                if (
+                        cardNumberInput.classList.contains('invalid') ||
+                        expiresInput.classList.contains('invalid') ||
+                        cardNameInput.classList.contains('invalid') ||
+                        cvcInput.classList.contains('invalid')
+                        ) {
+                    return false;
+                }
+
+                // Nếu tất cả các trường đều hợp lệ, submit form
+                var form = document.getElementById('myForm'); // Thay 'myForm' bằng ID của form thực tế của bạn
+                form.submit();
+
+                // Trả về false để ngăn chặn sự kiện mặc định của nút 'Purchase'
+                return false;
+            }
+
+
+        </script>
 
         <%@include file="gui/footer.jsp" %>
     </body>

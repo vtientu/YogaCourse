@@ -120,7 +120,7 @@ public class Course {
     
     public String getPriceDiscount(){
         DecimalFormat df = new DecimalFormat("#0.00");
-        String formattedNumber = df.format(this.price - (this.price * this.discount));
+        String formattedNumber = df.format(this.price - (this.price * (this.discount / 100)));
         return formattedNumber;
     }
     

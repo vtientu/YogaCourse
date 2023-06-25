@@ -5,6 +5,7 @@
 package controller.common;
 
 import dal.ClassDAO;
+import dal.EnrollDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,6 +15,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import module.Account;
 import module.Classes;
+import module.Enroll;
+import module.Payment;
 
 /**
  *
@@ -96,7 +99,45 @@ public class CheckoutController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            String cardNumber = request.getParameter("cardNumber");
+            String expires = request.getParameter("expires");
+            String cardName = request.getParameter("cardName");
+            String cvc = request.getParameter("cvc");
+            int cid = Integer.parseInt(request.getParameter("cid")) ;
+            PrintWriter out = response.getWriter();
+            out.print(cid);
+            System.out.println(cid);
+            Payment payment = new Payment();
+                payment.setCardNumber(cardNumber);
+                payment.setExpires(expires);
+                payment.setCardName(cardName);
+                payment.setCvc(cvc);
+            HttpSession session = request.getSession();
+            Account a = (Account) session.getAttribute("account");
+            if(a == null) {
+                response.sendRedirect("home?action=login");
+            } else {
+                ClassDAO cdao = new ClassDAO();
+                double totalPrice = cdao.getClassByID(cid).getCourse().getPrice() - (cdao.getClassByID(cid).getCourse().getPrice() * cdao.getClassByID(cid).getCourse().getDiscount());
+                Enroll enroll = new Enroll();
+                    enroll.setAccount(a);
+                    enroll.setPayment(payment);
+                    enroll.setTotalPrice(totalPrice);
+                    enroll.setClassOrder(cdao.getClassByID(cid));
+                EnrollDAO edao = new EnrollDAO();
+                if(edao.createEnroll(enroll)) {
+                    session.setAttribute("message", "Order class succesful!");
+                    session.setAttribute("messageColor", "green");
+                } else {
+                    session.setAttribute("message", "Order class failure!");
+                    session.setAttribute("messageColor", "red");
+                }
+                response.sendRedirect("class");
+            }
+        } catch (IOException | NumberFormatException e) {
+            System.out.println("Checkout -> doPost: " + e);
+        }
     }
 
     /**

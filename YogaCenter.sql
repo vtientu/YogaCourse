@@ -116,30 +116,30 @@ CREATE TABLE [dbo].[Class](
 GO
 
 
-CREATE TABLE [dbo].[Enroll](
-	[EnrollID] [int] IDENTITY(1,1),
-	[EnrollDate] Date NULL,
-	[totalPrice] money,
-	[status] [bit] NULL,
-	[AccountID] [int] NOT NULL,
-	[ClassID] [int] NOT NULL,
-	PRIMARY KEY (EnrollID),
-	FOREIGN KEY(AccountID) REFERENCES Account(AccountID),
-	FOREIGN KEY(ClassID) REFERENCES Class(ClassID)
-)
-GO
-
-
 CREATE TABLE [dbo].[Payment] (
 	[PaymentID] [int] IDENTITY(1, 1),
-	[EnrollID] [int],
 	[CardNumber] varchar(20),
 	[Expires] varchar(20),
 	[CardholderName] varchar(100),
 	[CVC] varchar(5),
-	PRIMARY KEY(PaymentID),
-	FOREIGN KEY(EnrollID) REFERENCES Enroll(EnrollID)
+	PRIMARY KEY(PaymentID)
 )
+
+
+CREATE TABLE [dbo].[Enroll](
+	[EnrollID] [int] IDENTITY(1,1),
+	[PaymentID] [int],
+	[EnrollDate] Date DEFAULT GETDATE(),
+	[totalPrice] money,
+	[status] [bit] DEFAULT 1,
+	[AccountID] [int] NOT NULL,
+	[ClassID] [int] NOT NULL,
+	PRIMARY KEY (EnrollID),
+	FOREIGN KEY(PaymentID) REFERENCES Payment(PaymentID),
+	FOREIGN KEY(AccountID) REFERENCES Account(AccountID),
+	FOREIGN KEY(ClassID) REFERENCES Class(ClassID)
+)
+GO
 
 
 
@@ -202,7 +202,7 @@ VALUES
     (2, 'Trainer', '1', 'user/assets/img/team-2.jpg', 2, 'Phone2', 'trainer@gmail.com', 'Address2', '202CB962AC59075B964B07152D234B70', 1),
     (3, 'Firstname3', 'Lastname3', 'user/assets/img/team-3.jpg', 1, 'Phone3', 'staff@gmail.com', 'Address3', '202CB962AC59075B964B07152D234B70', 1),
     (4, 'Account', 'Admin', 'user/assets/img/team-4.jpg', 2, 'Phone4', 'admin@gmail.com', 'Address4', '202CB962AC59075B964B07152D234B70', 1),
-    (2, 'Firstname5', 'Lastname5', 'user/assets/img/team-1.jpg', 1, 'Phone5', 'Email5@example.com', 'Address5', 'Password5', 1),
+    (1, 'Firstname5', 'Lastname5', 'user/assets/img/team-1.jpg', 1, 'Phone5', 'guest1@gmail.com', 'Address5', '202CB962AC59075B964B07152D234B70', 1),
     (2, 'Firstname6', 'Lastname6', 'user/assets/img/team-2.jpg', 2, 'Phone6', 'Email6@example.com', 'Address6', 'Password6', 0),
     (2, 'Firstname7', 'Lastname7', 'user/assets/img/team-3.jpg', 1, 'Phone7', 'Email7@example.com', 'Address7', 'Password7', 1),
     (2, 'Firstname8', 'Lastname8', 'user/assets/img/team-4.jpg', 2, 'Phone8', 'Email8@example.com', 'Address8', 'Password8', 1),
@@ -244,38 +244,38 @@ INSERT INTO [dbo].[Course]
            ,[Image]
            ,[Active])
      VALUES
-           (1, 4, 'Gentle Yoga', 9.99, 0.2, 'Gentle yoga classes can include movements done at a slow pace and breathing exercises. It may also include longer holds and even have rest in between poses. Students often find that classes meditative style of yoga practice.', 30, 'user/assets/img/class-1.jpg', 1),
-           (2, 4, 'Hatha Yoga', 19.99, 0.1, 'A branch of yoga which uses physical techniques to try to preserve and channel the vital force or energy. The Sanskrit word literally means "force", alluding to a system of physical techniques', 20, 'user/assets/img/class-2.jpg', 1),
-           (3, 4, 'Ashtanga', 14.99, 0.15, 'A style of yoga as exercise popularised by K. Pattabhi Jois during the twentieth century, often promoted as a dynamic form of classical Indian (hatha) yoga.', 25, 'user/assets/img/class-3.jpg', 1),
-           (4, 4, 'Vinyasa', 24.99, 0.25, 'The vinyasa forms of yoga used as exercise, including Pattabhi Jois 1948 Ashtanga Vinyasa Yoga and its spin-off schools such as Beryl Bender Birchs 1995 Power Yoga and others like Baptiste Yoga, Jivamukti Yoga, Vinyasa Flow Yoga, Power Vinyasa Yoga, and Core Strength Vinyasa Yoga, derive from Krishnamacharyas development of a flowing aerobic style of yoga in the Mysore Palace in the early 20th century', 35, 'user/assets/img/class-4.jpg', 1),
-           (1, 4, 'Yoga Course 5', 9.99, 0.2, 'Yoga Course description', 30, 'user/assets/img/class-5.jpg', 1),
-           (2, 4, 'Yoga Course 6', 19.99, 0.1, 'Yoga Course description', 20, 'user/assets/img/class-6.jpg', 1),
-           (3, 4, 'Yoga Course 7', 14.99, 0.15, 'Yoga Course description', 25, 'user/assets/img/class-1.jpg', 1),
-           (4, 4, 'Yoga Course 8', 24.99, 0.25, 'Yoga Course description', 35, 'user/assets/img/class-1.jpg', 1),
-           (1, 4, 'Yoga Course 9', 9.99, 0.2, 'Yoga Course description', 30, 'user/assets/img/class-1.jpg', 1),
-           (2, 4, 'Yoga Course 10', 19.99, 0.1, 'Yoga Course description', 20, 'yoga_image2.jpg', 1),
-           (3, 4, 'Yoga Course 11', 14.99, 0.15, 'Yoga Course description', 25, 'yoga_image3.jpg', 1),
-           (4, 4, 'Yoga Course 12', 24.99, 0.25, 'Yoga Course description', 35, 'yoga_image40.jpg', 1),
-           (1, 8, 'Yoga Course 13', 9.99, 0.2, 'Yoga Course description', 30, 'yoga_image1.jpg', 1),
-           (2, 8, 'Yoga Course 14', 19.99, 0.1, 'Yoga Course description', 20, 'yoga_image2.jpg', 1),
-           (3, 8, 'Yoga Course 15', 14.99, 0.15, 'Yoga Course description', 25, 'yoga_image3.jpg', 1),
-           (4, 8, 'Yoga Course 16', 24.99, 0.25, 'Yoga Course description', 35, 'yoga_image40.jpg', 1),
-           (1, 8, 'Yoga Course 17', 9.99, 0.2, 'Yoga Course description', 30, 'yoga_image1.jpg', 1),
-           (2, 8, 'Yoga Course 18', 19.99, 0.1, 'Yoga Course description', 20, 'yoga_image2.jpg', 1),
-           (3, 8, 'Yoga Course 19', 14.99, 0.15, 'Yoga Course description', 25, 'yoga_image3.jpg', 1),
-           (4, 8, 'Yoga Course 20', 24.99, 0.25, 'Yoga Course description', 35, 'yoga_image40.jpg', 1),
-           (1, 8, 'Yoga Course 21', 9.99, 0.2, 'Yoga Course description', 30, 'yoga_image1.jpg', 1),
-           (2, 8, 'Yoga Course 22', 19.99, 0.1, 'Yoga Course description', 20, 'yoga_image2.jpg', 1),
-           (3, 12, 'Yoga Course 23', 14.99, 0.15, 'Yoga Course description', 25, 'yoga_image3.jpg', 1),
-           (4, 12, 'Yoga Course 24', 24.99, 0.25, 'Yoga Course description', 35, 'yoga_image40.jpg', 1),
-           (1, 12, 'Yoga Course 25', 9.99, 0.2, 'Yoga Course description', 30, 'yoga_image1.jpg', 1),
-           (2, 12, 'Yoga Course 26', 19.99, 0.1, 'Yoga Course description', 20, 'yoga_image2.jpg', 1),
-           (3, 12, 'Yoga Course 27', 14.99, 0.15, 'Yoga Course description', 25, 'yoga_image3.jpg', 1),
-           (4, 12, 'Yoga Course 28', 24.99, 0.25, 'Yoga Course description', 35, 'yoga_image40.jpg', 1),
-           (1, 12, 'Yoga Course 29', 9.99, 0.2, 'Yoga Course description', 30, 'yoga_image1.jpg', 1),
-           (2, 12, 'Yoga Course 30', 19.99, 0.1, 'Yoga Course description', 20, 'yoga_image2.jpg', 1),
-           (3, 12, 'Yoga Course 31', 14.99, 0.15, 'Yoga Course description', 25, 'yoga_image3.jpg', 1),
-           (4, 12, 'Yoga Course 32', 24.99, 0.25, 'Yoga Course description', 35, 'yoga_image40.jpg', 1);
+           (1, 4, 'Gentle Yoga', 9.99, 20, 'Gentle yoga classes can include movements done at a slow pace and breathing exercises. It may also include longer holds and even have rest in between poses. Students often find that classes meditative style of yoga practice.', 30, 'user/assets/img/class-1.jpg', 1),
+           (2, 4, 'Hatha Yoga', 19.99, 10, 'A branch of yoga which uses physical techniques to try to preserve and channel the vital force or energy. The Sanskrit word literally means "force", alluding to a system of physical techniques', 20, 'user/assets/img/class-2.jpg', 1),
+           (3, 4, 'Ashtanga', 14.99, 15, 'A style of yoga as exercise popularised by K. Pattabhi Jois during the twentieth century, often promoted as a dynamic form of classical Indian (hatha) yoga.', 25, 'user/assets/img/class-3.jpg', 1),
+           (4, 4, 'Vinyasa', 24.99, 25, 'The vinyasa forms of yoga used as exercise, including Pattabhi Jois 1948 Ashtanga Vinyasa Yoga and its spin-off schools such as Beryl Bender Birchs 1995 Power Yoga and others like Baptiste Yoga, Jivamukti Yoga, Vinyasa Flow Yoga, Power Vinyasa Yoga, and Core Strength Vinyasa Yoga, derive from Krishnamacharyas development of a flowing aerobic style of yoga in the Mysore Palace in the early 20th century', 35, 'user/assets/img/class-4.jpg', 1),
+           (1, 4, 'Yoga Course 5', 9.99, 20, 'Yoga Course description', 30, 'user/assets/img/class-5.jpg', 1),
+           (2, 4, 'Yoga Course 6', 19.99, 10, 'Yoga Course description', 20, 'user/assets/img/class-6.jpg', 1),
+           (3, 4, 'Yoga Course 7', 14.99, 15, 'Yoga Course description', 25, 'user/assets/img/class-1.jpg', 1),
+           (4, 4, 'Yoga Course 8', 24.99, 25, 'Yoga Course description', 35, 'user/assets/img/class-1.jpg', 1),
+           (1, 4, 'Yoga Course 9', 9.99, 20, 'Yoga Course description', 30, 'user/assets/img/class-1.jpg', 1),
+           (2, 4, 'Yoga Course 10', 19.99, 10, 'Yoga Course description', 20, 'yoga_image2.jpg', 1),
+           (3, 4, 'Yoga Course 11', 14.99, 15, 'Yoga Course description', 25, 'yoga_image3.jpg', 1),
+           (4, 4, 'Yoga Course 12', 24.99, 25, 'Yoga Course description', 35, 'yoga_image40.jpg', 1),
+           (1, 8, 'Yoga Course 13', 9.99, 20, 'Yoga Course description', 30, 'yoga_image1.jpg', 1),
+           (2, 8, 'Yoga Course 14', 19.99, 10, 'Yoga Course description', 20, 'yoga_image2.jpg', 1),
+           (3, 8, 'Yoga Course 15', 14.99, 15, 'Yoga Course description', 25, 'yoga_image3.jpg', 1),
+           (4, 8, 'Yoga Course 16', 24.99, 25, 'Yoga Course description', 35, 'yoga_image40.jpg', 1),
+           (1, 8, 'Yoga Course 17', 9.99, 20, 'Yoga Course description', 30, 'yoga_image1.jpg', 1),
+           (2, 8, 'Yoga Course 18', 19.99, 10, 'Yoga Course description', 20, 'yoga_image2.jpg', 1),
+           (3, 8, 'Yoga Course 19', 14.99, 15, 'Yoga Course description', 25, 'yoga_image3.jpg', 1),
+           (4, 8, 'Yoga Course 20', 24.99, 25, 'Yoga Course description', 35, 'yoga_image40.jpg', 1),
+           (1, 8, 'Yoga Course 21', 9.99, 20, 'Yoga Course description', 30, 'yoga_image1.jpg', 1),
+           (2, 8, 'Yoga Course 22', 19.99, 10, 'Yoga Course description', 20, 'yoga_image2.jpg', 1),
+           (3, 12, 'Yoga Course 23', 14.99, 15, 'Yoga Course description', 25, 'yoga_image3.jpg', 1),
+           (4, 12, 'Yoga Course 24', 24.99, 25, 'Yoga Course description', 35, 'yoga_image40.jpg', 1),
+           (1, 12, 'Yoga Course 25', 9.99, 20, 'Yoga Course description', 30, 'yoga_image1.jpg', 1),
+           (2, 12, 'Yoga Course 26', 19.99, 10, 'Yoga Course description', 20, 'yoga_image2.jpg', 1),
+           (3, 12, 'Yoga Course 27', 14.99, 15, 'Yoga Course description', 25, 'yoga_image3.jpg', 1),
+           (4, 12, 'Yoga Course 28', 24.99, 25, 'Yoga Course description', 35, 'yoga_image40.jpg', 1),
+           (1, 12, 'Yoga Course 29', 9.99, 20, 'Yoga Course description', 30, 'yoga_image1.jpg', 1),
+           (2, 12, 'Yoga Course 30', 19.99, 10, 'Yoga Course description', 20, 'yoga_image2.jpg', 1),
+           (3, 12, 'Yoga Course 31', 14.99, 15, 'Yoga Course description', 25, 'yoga_image3.jpg', 1),
+           (4, 12, 'Yoga Course 32', 24.99, 25, 'Yoga Course description', 35, 'yoga_image40.jpg', 1);
 GO
 
 

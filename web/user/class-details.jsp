@@ -154,7 +154,7 @@
                                         <label>Schedule: ${classModule.dayOfWeek}</label><br/>
                                         <label><i class="fa fa-regular fa-clock"></i> ${classModule.startTime} - ${classModule.endTime}</label><br/>
                                         <h4 class="mt-2">Member: <strong>${totalMember}/${classModule.limitMember}</strong></h4>
-
+                                        <h5>Price of course: ${classModule.course.price}$ (-${classModule.course.discount}%)</h5>
                                         <c:if test="${(account.role.rid == 1 && checkEnroll == false) || account == null}">
                                             <a class="btn btn-success my-3" href="checkout?cid=${classModule.classID}">Buy <strong>${classModule.course.priceDiscount} $</strong></a>
                                         </c:if>
