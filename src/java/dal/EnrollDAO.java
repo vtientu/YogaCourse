@@ -7,6 +7,9 @@ package dal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import module.Account;
+import module.Classes;
 import module.Enroll;
 import module.Payment;
 
@@ -71,5 +74,97 @@ public class EnrollDAO extends DBContext {
             System.out.println("createEnroll -> " + e);
         }
         return false;
+    }
+
+    public ArrayList<Enroll> getEnrollList(String keySearch, int pageNo, int numberOfPage, String action) {
+        ArrayList<Enroll> list = new ArrayList<>();
+        try {
+            String sql = "SELECT [EnrollID]\n"
+                    + "      ,[PaymentID]\n"
+                    + "      ,[EnrollDate]\n"
+                    + "      ,[totalPrice]\n"
+                    + "      ,[status]\n"
+                    + "      ,e.[AccountID]\n"
+                    + "      ,e.[ClassID]\n"
+                    + "  FROM [dbo].[Enroll] e INNER JOIN [Account] a\n"
+                    + "  ON e.AccountID = a.AccountID INNER JOIN [Class] c\n"
+                    + "  ON c.[ClassID] = e.[ClassID]"
+                    + "  WHERE 1 = 1";
+            if (keySearch != null) {
+                sql += " AND (a.Firstname LIKE ? OR a.[Email] LIKE ? OR a.Lastname LIKE ? OR a.Phone = ?)";
+            }
+
+            if (action != null) {
+                sql += " AND e.[status] = " + action;
+            }
+
+            sql += " ORDER BY a.AccountID ASC OFFSET " + ((pageNo - 1) * numberOfPage) + " ROWS\n"
+                    + "FETCH NEXT " + numberOfPage + " ROWS ONLY ;";
+
+            PreparedStatement st = connection.prepareStatement(sql);
+
+            if (keySearch != null) {
+                st.setString(1, "%" + keySearch + "%");
+                st.setString(2, "%" + keySearch + "%");
+                st.setString(3, "%" + keySearch + "%");
+                st.setString(4, "%" + keySearch + "%");
+            }
+
+            ResultSet rs = st.executeQuery();
+
+            CommonDAO cdao = new CommonDAO();
+            ClassDAO clasDAO = new ClassDAO();
+            while (rs.next()) {
+                Account a = cdao.getAccountByAid(rs.getInt(6));
+                Classes c = clasDAO.getClassByID(rs.getInt(7));
+                Payment p = cdao.getPaymentById(rs.getInt(2));
+                Enroll enroll = new Enroll();
+                enroll.setEnrollID(rs.getInt(1));
+                enroll.setPayment(p);
+                enroll.setEnrollDate(rs.getDate(3));
+                enroll.setTotalPrice(rs.getDouble(4));
+                enroll.setStatus(rs.getBoolean(5));
+                enroll.setAccount(a);
+                enroll.setClassOrder(c);
+                list.add(enroll);
+            }
+        } catch (SQLException e) {
+            System.out.println("getEnrollList -> " + e);
+        }
+        return list;
+    }
+
+    public int getCountListEnroll(String keySearch, String action) {
+        try {
+            String sql = "SELECT COUNT([EnrollID])\n"
+                    + "  FROM [dbo].[Enroll] e INNER JOIN [Account] a\n"
+                    + "  ON e.AccountID = a.AccountID INNER JOIN [Class] c\n"
+                    + "  ON c.[ClassID] = e.[ClassID]"
+                    + "  WHERE 1 = 1";
+            if (keySearch != null) {
+                sql += " AND (a.Firstname LIKE ? OR a.[Email] LIKE ? OR a.Lastname LIKE ? OR a.Phone = ?)";
+            }
+
+            if (action != null) {
+                sql += " AND e.[status] = " + action;
+            }
+
+            PreparedStatement st = connection.prepareStatement(sql);
+
+            if (keySearch != null) {
+                st.setString(1, "%" + keySearch + "%");
+                st.setString(2, "%" + keySearch + "%");
+                st.setString(3, "%" + keySearch + "%");
+                st.setString(4, "%" + keySearch + "%");
+            }
+
+            ResultSet rs = st.executeQuery();
+            if(rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println("getCountListEnroll -> " + e);
+        }
+        return 0;
     }
 }

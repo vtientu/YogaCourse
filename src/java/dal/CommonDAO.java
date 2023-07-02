@@ -13,7 +13,9 @@ import module.Blog;
 import module.Category;
 import module.Classes;
 import module.Course;
+import module.Enroll;
 import module.Lession;
+import module.Payment;
 import module.Role;
 
 /**
@@ -21,6 +23,32 @@ import module.Role;
  * @author admin
  */
 public class CommonDAO extends DBContext {
+
+    public Payment getPaymentById(int pid) {
+        try {
+            String sql = "SELECT [PaymentID]\n"
+                    + "      ,[CardNumber]\n"
+                    + "      ,[Expires]\n"
+                    + "      ,[CardholderName]\n"
+                    + "      ,[CVC]\n"
+                    + "  FROM [dbo].[Payment] WHERE [Payment].PaymentID = ?";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, pid);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                Payment payment = new Payment();
+                payment.setPaymentID(rs.getInt(1));
+                payment.setCardNumber(rs.getString(2));
+                payment.setExpires(rs.getString(3));
+                payment.setCardName(rs.getString(4));
+                payment.setCvc(rs.getString(5));
+                return payment;
+            }
+        } catch (SQLException e) {
+            System.out.println("getPaymentById -> " + e);
+        }
+        return null;
+    }
 
     public Category getCategoryByID(int cateID) {
         try {
@@ -73,7 +101,7 @@ public class CommonDAO extends DBContext {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, cid);
             ResultSet rs = st.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 Lession l = new Lession();
                 l.setLessionID(rs.getInt(1));
                 l.setLessionName(rs.getString(2));

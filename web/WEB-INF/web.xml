@@ -68,6 +68,14 @@
         <servlet-name>CourseDetailsController</servlet-name>
         <servlet-class>controller.admin.course.CourseDetailsController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EnrollListController</servlet-name>
+        <servlet-class>controller.admin.enroll.EnrollListController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ClassListController</servlet-name>
+        <servlet-class>controller.admin.classes.ClassListController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeController</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -127,6 +135,14 @@
     <servlet-mapping>
         <servlet-name>CourseDetailsController</servlet-name>
         <url-pattern>/admin/course-details</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EnrollListController</servlet-name>
+        <url-pattern>/admin/enroll</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ClassListController</servlet-name>
+        <url-pattern>/admin/class-manager</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

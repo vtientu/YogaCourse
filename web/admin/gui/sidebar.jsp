@@ -35,8 +35,12 @@
                                 <i class="fas fa-table"></i>Course Manager</a>
                         </li>
                         <li>
-                            <a href="form.html">
-                                <i class="far fa-check-square"></i>Forms</a>
+                            <a href="class-manager">
+                                <i class="fas fa-table"></i>Class Manager</a>
+                        </li>
+                        <li>
+                            <a href="enroll">
+                                <i class="far fa-check-square"></i>Order List</a>
                         </li>
                         <li>
                             <a href="calendar.html">

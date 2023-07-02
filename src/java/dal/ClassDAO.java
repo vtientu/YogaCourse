@@ -73,6 +73,93 @@ public class ClassDAO extends DBContext {
         return list;
     }
 
+    public ArrayList<Classes> getClassListAdmin(String cateID, String courseID, int pageNo, int numberOfPage, String keySearch) {
+        ArrayList<Classes> list = new ArrayList<>();
+        try {
+            String sql = "SELECT [Class].[ClassID]\n"
+                    + "      ,[Class].[TrainerID]\n"
+                    + "      ,[Class].[CourseID]\n"
+                    + "      ,[Class].[ClassName]\n"
+                    + "      ,[Class].[StartTime]\n"
+                    + "      ,[Class].[EndTime]\n"
+                    + "      ,[Class].[DayOfWeek]"
+                    + "      ,[Class].[LimitMember]"
+                    + "  FROM [dbo].[Class] INNER JOIN [Course]\n"
+                    + "  ON [Class].[CourseID] = [Course].[CourseID]\n"
+                    + "  INNER JOIN [Category] ON [Course].[CategoryID] = [Category].[CategoryID] WHERE 1 = 1";
+
+            if (keySearch != null && keySearch.length() > 0) {
+                sql += " AND ([Class].[ClassName] LIKE ? OR [Course].[CourseName] LIKE ?)";
+            }
+
+            if (cateID != null && cateID.length() > 0)  {
+                sql += " AND [Category].[CategoryID] = " + cateID;
+            }
+            
+            if(courseID != null && courseID.length() > 0) {
+                sql += " AND [Course].[CourseID] = " + courseID;
+            }
+
+            sql += " ORDER BY [ClassID] ASC OFFSET " + ((pageNo - 1) * numberOfPage) + " ROWS\n"
+                    + "FETCH NEXT " + numberOfPage + " ROWS ONLY ;";
+
+            PreparedStatement st = connection.prepareStatement(sql);
+            if (keySearch != null) {
+                st.setString(1, "%" + keySearch + "%");
+                st.setString(2, "%" + keySearch + "%");
+            }
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Classes clas = new Classes();
+                clas.setClassID(rs.getInt(1));
+                clas.setClassName(rs.getString(4));
+                clas.setStartTime(rs.getTime(5));
+                clas.setEndTime(rs.getTime(6));
+                clas.setDayOfWeek(rs.getString(7));
+                clas.setLimitMember(rs.getInt(8));
+                clas.setTrainer(cdao.getAccountByAid(rs.getInt(2)));
+                clas.setCourse(cdao.getCourseByID(rs.getInt(3)));
+                list.add(clas);
+            }
+        } catch (SQLException e) {
+            System.out.println("getClassListAdmin -> " + e);
+        }
+        return list;
+    }
+    
+    public int getCountClassListAdmin(String cateID, String courseID, String keySearch) {
+        try {
+            String sql = "SELECT COUNT([Class].[ClassID])\n"
+                    + "  FROM [dbo].[Class] INNER JOIN [Course]\n"
+                    + "  ON [Class].[CourseID] = [Course].[CourseID]\n"
+                    + "  INNER JOIN [Category] ON [Course].[CategoryID] = [Category].[CategoryID] WHERE 1 = 1";
+
+            if (keySearch != null && keySearch.length() > 0) {
+                sql += " AND [Class].[ClassName] LIKE ? ";
+            }
+
+            if (cateID != null && cateID.length() > 0)  {
+                sql += " AND [Category].[CategoryID] = " + cateID;
+            }
+            
+            if(courseID != null && courseID.length() > 0) {
+                sql += " AND [Course].[CourseID] = " + courseID;
+            }
+
+            PreparedStatement st = connection.prepareStatement(sql);
+            if (keySearch != null) {
+                st.setString(1, "%" + keySearch + "%");
+            }
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println("getClassListAdmin -> " + e);
+        }
+        return 0;
+    }
+
     public boolean checkAccountMemberInClass(int aid, int cid) {
         try {
             String sql = "SELECT [EnrollID]\n"
@@ -87,7 +174,7 @@ public class ClassDAO extends DBContext {
             st.setInt(1, aid);
             st.setInt(2, cid);
             ResultSet rs = st.executeQuery();
-            if(rs.next()) {
+            if (rs.next()) {
                 return true;
             }
         } catch (SQLException e) {
