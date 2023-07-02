@@ -5,6 +5,7 @@
 package controller.common;
 
 import dal.ClassDAO;
+import dal.LessionDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,6 +18,7 @@ import module.Account;
 import module.Classes;
 import module.Course;
 import module.Feedback;
+import module.Lession;
 
 /**
  *
@@ -72,12 +74,15 @@ public class ClassDetailsController extends HttpServlet {
                 int cid = Integer.parseInt(cid_raw);
                 ClassDAO cdao = new ClassDAO();
                 Classes clas = cdao.getClassByID(cid);
+                LessionDAO ldao = new LessionDAO();
+                ArrayList<Lession> lessionList = ldao.getLessionListByCid(cid);
                 if (clas != null) {
                     if(a != null) {
                         boolean checked = cdao.checkAccountMemberInClass(a.getAid(), cid);
                         request.setAttribute("checkEnroll", checked);
                     }
                     request.setAttribute("totalMember", cdao.getTotalMemberInClass(cid));
+                    request.setAttribute("lesstionList", lessionList);
                     ArrayList<Feedback> listFeedback = cdao.getFeedbackListByCid(clas.getCourse().getCourseID());
                     request.setAttribute("listFeed", listFeedback);
                     request.setAttribute("classModule", clas);

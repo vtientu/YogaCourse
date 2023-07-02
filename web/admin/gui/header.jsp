@@ -46,7 +46,7 @@
         <header class="header-desktop">
             <div class="section__content section__content--p30">
                 <div class="container-fluid">
-                    <div class="header-wrap"  style="float: right">
+                    <div class="header-wrap"  style="float: right; position: relative;">
                         <div class="header-button ">
                             <div class="account-wrap"">
                                 <div class="account-item clearfix js-item-menu">
@@ -89,9 +89,28 @@
                             </div>
                         </div>
                     </div>
+                    <div style="position: absolute; top: 5rem; right: 1.5rem;">
+                        <div id="toasts" class="toast fade" data-delay="5000">
+                            <div class="toast-body" style="background-color: ${sessionScope.messageColor}; color: white">
+                                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                                    <span aria-hidden="true" style="color: white">&times;</span>
+                                </button>
+                                ${sessionScope.message}
+                            </div>
+                        </div>
+                    </div>
+                    <div id="message" hidden="">${sessionScope.message}</div>
+
+                    <%
+                        session.removeAttribute("message");
+                        session.removeAttribute("messageColor");
+                    %>
                 </div>
             </div>
         </header>
-        <!-- HEADER DESKTOP-->
+        <script>
+            $('.toast').toast('show');
+        </script>
+
     </body>
 </html>

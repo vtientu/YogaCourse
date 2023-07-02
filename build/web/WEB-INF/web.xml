@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <filter>
+        <filter-name>AdminFilter</filter-name>
+        <filter-class>filter.AdminFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AdminFilter</filter-name>
+        <url-pattern>/admin/*</url-pattern>
+    </filter-mapping>
     <servlet>
         <servlet-name>HomeController</servlet-name>
         <servlet-class>controller.HomeController</servlet-class>
@@ -48,6 +56,18 @@
         <servlet-name>CheckoutController</servlet-name>
         <servlet-class>controller.common.CheckoutController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CourseListServlet</servlet-name>
+        <servlet-class>controller.admin.course.CourseListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CourseStatusController</servlet-name>
+        <servlet-class>controller.admin.course.CourseStatusController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CourseDetailsController</servlet-name>
+        <servlet-class>controller.admin.course.CourseDetailsController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeController</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -95,6 +115,18 @@
     <servlet-mapping>
         <servlet-name>CheckoutController</servlet-name>
         <url-pattern>/checkout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CourseListServlet</servlet-name>
+        <url-pattern>/admin/course-manager</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CourseStatusController</servlet-name>
+        <url-pattern>/admin/course-status</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CourseDetailsController</servlet-name>
+        <url-pattern>/admin/course-details</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

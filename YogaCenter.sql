@@ -182,7 +182,7 @@ CREATE TABLE Attend(
 	[AttendID] INT IDENTITY(1,1),
 	[AccountID] INT,
 	[LessionID] INT,
-	Attent bit,
+	Attent int,
 	PRIMARY KEY(AttendID),
 	FOREIGN KEY(AccountID) REFERENCES Account(AccountID),
 	FOREIGN KEY(LessionID) REFERENCES Lession(LessionID)

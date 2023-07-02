@@ -61,7 +61,7 @@ public class ChangeStatusUserController extends HttpServlet {
             HttpSession session = request.getSession();
             Account acc = (Account) session.getAttribute("account");
             if(acc == null || acc.getRole().getRid()!= 4 || aid_raw == null) {
-                response.sendRedirect("home");
+                response.sendRedirect("../home");
             } else {
                 int aid = Integer.parseInt(aid_raw);
                 UserDAO udao = new UserDAO();
@@ -77,7 +77,7 @@ public class ChangeStatusUserController extends HttpServlet {
         } catch (IOException | NumberFormatException e) {
             System.out.println(e);
         }
-    } 
+    }
 
     /** 
      * Handles the HTTP <code>POST</code> method.

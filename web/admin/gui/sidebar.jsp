@@ -31,8 +31,8 @@
                                 <i class="fas fa-user"></i>User Manager</a>
                         </li>
                         <li>
-                            <a href="table.html">
-                                <i class="fas fa-table"></i>Tables</a>
+                            <a href="course-manager">
+                                <i class="fas fa-table"></i>Course Manager</a>
                         </li>
                         <li>
                             <a href="form.html">

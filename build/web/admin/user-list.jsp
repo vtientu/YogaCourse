@@ -96,7 +96,9 @@
                                                                 <c:if test="${account.aid != item.aid && item.role.rid != 4}">
                                                                     <td>
                                                                         <a class="text-secondary" href="user-detail?type=edit&aid=${item.aid}"><i class="fas fa-pen-square"></i></a>
-                                                                        <a href="change-status?aid=${item.aid}" ><i class="ml-3 ${item.active == true?'fas fa-toggle-on text-success':'fas fa-toggle-off text-danger'}" style="cursor: pointer"></i></a>
+                                                                        <i onclick="document.getElementById('deleteLink').href = 'change-status?aid=${item.aid}';"
+                                                                           data-target="#ModalDelete"
+                                                                           data-toggle="modal" class="ml-3 ${item.active == true?'fas fa-toggle-on text-success':'fas fa-toggle-off text-danger'}" style="cursor: pointer"></i>
                                                                     </td>
                                                                 </c:if>
                                                                 <c:if test="${account.aid == item.aid || item.role.rid == 4}">
@@ -152,8 +154,29 @@
                                         </c:if>
                                     </div>
                                 </div>
-
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="ModalDelete" role="dialog"
+                 tabindex="-1">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background: #304156;">
+                            <h5 class="modal-title" id="exampleModalLabel" style="color: white">
+                                Change Status</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true" style="color: white">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <h4>Are you sure want to change status account?</h4>
+                        </div>
+                        <div class="modal-footer" style="margin: 0 auto; display: flex ; justify-content: space-between">
+                            <a id="deleteLink" class="btn  btn-outline-danger" href="#">
+                                Change
+                            </a>
                         </div>
                     </div>
                 </div>

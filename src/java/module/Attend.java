@@ -10,18 +10,18 @@ package module;
  */
 public class Attend {
     private int attendId;
-    private int accountId;
-    private int lessionId;
-    private boolean attend;
+    private int attend;
+    private Account account;
+    private Lession lession;
 
     public Attend() {
     }
 
-    public Attend(int attendId, int accountId, int lessionId, boolean attend) {
+    public Attend(int attendId, int attend, Account account, Lession lession) {
         this.attendId = attendId;
-        this.accountId = accountId;
-        this.lessionId = lessionId;
         this.attend = attend;
+        this.account = account;
+        this.lession = lession;
     }
 
     public int getAttendId() {
@@ -32,29 +32,28 @@ public class Attend {
         this.attendId = attendId;
     }
 
-    public int getAccountId() {
-        return accountId;
+    public Account getAccount() {
+        return account;
     }
 
-    public void setAccountId(int accountId) {
-        this.accountId = accountId;
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
-    public int getLessionId() {
-        return lessionId;
+    public Lession getLession() {
+        return lession;
     }
 
-    public void setLessionId(int lessionId) {
-        this.lessionId = lessionId;
+    public void setLession(Lession lession) {
+        this.lession = lession;
     }
 
-    public boolean isAttend() {
+    public int getAttend() {
         return attend;
     }
 
-    public void setAttend(boolean attend) {
+    public void setAttend(int attend) {
         this.attend = attend;
     }
-    
     
 }

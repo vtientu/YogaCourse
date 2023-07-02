@@ -44,7 +44,7 @@
                             </p>
                         </div>
                         <div>
-                            <c:if test="${classModule.listLession != null && classModule.listLession.size() > 0}">
+                            <c:if test="${lesstionList != null && lesstionList.size() > 0}">
                                 <table class="table table-hover  wow fadeInUp">
                                     <thead class="text-center">
                                         <tr>
@@ -61,19 +61,19 @@
                                         </tr>
                                     </thead>
                                     <tbody class="text-center">
-                                        <c:forEach begin="0" end="${classModule.listLession.size() - 1}" var="i">
+                                        <c:forEach begin="0" end="${lesstionList.size() - 1}" var="i">
                                             <tr>
                                                 <td>
                                                     ${i + 1}
                                                 </td>
                                                 <td>
-                                                    ${classModule.listLession[i].lessionName}
+                                                    ${lesstionList[i].lessionName}
                                                 </td>
                                                 <td>
                                                     ${classModule.startTime} - ${classModule.endTime}
                                                 </td>
                                                 <td>
-                                                    ${classModule.listLession[i].lessionDescription}
+                                                    ${lesstionList[i].lessionDescription}
                                                 </td>
                                                 <c:if test="${checkEnroll == true && account != null}">
                                                     <td>
@@ -90,7 +90,7 @@
                                     </tbody>
                                 </table>
                             </c:if>
-                            <c:if test="${classModule.listLession == null || classModule.listLession.size() == 0}">
+                            <c:if test="${lesstionList == null || lesstionList.size() == 0}">
                                 <h4 class="my-5 wow fadeInUp">The course currently does not have a schedule!</h4>
                             </c:if>
                         </div>

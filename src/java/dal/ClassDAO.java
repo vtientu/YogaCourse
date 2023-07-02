@@ -122,7 +122,6 @@ public class ClassDAO extends DBContext {
                 clas.setLimitMember(rs.getInt(8));
                 clas.setTrainer(cdao.getAccountByAid(rs.getInt(2)));
                 clas.setCourse(cdao.getCourseByID(rs.getInt(3)));
-                clas.setListLession(cdao.getLessiontListByClassID(cid));
                 return clas;
             }
         } catch (SQLException e) {

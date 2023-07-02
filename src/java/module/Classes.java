@@ -20,8 +20,6 @@ public class Classes {
     private int limitMember;
     private Account trainer;
     private Course course;
-    private ArrayList<Account> listMember;
-    private ArrayList<Lession> listLession;
 
     
     
@@ -37,8 +35,6 @@ public class Classes {
         this.limitMember = limitMember;
         this.trainer = trainer;
         this.course = course;
-        this.listMember = listMember;
-        this.listLession = listLession;
     }
 
     public int getLimitMember() {
@@ -104,23 +100,4 @@ public class Classes {
     public void setCourse(Course course) {
         this.course = course;
     }
-
-    public ArrayList<Account> getListMember() {
-        return listMember;
-    }
-
-    public void setListMember(ArrayList<Account> listMember) {
-        this.listMember = listMember;
-    }
-
-    public ArrayList<Lession> getListLession() {
-        return listLession;
-    }
-
-    public void setListLession(ArrayList<Lession> listLession) {
-        this.listLession = listLession;
-    }
-
-    
-    
 }
