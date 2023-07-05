@@ -218,6 +218,50 @@ public class UserDAO extends DBContext {
         }
         return list;
     }
+    
+    public ArrayList<Account> getAccountListByRole(int rid) {
+        ArrayList<Account> list = new ArrayList<>();
+        try {
+            String sql = "SELECT [AccountID]\n"
+                    + "      ,a.[RoleId]\n"
+                    + "      ,[Firstname]\n"
+                    + "      ,[Lastname]\n"
+                    + "      ,[Avatar]\n"
+                    + "      ,[Gender]\n"
+                    + "      ,[Phone]\n"
+                    + "      ,[Email]\n"
+                    + "      ,[Address]\n"
+                    + "      ,[Password]\n"
+                    + "      ,[Active]\n"
+                    + "	  ,r.[RoleName]\n"
+                    + "  FROM [dbo].[Account] a INNER JOIN [Role] r\n"
+                    + "  ON a.RoleId = r.RoleID WHERE a.[RoleId] = ? \n ";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, rid);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                Role role = new Role(rs.getInt("RoleId"), rs.getString("RoleName"));
+                Account acc = new Account();
+                acc.setAid(rs.getInt("AccountID"));
+                acc.setFirstName(rs.getString("FirstName"));
+                acc.setLastName(rs.getString("LastName"));
+                acc.setAvatar(rs.getString("Avatar"));
+                acc.setGender(rs.getInt("Gender"));
+                acc.setPhone(rs.getString("Phone"));
+                acc.setEmail(rs.getString("Email"));
+                acc.setAddress(rs.getString("Address"));
+                acc.setPassword(rs.getString("Password"));
+                acc.setActive(rs.getBoolean("Active"));
+                acc.setRole(role);
+                list.add(acc);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("getAccountListByRole(): " + e);
+        }
+        return list;
+    }
 
     public int getCountUserList(String keySearch, String status) {
         try {

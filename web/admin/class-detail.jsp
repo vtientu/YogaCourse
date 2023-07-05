@@ -15,6 +15,7 @@
             .is-invalid {
                 border: solid 1px red;
             }
+
         </style>
     </head>
 
@@ -35,47 +36,52 @@
                         <div class="container-fluid">
                             <form action="course-details" method="post" class="form-horizontal" id="myForm">
                                 <input hidden="" name="action" value="${action}"}/>
-                                <input hidden="" name="cid" value="${courseModule.courseID}"/>
+                                <input hidden="" name="cid" value="${classModule.classID}"/>
                                 <div class="card">
                                     <div class="card-header">
-                                        <h3>Course Manager</h3>
+                                        <h3>Class Manager</h3>
                                     </div>
                                     <div class="card-body card-block my-5">
                                         <div class="row form-group mb-5 mx-5">
-                                            <label for="courseName">Course Name <i class="text-danger">*</i> </label>
-                                            <input type="text" onblur="validateCourseName()" class="form-control" id="courseName" value="${courseModule.courseName}" name="courseName" placeholder="Enter course name">
+                                            <label for="className">Class Name <i class="text-danger">*</i> </label>
+                                            <input type="text" onblur="validateClassName()" class="form-control" id="className" value="${classModule.className}" name="className" placeholder="Enter class name">
                                         </div>
 
                                         <div class="row form-group mb-5 mx-5">
                                             <div class="col-12 col-md-6 row border-right mr-3">
-                                                <label for="category">Category <i class="text-danger">*</i> </label>
-                                                <select class="form-control" name="category" id="category">
-                                                    <c:forEach items="${categoryList}" var="lc">
-                                                        <option class="form-control" ${lc.categoryID == courseModule.category.categoryID?'selected':''} value="${lc.categoryID}">${lc.categoryName}</option>
+                                                <label for="category">Course <i class="text-danger">*</i> </label>
+                                                <select class="form-control js-basic-example2l" name="category" id="category">
+                                                    <c:forEach items="${courseList}" var="lc">
+                                                        <option class="form-control" ${lc.courseID == classModule.course.courseID?'selected':''} value="${lc.courseID}">${lc.courseName}</option>
                                                     </c:forEach>
                                                 </select>
                                             </div>
                                             <div class="col-12 col-md-6 row">
-                                                <label for="totalDay">Total Day <i class="text-danger">*</i> </label>
-                                                <input type="number" id="totalDate" onblur="validateTotalDate()" name="totalDay" class="input form-control" value="${courseModule.totalDay}" />
+                                                <label for="category">Trainer <i class="text-danger">*</i> </label>
+                                                <select class="form-control js-basic-example2" name="category" id="category">
+                                                    <c:forEach items="${trainerList}" var="lc">
+                                                        <option class="form-control" ${lc.aid == classModule.trainer.aid?'selected':''} value="${lc.aid}">${lc.displayName}</option>
+                                                    </c:forEach>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="row form-group mx-5 mb-5">
                                             <div class="col-12 col-md-6 row border-right mr-3">
-                                                <label for="price">Price <i class="text-danger">*</i> </label>
-                                                <input type="number" id="price" onblur="validatePrice()"  name="price" class="input form-control" required="" value="${courseModule.price}" />
+                                                <label for="startTime">Start Time <i class="text-danger">*</i> </label>
+                                                <input type="number" id="startTime" onblur="validateStartTime()"   name="startTime" class="input form-control" required="" value="${courseModule.discount}" />
                                             </div>
                                             <div class="col-12 col-md-6 row">
-                                                <label for="discount">Discount </label>
-                                                <input type="number" id="discount" name="discount" class="input form-control" required="" value="${courseModule.discount}" />
+                                                <label for="endTime">End Time <i class="text-danger">*</i> </label>
+                                                <input type="number" id="endTime" onblur="validateEndTime()"  name="endTime" class="input form-control" required="" value="${classModule.limitMember}" />
                                             </div>
                                         </div>
-                                        <div class="row form-group mx-5">
-                                            <label for="description" class=" form-control-label">Description </label>
-                                            <textarea id="description" name="description" class="input form-control" cols="10" rows="5">${courseModule.description}</textarea>
+                                        <div class="d-flex form-group mx-5 mb-5">
+                                            <div class="col-12 col-md-6 row border-right mr-3">
+                                                <label for="limitMember">Limit Member <i class="text-danger">*</i> </label>
+                                                <input type="number" id="limitMember" onblur="validateLimitMember()"  name="limitMember" class="input form-control" required="" value="${classModule.limitMember}" />
+                                            </div>
                                         </div>
                                     </div>
-
                                 </div>
                                 <div class="card-footer d-flex flex-row-reverse">
                                     <button onclick="validateForm()" name="type" value="${action}" class="btn btn-success mx-3">
@@ -97,6 +103,13 @@
 
     <%@include file="gui/footer.jsp" %>
     <script>
+
+        $(document).ready(function () {
+            $(".js-basic-example2").select2({
+                theme: "classic"
+            });
+        });
+        
         function validateCourseName() {
             let fnameInput = document.getElementById("courseName");
             let firstName = fnameInput.value;

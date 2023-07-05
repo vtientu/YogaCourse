@@ -80,6 +80,7 @@ public class UserDetailController extends HttpServlet {
                             case "add":
                                 request.setAttribute("roleList", roleList);
                                 request.setAttribute("type", type);
+                                request.setAttribute("page", "user");
                                 request.getRequestDispatcher("user-detail.jsp").forward(request, response);
                                 break;
                             case "edit":
@@ -91,6 +92,7 @@ public class UserDetailController extends HttpServlet {
                                     request.setAttribute("roleList", roleList);
                                     request.setAttribute("user", acc);
                                     request.setAttribute("type", type);
+                                    request.setAttribute("page", "user");
                                     request.getRequestDispatcher("user-detail.jsp").forward(request, response);
                                 } else {
                                     response.sendRedirect("user-manager");

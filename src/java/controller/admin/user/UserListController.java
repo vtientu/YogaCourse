@@ -91,6 +91,7 @@ public class UserListController extends HttpServlet {
                 request.setAttribute("search", search);
                 request.setAttribute("active", active);
                 request.setAttribute("listUser", listUser);
+                request.setAttribute("page", "user");
                 request.getRequestDispatcher("user-list.jsp").forward(request, response);
             }
         } catch (IOException e) {

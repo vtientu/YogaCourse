@@ -91,6 +91,7 @@ public class ClassListController extends HttpServlet {
             request.setAttribute("search", search);
             request.setAttribute("courseID", courseId);
             request.setAttribute("listClass", listClass);
+            request.setAttribute("page", "class");
             request.getRequestDispatcher("class-list.jsp").forward(request, response);
         } catch (IOException e) {
             System.out.println("Course List -> " + e);

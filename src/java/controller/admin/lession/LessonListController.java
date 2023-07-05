@@ -2,9 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.admin.enroll;
+package controller.admin.lession;
 
-import dal.EnrollDAO;
+import dal.ClassDAO;
+import dal.LessionDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,13 +13,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import module.Enroll;
+import module.Classes;
+import module.Lession;
 
 /**
  *
  * @author admin
  */
-public class EnrollListController extends HttpServlet {
+public class LessonListController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,10 +39,10 @@ public class EnrollListController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet EnrollListController</title>");
+            out.println("<title>Servlet LessonListController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet EnrollListController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet LessonListController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,38 +60,40 @@ public class EnrollListController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        EnrollDAO edao = new EnrollDAO();
+        LessionDAO ldao = new LessionDAO();
         String search = request.getParameter("search");
         String pageNo_raw = request.getParameter("pageNo");
-        String active_raw = request.getParameter("status");
+        String cid_raw = request.getParameter("cid");
         try {
             int numberOfPage = 10;
             int pageNo = 1;
-            String active = null;
+            String cid = "1";
             if (pageNo_raw != null) {
                 pageNo = Integer.parseInt(pageNo_raw);
             }
 
-            if (active_raw != null && active_raw.length() > 0) {
-                active = active_raw;
+            if (cid_raw != null && cid_raw.length() > 0) {
+                cid = cid_raw;
             }
-            int listSize = edao.getCountListEnroll(search, active);
-            int totalPage = (int) Math.floor(listSize / numberOfPage + 1);
-
-            ArrayList<Enroll> enrollList = edao.getEnrollList(search, pageNo, numberOfPage, active);
+            
+            double listSize = ldao.getCountLessionListByCidAdmin(cid, search);
+            int totalPage = (int) Math.ceil(listSize / numberOfPage );
+            ClassDAO cdao = new ClassDAO();
+            ArrayList<Classes> listClass = cdao.getClassListAll();
+            ArrayList<Lession> listLesson = ldao.getLessionListByCidAdmin(cid, search, pageNo, numberOfPage);
 //                PrintWriter out = response.getWriter();
 //                out.print(listUser.size());
-            request.setAttribute("status", active);
+            request.setAttribute("cid", cid);
             request.setAttribute("totalPages", totalPage);
             request.setAttribute("pageNo", pageNo);
             request.setAttribute("search", search);
-            request.setAttribute("active", active);
-            request.setAttribute("enrollList", enrollList);
-            request.setAttribute("page", "enroll");
-            request.getRequestDispatcher("enroll-list.jsp").forward(request, response);
+            request.setAttribute("lessonList", listLesson);
+            request.setAttribute("classList", listClass);
+            request.setAttribute("page", "lesson");
+            request.getRequestDispatcher("lesson-list.jsp").forward(request, response);
 
         } catch (IOException e) {
-            System.out.println("Course List -> " + e);
+            System.out.println("Lesson List -> " + e);
         }
     }
 
@@ -104,7 +108,7 @@ public class EnrollListController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
     }
 
     /**

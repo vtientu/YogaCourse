@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import module.Account;
+import module.Category;
 import module.Classes;
 import module.Course;
 import module.Feedback;
@@ -72,6 +73,77 @@ public class ClassDAO extends DBContext {
         }
         return list;
     }
+    
+    public ArrayList<Classes> getClassListAll() {
+        ArrayList<Classes> list = new ArrayList<>();
+        try {
+            String sql = "SELECT [Class].[ClassID]\n"
+                    + "      ,[Class].[TrainerID]\n"
+                    + "      ,[Class].[CourseID]\n"
+                    + "      ,[Class].[ClassName]\n"
+                    + "      ,[Class].[StartTime]\n"
+                    + "      ,[Class].[EndTime]\n"
+                    + "      ,[Class].[DayOfWeek]"
+                    + "      ,[Class].[LimitMember]"
+                    + "  FROM [dbo].[Class]  ";
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Classes clas = new Classes();
+                clas.setClassID(rs.getInt(1));
+                clas.setClassName(rs.getString(4));
+                clas.setStartTime(rs.getTime(5));
+                clas.setEndTime(rs.getTime(6));
+                clas.setDayOfWeek(rs.getString(7));
+                clas.setLimitMember(rs.getInt(8));
+                clas.setTrainer(cdao.getAccountByAid(rs.getInt(2)));
+                clas.setCourse(cdao.getCourseByID(rs.getInt(3)));
+                list.add(clas);
+            }
+        } catch (SQLException e) {
+            System.out.println("getClassListAll -> " + e);
+        }
+        return list;
+    }
+
+    public ArrayList<Course> getCourseList() {
+        ArrayList<Course> list = new ArrayList<>();
+        try {
+            String sql = "SELECT [CourseID]\n"
+                    + "      ,c.[CategoryID]\n"
+                    + "      ,[CreateBy]\n"
+                    + "      ,[CourseName]\n"
+                    + "      ,[Price]\n"
+                    + "      ,[Discount]\n"
+                    + "      ,[Description]\n"
+                    + "      ,[TotalDay]\n"
+                    + "      ,[Image]\n"
+                    + "      ,c.[Active]\n"
+                    + "	  ,cate.CategoryName\n"
+                    + "  FROM [dbo].[Course] c INNER JOIN [Category] cate ON c.CategoryID = cate.CategoryID ";
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            CommonDAO cdao = new CommonDAO();
+            while (rs.next()) {
+                Category category = new Category(rs.getInt(2), rs.getString(11), true);
+                Course course = new Course();
+                course.setCourseID(rs.getInt(1));
+                course.setCategory(category);
+                course.setCreateBy(cdao.getAccountByAid(rs.getInt(3)));
+                course.setCourseName(rs.getString(4));
+                course.setPrice(rs.getDouble(5));
+                course.setDiscount(rs.getDouble(6));
+                course.setDescription(rs.getString(7));
+                course.setTotalDay(rs.getInt(8));
+                course.setImage(rs.getString(9));
+                course.setActive(rs.getBoolean(10));
+                list.add(course);
+            }
+        } catch (SQLException e) {
+            System.out.println("getCOurseList -> " + e);
+        }
+        return list;
+    }
 
     public ArrayList<Classes> getClassListAdmin(String cateID, String courseID, int pageNo, int numberOfPage, String keySearch) {
         ArrayList<Classes> list = new ArrayList<>();
@@ -92,11 +164,11 @@ public class ClassDAO extends DBContext {
                 sql += " AND ([Class].[ClassName] LIKE ? OR [Course].[CourseName] LIKE ?)";
             }
 
-            if (cateID != null && cateID.length() > 0)  {
+            if (cateID != null && cateID.length() > 0) {
                 sql += " AND [Category].[CategoryID] = " + cateID;
             }
-            
-            if(courseID != null && courseID.length() > 0) {
+
+            if (courseID != null && courseID.length() > 0) {
                 sql += " AND [Course].[CourseID] = " + courseID;
             }
 
@@ -126,7 +198,7 @@ public class ClassDAO extends DBContext {
         }
         return list;
     }
-    
+
     public int getCountClassListAdmin(String cateID, String courseID, String keySearch) {
         try {
             String sql = "SELECT COUNT([Class].[ClassID])\n"
@@ -138,11 +210,11 @@ public class ClassDAO extends DBContext {
                 sql += " AND [Class].[ClassName] LIKE ? ";
             }
 
-            if (cateID != null && cateID.length() > 0)  {
+            if (cateID != null && cateID.length() > 0) {
                 sql += " AND [Category].[CategoryID] = " + cateID;
             }
-            
-            if(courseID != null && courseID.length() > 0) {
+
+            if (courseID != null && courseID.length() > 0) {
                 sql += " AND [Course].[CourseID] = " + courseID;
             }
 

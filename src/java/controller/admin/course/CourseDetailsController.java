@@ -83,6 +83,7 @@ public class CourseDetailsController extends HttpServlet {
                     ArrayList<Category> categoryList = cdao.getCategoryList();
                     request.setAttribute("categoryList", categoryList);
                     request.setAttribute("action", action);
+                    request.setAttribute("page", "course");
                     request.getRequestDispatcher("course-detail.jsp").forward(request, response);
                 } else {
                     response.sendRedirect("course-manager");

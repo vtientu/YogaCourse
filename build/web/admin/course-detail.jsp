@@ -37,7 +37,6 @@
                                 <input hidden="" name="action" value="${action}"}/>
                                 <input hidden="" name="cid" value="${courseModule.courseID}"/>
                                 <div class="card">
-                                    <input name="cid" value="${classModule.courseID}" hidden=""/>
                                     <div class="card-header">
                                         <h3>Course Manager</h3>
                                     </div>

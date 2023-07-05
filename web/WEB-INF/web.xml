@@ -76,6 +76,18 @@
         <servlet-name>ClassListController</servlet-name>
         <servlet-class>controller.admin.classes.ClassListController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ClassesDetailsController</servlet-name>
+        <servlet-class>controller.admin.classes.ClassDetailsController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LessonListController</servlet-name>
+        <servlet-class>controller.admin.lession.LessonListController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LessonDetailsController</servlet-name>
+        <servlet-class>controller.admin.lession.LessonDetailsController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeController</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -143,6 +155,18 @@
     <servlet-mapping>
         <servlet-name>ClassListController</servlet-name>
         <url-pattern>/admin/class-manager</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ClassesDetailsController</servlet-name>
+        <url-pattern>/admin/class-details</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LessonListController</servlet-name>
+        <url-pattern>/admin/lession-manager</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LessonDetailsController</servlet-name>
+        <url-pattern>/admin/lession-details</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -16,17 +16,27 @@ public class Lession {
     private String lessionName;
     private String lessionDescription;
     private String lessionContent;
+    private Classes classModule;
 
     public Lession() {
     }
 
-    public Lession(int lessionID, String lessionName, String lessionDescription, String lessionContent) {
+    public Lession(int lessionID, String lessionName, String lessionDescription, String lessionContent, Classes classModule) {
         this.lessionID = lessionID;
         this.lessionName = lessionName;
         this.lessionDescription = lessionDescription;
         this.lessionContent = lessionContent;
+        this.classModule = classModule;
     }
 
+    public Classes getClassModule() {
+        return classModule;
+    }
+
+    public void setClassModule(Classes classModule) {
+        this.classModule = classModule;
+    }
+    
     public int getLessionID() {
         return lessionID;
     }

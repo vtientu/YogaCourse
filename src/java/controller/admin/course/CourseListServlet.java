@@ -90,12 +90,13 @@ public class CourseListServlet extends HttpServlet {
                 request.setAttribute("search", search);
                 request.setAttribute("active", active);
                 request.setAttribute("listCourse", listCourse);
+                request.setAttribute("page", "course");
                 request.getRequestDispatcher("course-list.jsp").forward(request, response);
             }
         } catch (IOException e) {
             System.out.println("Course List -> " + e);
         }
-    } 
+    }
 
     /** 
      * Handles the HTTP <code>POST</code> method.
