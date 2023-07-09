@@ -73,7 +73,59 @@ public class ClassDAO extends DBContext {
         }
         return list;
     }
-    
+
+    public boolean createClass(Classes cla) {
+        try {
+            String sql = "INSERT INTO [dbo].[Class]\n"
+                    + "           ([TrainerID]\n"
+                    + "           ,[CourseID]\n"
+                    + "           ,[ClassName]\n"
+                    + "           ,[LimitMember]\n"
+                    + "           ,[StartTime]\n"
+                    + "           ,[EndTime])\n"
+                    + "     VALUES\n"
+                    + "           (?, ?, ?, ?, ?, ?)";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, cla.getTrainer().getAid());
+            st.setInt(2, cla.getCourse().getCourseID());
+            st.setString(3, cla.getClassName());
+            st.setInt(4, cla.getLimitMember());
+            st.setTime(5, cla.getStartTime());
+            st.setTime(6, cla.getEndTime());
+            st.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("createClass -> " + e);
+        }
+        return false;
+    }
+
+    public boolean updateClass(Classes cla) {
+        try {
+            String sql = "UPDATE [dbo].[Class]\n"
+                    + "   SET [TrainerID] = ?\n"
+                    + "      ,[CourseID] = ?\n"
+                    + "      ,[ClassName] = ?\n"
+                    + "      ,[LimitMember] = ?\n"
+                    + "      ,[StartTime] = ?\n"
+                    + "      ,[EndTime] = ?\n"
+                    + " WHERE ClassID = ?";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, cla.getTrainer().getAid());
+            st.setInt(2, cla.getCourse().getCourseID());
+            st.setString(3, cla.getClassName());
+            st.setInt(4, cla.getLimitMember());
+            st.setTime(5, cla.getStartTime());
+            st.setTime(6, cla.getEndTime());
+            st.setInt(7, cla.getClassID());
+            st.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("updateClass -> " + e);
+        }
+        return false;
+    }
+
     public ArrayList<Classes> getClassListAll() {
         ArrayList<Classes> list = new ArrayList<>();
         try {
@@ -239,9 +291,9 @@ public class ClassDAO extends DBContext {
                     + "      ,[totalPrice]\n"
                     + "      ,[status]\n"
                     + "      ,[AccountID]\n"
-                    + "      ,[ClassID]\n"
-                    + "  FROM [dbo].[Enroll]\n"
-                    + "  WHERE [AccountID] = ? AND [ClassID] = ?";
+                    + "      ,e.[ClassID]\n"
+                    + "  FROM [dbo].[Enroll] e INNER JOIN [Class] c ON e.ClassID = c.ClassID\n"
+                    + "  WHERE e.[AccountID] = ? AND c.[CourseID] = ?";
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, aid);
             st.setInt(2, cid);
@@ -302,6 +354,22 @@ public class ClassDAO extends DBContext {
             System.out.println("getTotalMemberInClass -> " + e);
         }
         return 0;
+    }
+
+    public boolean deleteClass(int cid) {
+        try {
+            String sql = "DELETE FROM [dbo].[Timetable]\n"
+                    + "      WHERE [ClassID] = ?";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, cid);
+            st.executeUpdate();
+
+            sql = "";
+
+            return true;
+        } catch (Exception e) {
+        }
+        return false;
     }
 
     public int getCountClassList(int cateID, String keySearch) {

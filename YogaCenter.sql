@@ -109,7 +109,7 @@ CREATE TABLE [dbo].[Class](
 	[LimitMember] int DEFAULT 30,
 	[StartTime] Time,
 	[EndTime] Time,
-	[DayOfWeek] nvarchar(max),
+	[DayOfWeek] nvarchar(max) DEFAULT 'Mon Tue Wed Thur Fri',
 	PRIMARY KEY (ClassID),
 	FOREIGN KEY(TrainerID) REFERENCES Account(AccountID),
 	FOREIGN KEY(CourseID) REFERENCES Course(CourseID)

@@ -79,7 +79,7 @@ public class ClassDetailsController extends HttpServlet {
                 ArrayList<Attend> lessionList = ldao.getAttendList(cid);
                 if (clas != null) {
                     if(a != null) {
-                        boolean checked = cdao.checkAccountMemberInClass(a.getAid(), cid);
+                        boolean checked = cdao.checkAccountMemberInClass(a.getAid(), clas.getCourse().getCourseID());
                         request.setAttribute("checkEnroll", checked);
                     }
                     request.setAttribute("totalMember", cdao.getTotalMemberInClass(cid));

@@ -34,7 +34,7 @@
                 <div class="main-content">
                     <div class="section__content section__content--p30">
                         <div class="container-fluid">
-                            <form action="course-details" method="post" class="form-horizontal" id="myForm">
+                            <form action="class-details" method="post" class="form-horizontal" id="myForm">
                                 <input hidden="" name="action" value="${action}"}/>
                                 <input hidden="" name="cid" value="${classModule.classID}"/>
                                 <div class="card">
@@ -49,18 +49,18 @@
 
                                         <div class="row form-group mb-5 mx-5">
                                             <div class="col-12 col-md-6 row border-right mr-3">
-                                                <label for="category">Course <i class="text-danger">*</i> </label>
-                                                <select class="form-control js-basic-example2l" name="category" id="category">
+                                                <label for="course">Course <i class="text-danger">*</i> </label>
+                                                <select class="form-control js-basic-example2" name="course" id="course">
                                                     <c:forEach items="${courseList}" var="lc">
                                                         <option class="form-control" ${lc.courseID == classModule.course.courseID?'selected':''} value="${lc.courseID}">${lc.courseName}</option>
                                                     </c:forEach>
                                                 </select>
                                             </div>
                                             <div class="col-12 col-md-6 row">
-                                                <label for="category">Trainer <i class="text-danger">*</i> </label>
-                                                <select class="form-control js-basic-example2" name="category" id="category">
+                                                <label for="trainer">Trainer <i class="text-danger">*</i> </label>
+                                                <select class="form-control js-basic-example2" name="trainer" id="trainer">
                                                     <c:forEach items="${trainerList}" var="lc">
-                                                        <option class="form-control" ${lc.aid == classModule.trainer.aid?'selected':''} value="${lc.aid}">${lc.displayName}</option>
+                                                        <option ${lc.aid == classModule.trainer.aid?'selected':''} value="${lc.aid}">${lc.displayName}</option>
                                                     </c:forEach>
                                                 </select>
                                             </div>
@@ -68,23 +68,23 @@
                                         <div class="row form-group mx-5 mb-5">
                                             <div class="col-12 col-md-6 row border-right mr-3">
                                                 <label for="startTime">Start Time <i class="text-danger">*</i> </label>
-                                                <input type="number" id="startTime" onblur="validateStartTime()"   name="startTime" class="input form-control" required="" value="${courseModule.discount}" />
+                                                <input type="time" id="startTime" onblur="validateStartTime()"   name="startTime" class="input form-control" value="${courseModule.discount}" />
                                             </div>
                                             <div class="col-12 col-md-6 row">
                                                 <label for="endTime">End Time <i class="text-danger">*</i> </label>
-                                                <input type="number" id="endTime" onblur="validateEndTime()"  name="endTime" class="input form-control" required="" value="${classModule.limitMember}" />
+                                                <input type="time" id="endTime" onblur="validateEndTime()"  name="endTime" class="input form-control" value="${classModule.limitMember}" />
                                             </div>
                                         </div>
                                         <div class="d-flex form-group mx-5 mb-5">
                                             <div class="col-12 col-md-6 row border-right mr-3">
                                                 <label for="limitMember">Limit Member <i class="text-danger">*</i> </label>
-                                                <input type="number" id="limitMember" onblur="validateLimitMember()"  name="limitMember" class="input form-control" required="" value="${classModule.limitMember}" />
+                                                <input type="number" id="limitMember" onblur="validateLimitMember()"  name="limitMember" class="input form-control" value="${classModule.limitMember}" />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card-footer d-flex flex-row-reverse">
-                                    <button onclick="validateForm()" name="type" value="${action}" class="btn btn-success mx-3">
+                                    <button onclick="validateForm()" type="button" name="type" value="${action}" class="btn btn-success mx-3">
                                         <i class="fa fa-dot-circle-o"></i> ${action == 'create'?'Create':'Update'}
                                     </button>
                                     <button type="reset" class="btn btn-danger">
@@ -109,53 +109,77 @@
                 theme: "classic"
             });
         });
-        
-        function validateCourseName() {
-            let fnameInput = document.getElementById("courseName");
-            let firstName = fnameInput.value;
-            if (!firstName) {
-                fnameInput.classList.add("is-invalid");
+
+        // Hàm kiểm tra validate cho Class Name
+        function validateClassName() {
+            var classNameInput = document.getElementById('className');
+            var classNameValue = classNameInput.value.trim();
+
+            if (classNameValue === '') {
+                // Nếu giá trị trống, hiển thị thông báo lỗi
+                classNameInput.classList.add('is-invalid');
                 return false;
             } else {
-                fnameInput.classList.remove("is-invalid");
+                classNameInput.classList.remove('is-invalid');
                 return true;
             }
         }
 
-        function validateTotalDate() {
-            let totalDateInput = document.getElementById("totalDate");
-            let totalDate = parseInt(totalDateInput.value);
-            if (totalDate <= 0) {
-                totalDateInput.classList.add("is-invalid");
+// Hàm kiểm tra validate cho Start Time
+        function validateStartTime() {
+            var startTimeInput = document.getElementById('startTime');
+            var startTimeValue = startTimeInput.value.trim();
+
+            if (startTimeValue === '') {
+                startTimeInput.classList.add('is-invalid');
                 return false;
             } else {
-                totalDateInput.classList.remove("is-invalid");
+                startTimeInput.classList.remove('is-invalid');
                 return true;
             }
         }
 
-        function validatePrice() {
-            let priceInput = document.getElementById("price");
-            let price = parseFloat(priceInput.value);
-            if (price <= 0) {
-                priceInput.classList.add("is-invalid");
+// Hàm kiểm tra validate cho End Time
+        function validateEndTime() {
+            var endTimeInput = document.getElementById('endTime');
+            var endTimeValue = endTimeInput.value.trim();
+
+            if (endTimeValue === '') {
+                endTimeInput.classList.add('is-invalid');
                 return false;
             } else {
-                priceInput.classList.remove("is-invalid");
+                endTimeInput.classList.remove('is-invalid');
                 return true;
             }
         }
 
+// Hàm kiểm tra validate cho Limit Member
+        function validateLimitMember() {
+            var limitMemberInput = document.getElementById('limitMember');
+            var limitMemberValue = limitMemberInput.value.trim();
+
+            if (limitMemberValue === '' || isNaN(limitMemberValue)) {
+                limitMemberInput.classList.add('is-invalid');
+                return false;
+            } else {
+                limitMemberInput.classList.remove('is-invalid');
+                return true;
+            }
+        }
+
+// Hàm kiểm tra và validate toàn bộ form
         function validateForm() {
-            var isValidCourseName = validateCourseName()();
-            var isValidTotalDate = validateTotalDate()();
-            var isValidPrice = validatePrice();
-            if (isValidCourseName && isValidTotalDate && isValidPrice) {
-                document.getElementById("myForm").submit();
-            } else {
-                document.getElementById('error').innerHTML = "Wrong change profile!";
+            var isClassNameValid = validateClassName();
+            var isStartTimeValid = validateStartTime();
+            var isEndTimeValid = validateEndTime();
+            var isLimitMemberValid = validateLimitMember();
+
+            // Nếu tất cả các input đều hợp lệ, cho phép submit form
+            if (isClassNameValid && isStartTimeValid && isEndTimeValid && isLimitMemberValid) {
+                document.getElementById('myForm').submit();
             }
         }
+
     </script>
 </body>
 

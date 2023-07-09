@@ -889,7 +889,6 @@ section {
 .select2-container {
     display: block;
     max-width: 100% !important;
-    width: auto !important;
     outline: none;
 }
 
