@@ -65,6 +65,7 @@ CREATE TABLE [dbo].[Blog](
 	[PublishedDate] [date] NULL,
 	[Title] [nvarchar](255) NULL,
 	[Content] [text] NULL,
+	[HashTag] varchar(10) NULL,
 	[Status] [int] NULL,
 	[Image] [text] NULL,
 	PRIMARY KEY (BlogID),
@@ -180,11 +181,11 @@ GO
 
 CREATE TABLE Attend(
 	[AttendID] INT IDENTITY(1,1),
-	[AccountID] INT,
+	[EnrollID] INT,
 	[LessionID] INT,
-	Attent int,
+	Attent int DEFAULT 0,
 	PRIMARY KEY(AttendID),
-	FOREIGN KEY(AccountID) REFERENCES Account(AccountID),
+	FOREIGN KEY(EnrollID) REFERENCES Enroll(EnrollID),
 	FOREIGN KEY(LessionID) REFERENCES Lession(LessionID)
 )
 
@@ -306,7 +307,8 @@ INSERT INTO [dbo].[Blog]
            ,[Title]
            ,[Content]
            ,[Status]
-           ,[Image])
+           ,[Image]
+		   ,[HashTag])
      VALUES
            (4, GETDATE(), 'Internationally Accredited Diploma in Yoga Training', 'Most of us spend the majority of our time regretting the past or worrying about the future, but forget to live in the present. Ever wondered why it’s called ‘the pre-sent”? Because it is indeed a ‘present’ from God himself, and when one is mindful, they have the true luxury of opening it.
 Yoga, when practised regularly, have the potential to help you become more mindful so that your life in the present, most of the time, which leads to increased happiness and optimal health and thereby reducing anxiety and stress. 
@@ -317,7 +319,7 @@ It also boosts self-esteem, increases confidence, helps you get in touch with yo
 Yoga is not just about doing handstands or wearing an orange rob and sit in Sukhasana. It’s much more than that and based on your preference, goals, abilities Yoga can be anything you want to be. 
 Just remember anyone can practice Yoga and you don’t need to turn vegan to practice it:)
 This Diploma in Yoga Training will be of great interest to all learners and healthcare professional who would like to learn the fundamentals of Yoga Training. It provides an in-depth look into Patanjali Eight Limb Ashtanga Yoga and not only provides an in-depth overview of Yogic Philosophy but also have videos of Akash (your instructor) teaching you how to master over 60 asanas and pranayamas with detailed instructions, difficulty level and benefits that accrue to your body when you practice them regularly. ',
-1, 'user/assets/img/blog-1.jpg'),
+1, 'user/assets/img/blog-1.jpg', '#IAD'),
 	(4, GETDATE(), 'Yin Yoga Teacher Training Course (Yoga Alliance Certificate)', 'If you want to have the most Comprehensive Guide to Yin Yoga and want to guide students through powerful and healing yin yoga classes then this course is for you. It is also WORLD FIRST Course that talks about the true History of Yin Yoga!
 Bodspheres Yin Yoga Teacher Training Certificate Course includes:
 250+ Pages Yin Yoga Teacher Training Manual
@@ -346,7 +348,7 @@ Postures for Each Meridian
 Target Areas for Yin Yoga Poses
 All of our resources are exclusive to Bodsphere! This course will provide you with all of the skills, tools and knowledge you need to confidently and safely teach yin yoga classes.
 Happy learning and continue growing on this beautiful path of Yoga!',
-1, 'user/assets/img/blog-2.jpg'),
+1, 'user/assets/img/blog-2.jpg', '#YAC'),
 	(4, GETDATE(), 'Yin Yoga Teacher Training Certificate Course', 'Welcome to the Anjali Yin Yoga Teacher Training Course!
 If you want to learn every aspect of yin yoga so that you can guide students through powerful and healing yin yoga classes then you are in the right place!
 Our course is a Yoga Alliance approved continuing education course.
@@ -367,14 +369,14 @@ Safety considerations
 You will also receive wonderful resources with this course including two student workbooks with over 35 pages of information to assist your learning and a fully illustrated, 25 page yin yoga pose guide with pose instructions, benefits, contraindications, variations and Chakras and Meridians, you will also receive a chakra cleanse meditation script to use in your classes and two professional yin yoga sequences to get you classes started.
 All of our resources are exclusive to Anjali Yoga!
 This course will provide you with all of the skills, tools and knowledge you need to confidently and safely teach yin yoga classes.',
-1, 'user/assets/img/blog-3.jpg'),
+1, 'user/assets/img/blog-3.jpg', '#YYT'),
 	(4, GETDATE(), 'Mindful Yin Yoga Training Certificate YOGA ALLAINCE', 'Offering you all the fundamental theories behind Mindful Yin Yoga including all aspects of mindfulness, & how we can incorporate this theory into our physical application of Yin yoga.
 In Mindful Yin Yoga, the student is encouraged & invited to feel sensations of stretch & compression as the body drops below the surface of the muscles into the YIN tissues of the tendons, ligaments, fascia, & bones.
 Mindful Yin Yoga invites you to tune into your body & be kind to yourself. It is a path, a journey, not to get somewhere else, but to be where we are, as we are in this very moment. The practice encourages mindful steady conscious breathing, as well as listening to your body & observing the mind. Allowing you to reconnect both body & mind & return to a sense of wholeness.
 You can enjoy Five Mindfulness techniques, Two Mindful meditations & three associated 60 minutes each Yin yoga class practices to release stress & tension in your body as you relax into these Mindful Yin Yoga practices.
 With a separate focus on the front body, back body, & upper body. These full-hour yin practices are designed to help you tune in to what your own body needs, release tightness & tension and surrender into complete relaxation.
 This course is designed for all levels including beginners, intermediate, & advanced yoga practitioners. I will walk you step-by-step through each of the poses. Variations are offered to suit all body shapes & abilities. Instructions will allow you to settle into the practice without having to keep watching the screen. You can practice at your own pace in the comfort of your home & can come back to the practice as often as desired.',
-1, 'user/assets/img/blog-4.jpg')
+1, 'user/assets/img/blog-4.jpg', '#MYY')
 GO
 
 INSERT INTO [dbo].[Feedback]
@@ -424,7 +426,7 @@ INSERT INTO [dbo].[Timetable]
 		   (2, 8),
 		   (2, 9),
 		   (2, 10),
-		   (2, 11)
+		   (1, 11)
 GO
 
 

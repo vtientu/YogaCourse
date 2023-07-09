@@ -17,19 +17,21 @@ import module.Course;
  */
 public class CourseDAO extends DBContext {
 
-    public int countCourseList(String keySearch, String status) {
+    public int countCourseList(String keySearch, String status, String cateID) {
         try {
             String sql = "SELECT COUNT([CourseID])\n"
-                    + "  FROM [dbo].[Course] c ";
+                    + "  FROM [dbo].[Course] c WHERE 1=1 ";
 
             if (keySearch != null) {
-                sql += " WHERE c.CourseName LIKE ? ";
+                sql += " AND c.CourseName LIKE ? ";
             }
 
-            if (keySearch != null && status != null) {
+            if (status != null) {
                 sql += " AND c.Active = " + status;
-            } else if (keySearch == null && status != null) {
-                sql += " WHERE c.Active = " + status;
+            }
+            
+            if (cateID != null) {
+                sql += " AND c.CategoryID = " + cateID;
             }
 
             PreparedStatement st = connection.prepareStatement(sql);
@@ -46,7 +48,7 @@ public class CourseDAO extends DBContext {
         return -1;
     }
 
-    public ArrayList<Course> getCourseList(String keySearch, int pageNo, int numberOfPage, String status) {
+    public ArrayList<Course> getCourseList(String keySearch, int pageNo, int numberOfPage, String status, String cateID) {
         ArrayList<Course> list = new ArrayList<>();
         try {
             String sql = "SELECT [CourseID]\n"
@@ -60,15 +62,17 @@ public class CourseDAO extends DBContext {
                     + "      ,[Image]\n"
                     + "      ,c.[Active]\n"
                     + "	  ,cate.CategoryName\n"
-                    + "  FROM [dbo].[Course] c INNER JOIN [Category] cate ON c.CategoryID = cate.CategoryID ";
+                    + "  FROM [dbo].[Course] c INNER JOIN [Category] cate ON c.CategoryID = cate.CategoryID WHERE 1=1 ";
             if (keySearch != null) {
-                sql += " WHERE c.CourseName LIKE ? ";
+                sql += " AND c.CourseName LIKE ? ";
             }
 
-            if (keySearch != null && status != null) {
+            if (status != null) {
                 sql += " AND c.Active = " + status;
-            } else if (keySearch == null && status != null) {
-                sql += " WHERE c.Active = " + status;
+            }
+            
+            if (cateID != null) {
+                sql += " AND c.CategoryID = " + cateID;
             }
 
             sql += " ORDER BY c.CourseID ASC OFFSET " + ((pageNo - 1) * numberOfPage) + " ROWS\n"

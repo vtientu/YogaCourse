@@ -39,6 +39,14 @@
                                                     <option ${active == "0"?'selected':''} value="0">Inactive</option>
                                                 </select>
                                             </div>
+                                            <div class="input-group" style="position: relative;width: 25%;margin-left: auto;margin-bottom: 15px;float: left">
+                                                <select onchange="changeCate(this)" class="form-control js-basic-example2" id="filterType" style="margin-left:-2%;background: #cfcfcf;border-radius: 20px;padding: 10px 20px;">
+                                                    <option ${cateID == null || cateID == '0'?'selected':''} value="0">Select All</option>
+                                                    <c:forEach items="${listCate}" var="item">
+                                                        <option ${cateID == item.categoryID?'selected':''} value="${item.categoryID}">${item.categoryName}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
                                         </div>
                                         <div class="col-sm-12 col-md-6">
                                             <div class="input-group" style="position: relative;width: 75%;margin-left: auto;margin-bottom: 15px;">
@@ -97,8 +105,8 @@
                                                                     <td>
                                                                         <a class="text-secondary" href="course-details?action=update&cid=${item.courseID}"><i class="fas fa-pen-square"></i></a>
                                                                         <i onclick="document.getElementById('deleteLink').href = 'course-status?cid=${item.courseID}';"
-                                                                   data-target="#ModalDelete"
-                                                                   data-toggle="modal" class="ml-3 ${item.active == true?'fas fa-toggle-on text-success':'fas fa-toggle-off text-danger'}" style="cursor: pointer"></i>
+                                                                           data-target="#ModalDelete"
+                                                                           data-toggle="modal" class="ml-3 ${item.active == true?'fas fa-toggle-on text-success':'fas fa-toggle-off text-danger'}" style="cursor: pointer"></i>
                                                                     </td>
                                                                 </c:if>
                                                             </tr>
@@ -109,12 +117,12 @@
                                                 <ul class="pagination justify-content-center font-weight-bold">
                                                     <li class="page-item">
                                                         <c:if test="${pageNo > 1}">
-                                                            <button class="page-link" ><i class="fas fa-chevrons-left" onclick="onPage(1, '${search}', '${active}')">Start</i>
+                                                            <button class="page-link" ><i class="fas fa-chevrons-left" onclick="onPage(1, '${search}', '${active}', '${cateID}')">Start</i>
                                                             </c:if>
                                                     </li>
                                                     <li class="page-item">
                                                         <c:if test="${pageNo > 1}">
-                                                            <button class="page-link" ><i class="fas fa-angle-left" onclick="onPage('${pageNo - 1}', '${search}', '${active}')"></i>
+                                                            <button class="page-link" ><i class="fas fa-angle-left" onclick="onPage('${pageNo - 1}', '${search}', '${active}', '${cateID}')"></i>
                                                             </c:if>
                                                     </li>
                                                     <c:forEach var="page" begin="1" end="${totalPages}">
@@ -124,20 +132,20 @@
                                                                     <button class="page-link page-number">${page}</button>
                                                                 </c:when>
                                                                 <c:otherwise>
-                                                                    <button class="page-link page-number" onclick="onPage('${page}', '${search}', '${active}')">${page}</button>
+                                                                    <button class="page-link page-number" onclick="onPage('${page}', '${search}', '${active}', '${cateID}')">${page}</button>
                                                                 </c:otherwise>
                                                             </c:choose>
                                                         </li>
                                                     </c:forEach>
                                                     <li class="page-item">
                                                         <c:if test="${not empty listCourse && pageNo != totalPages}">
-                                                            <button class="page-link" onclick="onPage(${pageNo+1}, '${search}', '${active}')"><i class="fas fa-angle-right"></i>
+                                                            <button class="page-link" onclick="onPage(${pageNo+1}, '${search}', '${active}', '${cateID}')"><i class="fas fa-angle-right"></i>
                                                             </button>
                                                         </c:if>
                                                     </li>
                                                     <li class="page-item">
                                                         <c:if test="${not empty listCourse && pageNo != totalPages}">
-                                                            <button class="page-link" onclick="onPage('${totalPages}', '${search}', '${active}')"><i class="fas fa-angles-right">End</i>
+                                                            <button class="page-link" onclick="onPage('${totalPages}', '${search}', '${active}', '${cateID}')"><i class="fas fa-angles-right">End</i>
                                                             </c:if>
                                                     </li>
                                                 </ul>
@@ -187,11 +195,31 @@
         <script>
             function changeUrl(select) {
                 const searchValue = "${search}";
+                const cateID = "${cateID}";
                 var url = select.value;
-                if (searchValue.length === 0) {
+                if (searchValue.length === 0 && cateID.length === 0) {
                     window.location.href = "course-manager?status=" + url;
-                } else {
+                } else if (searchValue.length > 0 && cateID.length === 0) {
                     window.location.href = "course-manager?status=" + url + `&search=` + searchValue;
+                } else if (searchValue.length === 0 && cateID.length > 0) {
+                    window.location.href = "course-manager?status=" + url + `&cateID=` + cateID;
+                } else {
+                    window.location.href = "course-manager?status=" + url + `&cateID=` + cateID + `&search=` + searchValue;
+                }
+            }
+
+            function changeCate(select) {
+                const searchValue = "${search}";
+                const statusValue = "${active}";
+                var url = select.value;
+                if (searchValue.length === 0 && (statusValue.length === 0 || statusValue === '')) {
+                    window.location.href = "course-manager?cateID=" + url;
+                } else if (searchValue.length > 0 && (statusValue.length === 0 || statusValue === '')) {
+                    window.location.href = "course-manager?cateID=" + url + `&search=` + searchValue;
+                } else if (searchValue.length === 0 && (statusValue.length > 0)) {
+                    window.location.href = "course-manager?cateID=" + url + `&status=` + statusValue;
+                } else {
+                    window.location.href = "course-manager?cateID=" + url + `&status=` + statusValue + `&search=` + searchValue;
                 }
             }
 
@@ -207,20 +235,20 @@
                 }
             });
 
-            function onPage(pageNo, search, active) {
+            function onPage(pageNo, search, active, cateID) {
                 if (search.length === 0) {
-                    window.location.href = `course-manager?pageNo=` + pageNo + `&status=` + active;
+                    window.location.href = `course-manager?pageNo=` + pageNo + `&status=` + active + `&cateID=` + cateID;
                 } else {
-                    window.location.href = `course-manager?pageNo=` + pageNo + `&status=` + active + `&search=` + search;
+                    window.location.href = `course-manager?pageNo=` + pageNo + `&status=` + active + `&cateID=` + cateID + `&search=` + search;
                 }
             }
 
             function search() {
                 const searchValue = document.getElementById("textSearch").value;
                 if (searchValue.length === 0) {
-                    window.location.href = `course-manager?status=${active}`;
+                    window.location.href = `course-manager?status=${active}` + `&cateID=${cateID}`;
                 } else
-                    window.location.href = `course-manager?status=${active}` + `&search=` + searchValue;
+                    window.location.href = `course-manager?status=${active}` + `&cateID=${cateID}` + `&search=` + searchValue;
             }
         </script>
     </body>

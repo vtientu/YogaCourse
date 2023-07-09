@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import module.Attend;
 import module.Classes;
 import module.Lession;
 
@@ -34,6 +35,54 @@ public class LessionDAO extends DBContext {
             }
         } catch (SQLException e) {
             System.out.println("getLessionListByCid -> " + e);
+        }
+        return list;
+    }
+    
+     public Lession getLessionListById(int id) {
+        try {
+            String sql = "SELECT l.[LessionID]\n"
+                    + "      ,[LessionName]\n"
+                    + "      ,[LessionDescription]\n"
+                    + "      ,[LessionContent]\n"
+                    + "  FROM [dbo].[Lession] l WHERE l.[LessionID] = ?";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Lession lession = new Lession(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), null);
+                return lession;
+            }
+        } catch (SQLException e) {
+            System.out.println("getLessionListById -> " + e);
+        }
+        return null;
+    }
+
+    public ArrayList<Attend> getAttendList(int cid) {
+        ArrayList<Attend> list = new ArrayList<>();
+        try {
+            String sql = "SELECT [AttendID]\n"
+                    + "      ,e.AccountID\n"
+                    + "      ,[LessionID]\n"
+                    + "      ,[Attent]\n"
+                    + "  FROM [dbo].[Attend] a INNER JOIN  [Enroll] e\n"
+                    + "  ON a.[EnrollID] = e.EnrollID WHERE e.ClassID = ? ";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, cid);
+            ResultSet rs = st.executeQuery();
+            CommonDAO cdao = new CommonDAO();
+            LessionDAO ldao = new LessionDAO();
+            while(rs.next()) {
+                Attend a = new Attend();
+                a.setAttendId(rs.getInt(1));
+                a.setAttend(rs.getInt(4));
+                a.setAccount(cdao.getAccountByAid(rs.getInt(2)));
+                a.setLession(ldao.getLessionListById(rs.getInt(3)));
+                list.add(a);
+            }
+        } catch (SQLException e) {
+            System.out.println("getAttendList -> " + e);
         }
         return list;
     }
@@ -167,7 +216,7 @@ public class LessionDAO extends DBContext {
             st.executeUpdate();
             return true;
         } catch (SQLException e) {
-            System.out.println("deleteLession -> "  + e);
+            System.out.println("deleteLession -> " + e);
         }
         return false;
     }

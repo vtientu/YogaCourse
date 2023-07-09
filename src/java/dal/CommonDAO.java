@@ -224,27 +224,6 @@ public class CommonDAO extends DBContext {
         return null;
     }
 
-    public Lession getLessionByID(int lessionID) {
-        try {
-            String sql = "SELECT [LessionID]\n"
-                    + "      ,[RoomID]\n"
-                    + "      ,[DayOfWeek]\n"
-                    + "  FROM [dbo].[Lession]\n"
-                    + "  WHERE [LessionID] = ?";
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, lessionID);
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                Lession lession = new Lession();
-                lession.setLessionID(rs.getInt(1));
-                return lession;
-            }
-        } catch (SQLException e) {
-            System.out.println("getLessionByID -> " + e);
-        }
-        return null;
-    }
-
     public ArrayList<Lession> getLessionListByCID(int classID) {
         ArrayList<Lession> list = new ArrayList<>();
         try {

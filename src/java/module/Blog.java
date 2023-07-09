@@ -18,19 +18,29 @@ public class Blog {
     private String content;
     private int status;
     private String image;
+    private String hashTag;
     private Account createBy;
 
     public Blog() {
     }
 
-    public Blog(int blogID, Date publishedDate, String title, String content, int status, String image, Account createBy) {
+    public Blog(int blogID, Date publishedDate, String title, String content, int status, String image, String hashTag, Account createBy) {
         this.blogID = blogID;
         this.publishedDate = publishedDate;
         this.title = title;
         this.content = content;
         this.status = status;
         this.image = image;
+        this.hashTag = hashTag;
         this.createBy = createBy;
+    }
+
+    public String getHashTag() {
+        return hashTag;
+    }
+
+    public void setHashTag(String hashTag) {
+        this.hashTag = hashTag;
     }
 
     public int getBlogID() {

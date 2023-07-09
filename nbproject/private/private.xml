@@ -12,9 +12,13 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/FPT/SWP391/Yoga/SWP_Project/src/java/controller/admin/lession/LessonDetailsController.java</file>
-            <file>file:/D:/FPT/SWP391/Yoga/SWP_Project/web/admin/lesson-list.jsp</file>
-            <file>file:/D:/FPT/SWP391/Yoga/SWP_Project/src/java/dal/LessionDAO.java</file>
+            <file>file:/D:/FPT/SWP391/Yoga/SWP_Project/web/user/class-details.jsp</file>
+            <file>file:/D:/FPT/SWP391/Yoga/SWP_Project/web/admin/user-list.jsp</file>
+            <file>file:/D:/FPT/SWP391/Yoga/SWP_Project/src/java/dal/CommonDAO.java</file>
+            <file>file:/D:/FPT/SWP391/Yoga/SWP_Project/src/java/module/Role.java</file>
+            <file>file:/D:/FPT/SWP391/Yoga/SWP_Project/web/admin/course-list.jsp</file>
+            <file>file:/D:/FPT/SWP391/Yoga/SWP_Project/src/java/module/Attend.java</file>
+            <file>file:/D:/FPT/SWP391/Yoga/SWP_Project/src/java/module/Lession.java</file>
         </group>
     </open-files>
 </project-private>

@@ -157,7 +157,7 @@ public class UserDAO extends DBContext {
         return false;
     }
 
-    public ArrayList<Account> getUserList(String keySearch, int pageNo, int numberOfPage, String status) {
+    public ArrayList<Account> getUserList(String keySearch, int pageNo, int numberOfPage, String status, String roleID) {
         ArrayList<Account> list = new ArrayList<>();
         try {
             String sql = "SELECT [AccountID]\n"
@@ -173,15 +173,17 @@ public class UserDAO extends DBContext {
                     + "      ,[Active]\n"
                     + "	  ,r.[RoleName]\n"
                     + "  FROM [dbo].[Account] a INNER JOIN [Role] r\n"
-                    + "  ON a.RoleId = r.RoleID\n ";
-            if (keySearch != null) {
-                sql += " WHERE (a.Firstname LIKE ? OR a.[Email] LIKE ? OR a.Lastname LIKE ? OR a.Phone = ?)";
+                    + "  ON a.RoleId = r.RoleID\n WHERE 1 = 1 ";
+            if (keySearch != null && keySearch.length() > 0) {
+                sql += " AND (a.Firstname LIKE ? OR a.[Email] LIKE ? OR a.Lastname LIKE ? OR a.Phone = ?)";
             }
 
-            if (keySearch != null && status != null) {
+            if (status != null && status.length() > 0) {
                 sql += " AND a.Active = " + status;
-            } else if (keySearch == null && status != null) {
-                sql += " WHERE a.Active = " + status;
+            }
+            
+            if(roleID != null && roleID.length() > 0) {
+                sql += " AND a.[RoleId] = " + roleID;
             }
 
             sql += " ORDER BY a.AccountID ASC OFFSET " + ((pageNo - 1) * numberOfPage) + " ROWS\n"
@@ -263,23 +265,22 @@ public class UserDAO extends DBContext {
         return list;
     }
 
-    public int getCountUserList(String keySearch, String status) {
+    public int getCountUserList(String keySearch, String status, String roleID) {
         try {
 
             String sql = "SELECT COUNT(AccountID)\n"
-                    + " FROM account a ";
+                    + " FROM account a WHERE 1 = 1 ";
 
             if (keySearch != null) {
-                sql += " WHERE (a.Firstname LIKE ? OR a.[Email] LIKE ? OR a.Lastname LIKE ? OR a.Phone = ?)";
-                System.out.println("Where keysearch");
+                sql += " AND (a.Firstname LIKE ? OR a.[Email] LIKE ? OR a.Lastname LIKE ? OR a.Phone = ?)";
             }
 
-            if (keySearch != null && status != null) {
+            if (status != null) {
                 sql += " AND a.Active = " + status;
-                System.out.println("And a.active");
-            } else if (keySearch == null && status != null) {
-                sql += " WHERE a.Active = " + status;
-                System.out.println("Where a.active");
+            }
+            
+            if (roleID != null) {
+                sql += " AND a.[RoleId] = " + roleID;
             }
 
             PreparedStatement st = connection.prepareStatement(sql);

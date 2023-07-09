@@ -45,6 +45,7 @@
                                 </div>
                                 <div class="blog-text">
                                     <h2>${listb.title}</h2>
+                                    <span class="text-primary">${listb.hashTag}</span>
                                     <div class="blog-meta">
                                         <p><i class="far fa-user"></i>${listb.createBy.displayName}</p>
                                     </div>

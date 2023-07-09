@@ -159,12 +159,58 @@ public class EnrollDAO extends DBContext {
             }
 
             ResultSet rs = st.executeQuery();
-            if(rs.next()) {
+            if (rs.next()) {
                 return rs.getInt(1);
             }
         } catch (SQLException e) {
             System.out.println("getCountListEnroll -> " + e);
         }
         return 0;
+    }
+
+    public ArrayList<Integer> getListLessionID(int classID) {
+        ArrayList<Integer> list = new ArrayList<>();
+        try {
+            String sql = "SELECT tb.LessionID FROM Timetable tb WHERE tb.ClassID = ?";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, classID);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                list.add(rs.getInt(1));
+            }
+        } catch (SQLException e) {
+            System.out.println("getListLessionID -> " + e);
+        }
+        return list;
+    }
+
+    public boolean insertAttendInLession(int aid, int classID) {
+        try {
+            String sql = "SELECT e.EnrollID FROM Enroll e WHERE e.ClassID = ? AND e.AccountID = ?";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, classID);
+            st.setInt(2, aid);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                ArrayList<Integer> listLession = getListLessionID(classID);
+                if (listLession != null && !listLession.isEmpty()) {
+                    for (Integer i : listLession) {
+                        sql = "INSERT INTO [dbo].[Attend]\n"
+                                + "           ([EnrollID]\n"
+                                + "           ,[LessionID])\n"
+                                + "     VALUES\n"
+                                + "           (?, ?)";
+                        st = connection.prepareStatement(sql);
+                        st.setInt(1, rs.getInt(1));
+                        st.setInt(2, i);
+                        st.executeUpdate();
+                    }
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("insertAttendInLession -> " + e);
+        }
+        return false;
     }
 }

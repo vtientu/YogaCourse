@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package controller.admin.course;
 
 import dal.CourseDAO;
@@ -16,40 +15,44 @@ import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import module.Course;
 import module.Account;
+import module.Category;
 
 /**
  *
  * @author admin
  */
 public class CourseListServlet extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CourseListServlet</title>");  
+            out.println("<title>Servlet CourseListServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CourseListServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet CourseListServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    } 
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -57,40 +60,49 @@ public class CourseListServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         HttpSession session = request.getSession();
         Account a = (Account) session.getAttribute("account");
         CourseDAO cdao = new CourseDAO();
         String search = request.getParameter("search");
         String pageNo_raw = request.getParameter("pageNo");
         String active_raw = request.getParameter("status");
+        String cateID = request.getParameter("cateID");
         try {
             int numberOfPage = 10;
             int pageNo = 1;
             String active = null;
-            if (a == null || a.getRole().getRid()<3) {
+            if (a == null || a.getRole().getRid() < 3) {
                 response.sendRedirect("../home");
             } else {
                 if (pageNo_raw != null) {
                     pageNo = Integer.parseInt(pageNo_raw);
                 }
+                
+                if(cateID != null && cateID.equals("0")) {
+                    cateID = null;
+                }
 
                 if (active_raw != null && active_raw.length() > 0) {
                     active = active_raw;
                 }
-                int listSize = cdao.countCourseList(search, active);
+                int listSize = cdao.countCourseList(search, active, cateID);
                 int totalPage = (int) Math.floor(listSize / numberOfPage + 1);
 
-                ArrayList<Course> listCourse = cdao.getCourseList(search, pageNo, numberOfPage, active);
+                ArrayList<Course> listCourse = cdao.getCourseList(search, pageNo, numberOfPage, active, cateID);
 //                PrintWriter out = response.getWriter();
 //                out.print(listUser.size());
+                
+                ArrayList<Category> listCate = cdao.getCategoryList();
                 request.setAttribute("status", active);
                 request.setAttribute("totalPages", totalPage);
                 request.setAttribute("pageNo", pageNo);
                 request.setAttribute("search", search);
                 request.setAttribute("active", active);
                 request.setAttribute("listCourse", listCourse);
+                request.setAttribute("listCate", listCate);
                 request.setAttribute("page", "course");
+                request.setAttribute("cateID", cateID);
                 request.getRequestDispatcher("course-list.jsp").forward(request, response);
             }
         } catch (IOException e) {
@@ -98,8 +110,9 @@ public class CourseListServlet extends HttpServlet {
         }
     }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -107,12 +120,13 @@ public class CourseListServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

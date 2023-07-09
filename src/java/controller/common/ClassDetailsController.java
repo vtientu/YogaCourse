@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import module.Account;
+import module.Attend;
 import module.Classes;
 import module.Course;
 import module.Feedback;
@@ -75,7 +76,7 @@ public class ClassDetailsController extends HttpServlet {
                 ClassDAO cdao = new ClassDAO();
                 Classes clas = cdao.getClassByID(cid);
                 LessionDAO ldao = new LessionDAO();
-                ArrayList<Lession> lessionList = ldao.getLessionListByCid(cid);
+                ArrayList<Attend> lessionList = ldao.getAttendList(cid);
                 if (clas != null) {
                     if(a != null) {
                         boolean checked = cdao.checkAccountMemberInClass(a.getAid(), cid);

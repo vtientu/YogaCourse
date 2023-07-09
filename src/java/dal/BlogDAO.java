@@ -25,7 +25,7 @@ public class BlogDAO extends DBContext {
                     + "      ,[Title]\n"
                     + "      ,[Content]\n"
                     + "      ,[Status]\n"
-                    + "      ,[Image]\n"
+                    + "      ,[Image], HashTag\n"
                     + "  FROM [dbo].[Blog]\n"
                     + "  WHERE [Status] = 1 ";
 
@@ -43,6 +43,7 @@ public class BlogDAO extends DBContext {
                 blog.setContent(rs.getString(5));
                 blog.setStatus(rs.getInt(6));
                 blog.setImage(rs.getString(7));
+                blog.setHashTag(rs.getString(8));
                 blog.setCreateBy(cdao.getAccountByAid(rs.getInt(2)));
                 list.add(blog);
             }

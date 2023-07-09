@@ -39,6 +39,14 @@
                                                     <option ${active == "0"?'selected':''} value="0">Inactive</option>
                                                 </select>
                                             </div>
+                                            <div class="input-group" style="position: relative;width: 25%;margin-left: auto;margin-bottom: 15px;float: left">
+                                                <select onchange="changeRole(this)" class="form-control js-basic-example2" id="filterType" style="margin-left:-2%;background: #cfcfcf;border-radius: 20px;padding: 10px 20px;">
+                                                    <option ${roleID == null || roleID == '0'?'selected':''} value="0">Select Role</option>
+                                                    <c:forEach items="${listRole}" var="item">
+                                                        <option ${roleID == item.rid?'selected':''} value="${item.rid}">${item.roleName}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
                                         </div>
                                         <div class="col-sm-12 col-md-6">
                                             <div class="input-group" style="position: relative;width: 75%;margin-left: auto;margin-bottom: 15px;">
@@ -112,12 +120,12 @@
                                                 <ul class="pagination justify-content-center font-weight-bold">
                                                     <li class="page-item">
                                                         <c:if test="${pageNo > 1}">
-                                                            <button class="page-link" ><i class="fas fa-chevrons-left" onclick="onPage(1, '${search}', '${active}')">Start</i>
+                                                            <button class="page-link" ><i class="fas fa-chevrons-left" onclick="onPage(1, '${search}', '${active}', '${roleID}')">Start</i>
                                                             </c:if>
                                                     </li>
                                                     <li class="page-item">
                                                         <c:if test="${pageNo > 1}">
-                                                            <button class="page-link" ><i class="fas fa-angle-left" onclick="onPage('${pageNo - 1}', '${search}', '${active}')"></i>
+                                                            <button class="page-link" ><i class="fas fa-angle-left" onclick="onPage('${pageNo - 1}', '${search}', '${active}', '${roleID}')"></i>
                                                             </c:if>
                                                     </li>
                                                     <c:forEach var="page" begin="1" end="${totalPages}">
@@ -127,20 +135,20 @@
                                                                     <button class="page-link page-number">${page}</button>
                                                                 </c:when>
                                                                 <c:otherwise>
-                                                                    <button class="page-link page-number" onclick="onPage('${page}', '${search}', '${active}')">${page}</button>
+                                                                    <button class="page-link page-number" onclick="onPage('${page}', '${search}', '${active}', '${roleID}')">${page}</button>
                                                                 </c:otherwise>
                                                             </c:choose>
                                                         </li>
                                                     </c:forEach>
                                                     <li class="page-item">
                                                         <c:if test="${not empty listUser && pageNo != totalPages}">
-                                                            <button class="page-link" onclick="onPage(${pageNo+1}, '${search}', '${active}')"><i class="fas fa-angle-right"></i>
+                                                            <button class="page-link" onclick="onPage(${pageNo+1}, '${search}', '${active}', '${roleID}')"><i class="fas fa-angle-right"></i>
                                                             </button>
                                                         </c:if>
                                                     </li>
                                                     <li class="page-item">
                                                         <c:if test="${not empty listUser && pageNo != totalPages}">
-                                                            <button class="page-link" onclick="onPage('${totalPages}', '${search}', '${active}')"><i class="fas fa-angles-right">End</i>
+                                                            <button class="page-link" onclick="onPage('${totalPages}', '${search}', '${active}', '${roleID}')"><i class="fas fa-angles-right">End</i>
                                                             </c:if>
                                                     </li>
                                                 </ul>
@@ -189,11 +197,31 @@
         <script>
             function changeUrl(select) {
                 const searchValue = "${search}";
+                const roleValue = "${roleID}";
                 var url = select.value;
-                if (searchValue.length === 0) {
+                if (searchValue.length === 0 && roleValue.length === 0) {
                     window.location.href = "user-manager?status=" + url;
-                } else {
+                } else if (searchValue.length > 0 && roleValue.length === 0) {
                     window.location.href = "user-manager?status=" + url + `&search=` + searchValue;
+                } else if (searchValue.length === 0 && roleValue.length > 0) {
+                    window.location.href = "user-manager?status=" + url + `&roleID=` + roleValue;
+                } else {
+                    window.location.href = "user-manager?status=" + url + `&roleID=` + roleValue + `&search=` + searchValue;
+                }
+            }
+
+            function changeRole(select) {
+                const searchValue = "${search}";
+                const activeValue = "${active}";
+                var url = select.value;
+                if (searchValue.length === 0 && activeValue.length === 0) {
+                    window.location.href = "user-manager?roleID=" + url;
+                } else if (searchValue.length > 0 && activeValue.length === 0) {
+                    window.location.href = "user-manager?roleID=" + url + `&search=` + searchValue;
+                } else if (searchValue.length === 0 && activeValue.length > 0) {
+                    window.location.href = "user-manager?roleID=" + url + `&status=` + activeValue;
+                } else {
+                    window.location.href = "user-manager?roleID=" + url + `&status=` + activeValue + `&search=` + searchValue;
                 }
             }
 
@@ -209,21 +237,46 @@
                 }
             });
 
-            function onPage(pageNo, search, active) {
-                if (search.length === 0) {
-                    window.location.href = `user-manager?pageNo=` + pageNo + `&status=` + active;
-                } else {
-                    window.location.href = `user-manager?pageNo=` + pageNo + `&status=` + active + `&search=` + search;
+            function onPage(pageNo, search, active, roleID) {
+                let queryString = `user-manager?pageNo=` + pageNo;
+                if (active.length > 0) {
+                    queryString += `&status=` + active;
                 }
+
+                if (search.length > 0) {
+                    queryString += `&search=` + search;
+                }
+
+                if (roleID.length > 0) {
+                    queryString += `&roleID=` + roleID;
+                }
+
+                window.location.href = queryString;
             }
+
 
             function search() {
                 const searchValue = document.getElementById("textSearch").value;
-                if (searchValue.length === 0) {
-                    window.location.href = `user-manager?status=${active}`;
-                } else
-                    window.location.href = `user-manager?status=${active}` + `&search=` + searchValue;
+                const active = "${active}";
+                const roleID = "${roleID}";
+
+                let queryString = `user-manager`;
+
+                if (active !== null && active.length > 0) {
+                    queryString += `?status=${active}`;
+                }
+
+                if (searchValue !== null && searchValue.length > 0) {
+                    queryString += `&search=` + searchValue;
+                }
+
+                if (roleID !== null && roleID.length > 0) {
+                    queryString += `&roleID=${roleID}`;
+                }
+
+                window.location.href = queryString;
             }
+
         </script>
     </body>
 

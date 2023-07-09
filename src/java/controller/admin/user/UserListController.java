@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import module.Account;
+import module.Role;
 
 /**
  *
@@ -65,6 +66,7 @@ public class UserListController extends HttpServlet {
         String search = request.getParameter("search");
         String pageNo_raw = request.getParameter("pageNo");
         String active_raw = request.getParameter("status");
+        String roleID = request.getParameter("roleID");
         try {
             int numberOfPage = 10;
             int pageNo = 1;
@@ -75,21 +77,28 @@ public class UserListController extends HttpServlet {
                 if (pageNo_raw != null) {
                     pageNo = Integer.parseInt(pageNo_raw);
                 }
+                
+                if(roleID != null && roleID.equals("0")) {
+                    roleID = null;
+                }
 
                 if (active_raw != null && active_raw.length() > 0) {
                     active = active_raw;
                 }
-                int listSize = udao.getCountUserList(search, active);
+                int listSize = udao.getCountUserList(search, active, roleID);
                 int totalPage = (int) Math.floor(listSize / numberOfPage + 1);
-
-                ArrayList<Account> listUser = udao.getUserList(search, pageNo, numberOfPage, active);
+                
+                ArrayList<Account> listUser = udao.getUserList(search, pageNo, numberOfPage, active, roleID);
 //                PrintWriter out = response.getWriter();
 //                out.print(listUser.size());
+                ArrayList<Role> listRole = udao.getRoleList();
                 request.setAttribute("status", active);
                 request.setAttribute("totalPages", totalPage);
                 request.setAttribute("pageNo", pageNo);
                 request.setAttribute("search", search);
+                request.setAttribute("roleID", roleID);
                 request.setAttribute("active", active);
+                request.setAttribute("listRole", listRole);
                 request.setAttribute("listUser", listUser);
                 request.setAttribute("page", "user");
                 request.getRequestDispatcher("user-list.jsp").forward(request, response);

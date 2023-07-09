@@ -104,7 +104,26 @@
                 </div>
             </div>
         </div>
-        <!-- Nav Bar End -->
+        <div style="position: absolute; top: 5rem; right: 1.5rem;">
+            <div id="toasts" class="toast fade" data-delay="5000">
+                <div class="toast-body" style="background-color: ${sessionScope.messageColor}; color: white">
+                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                        <span aria-hidden="true" style="color: white">&times;</span>
+                    </button>
+                    ${sessionScope.message}
+                </div>
+            </div>
+        </div>
+        <div id="message" hidden="">${sessionScope.message}</div>
 
+        <%
+            session.removeAttribute("message");
+            session.removeAttribute("messageColor");
+        %>
+        <!-- Nav Bar End -->
+        
+        <script>
+            $('.toast').toast('show');
+        </script>
     </body>
 </html>

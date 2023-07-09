@@ -127,6 +127,12 @@ public class CheckoutController extends HttpServlet {
                     enroll.setClassOrder(cdao.getClassByID(cid));
                 EnrollDAO edao = new EnrollDAO();
                 if(edao.createEnroll(enroll)) {
+                    if(edao.insertAttendInLession(a.getAid(), cid)) {
+                        System.out.println("Successful!");
+                    } else {
+                        System.out.println("fail");
+                    }
+                    
                     session.setAttribute("message", "Order class succesful!");
                     session.setAttribute("messageColor", "green");
                 } else {

@@ -67,22 +67,22 @@
                                                     ${i + 1}
                                                 </td>
                                                 <td>
-                                                    ${lesstionList[i].lessionName}
+                                                    ${lesstionList[i].lession.lessionName}
                                                 </td>
                                                 <td>
                                                     ${classModule.startTime} - ${classModule.endTime}
                                                 </td>
                                                 <td>
-                                                    ${lesstionList[i].lessionDescription}
+                                                    ${lesstionList[i].lession.lessionDescription}
                                                 </td>
                                                 <c:if test="${checkEnroll == true && account != null}">
                                                     <td>
-                                                        VIew
+                                                        ${lesstionList[i].attend == 0?'No Data': lesstionList[i].attend == 1?'Attended':'Absent'}
                                                     </td>
                                                 </c:if>
                                                 <c:if test="${classModule.trainer.aid == account.aid  && account != null}">
                                                     <td>
-                                                        <a>Attendance</a>
+                                                        <button data-toggle="modal" data-target="#ModalAttend" class="btn btn-outline-success">Attendance</button>
                                                     </td>
                                                 </c:if>
                                             </tr>
@@ -176,6 +176,29 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="ModalAttend" role="dialog"
+             tabindex="-1">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background: #304156;">
+                        <h5 class="modal-title" id="exampleModalLabel" style="color: white">
+                            Change Status</h5>
+                        <button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" style="color: white">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h4>Are you sure want to change status account?</h4>
+                    </div>
+                    <div class="modal-footer" style="margin: 0 auto; display: flex ; justify-content: space-between">
+                        <a id="deleteLink" class="btn  btn-outline-danger" href="#">
+                            Change
+                        </a>
                     </div>
                 </div>
             </div>
