@@ -88,6 +88,10 @@
         <servlet-name>LessonDetailsController</servlet-name>
         <servlet-class>controller.admin.lession.LessonDetailsController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AttendController</servlet-name>
+        <servlet-class>controller.common.AttendController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeController</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -167,6 +171,10 @@
     <servlet-mapping>
         <servlet-name>LessonDetailsController</servlet-name>
         <url-pattern>/admin/lession-details</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AttendController</servlet-name>
+        <url-pattern>/attend</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -38,8 +38,8 @@ public class LessionDAO extends DBContext {
         }
         return list;
     }
-    
-     public Lession getLessionListById(int id) {
+
+    public Lession getLessionListById(int id) {
         try {
             String sql = "SELECT l.[LessionID]\n"
                     + "      ,[LessionName]\n"
@@ -73,7 +73,7 @@ public class LessionDAO extends DBContext {
             ResultSet rs = st.executeQuery();
             CommonDAO cdao = new CommonDAO();
             LessionDAO ldao = new LessionDAO();
-            while(rs.next()) {
+            while (rs.next()) {
                 Attend a = new Attend();
                 a.setAttendId(rs.getInt(1));
                 a.setAttend(rs.getInt(4));
@@ -85,6 +85,37 @@ public class LessionDAO extends DBContext {
             System.out.println("getAttendList -> " + e);
         }
         return list;
+    }
+
+    public boolean updateAttend(int lid, int[] aid) {
+        try {
+            if (aid != null && aid.length > 0) {
+                for (int i = 0; i < aid.length; i++) {
+                    String sql = "UPDATE Attend\n"
+                            + "SET Attent = 1\n"
+                            + "FROM Attend\n"
+                            + "JOIN Enroll ON Attend.EnrollID = Enroll.EnrollID\n"
+                            + "WHERE Enroll.AccountID = ?\n"
+                            + "AND Attend.LessionID = ?";
+                    PreparedStatement st = connection.prepareStatement(sql);
+                    st.setInt(1, aid[i]);
+                    st.setInt(2, lid);
+                    st.executeUpdate();
+                }
+            }
+            String sql = "UPDATE Attend\n"
+                    + "SET Attent = 2\n"
+                    + "FROM Attend\n"
+                    + "JOIN Enroll ON Attend.EnrollID = Enroll.EnrollID\n"
+                    + "WHERE Attend.LessionID = ? AND Attend.[Attent] = 0";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, lid);
+            st.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
     }
 
     public ArrayList<Lession> getLessionListByCidAdmin(String cid, String keySearch, int pageNo, int numberPerPage) {

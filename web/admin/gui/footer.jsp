@@ -12,6 +12,20 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                if (document.getElementById('message').innerHTML !== '') {
+                    var toastElement = document.querySelector('#toasts');
+                    if (toastElement) {
+                        toastElement.classList.add('show');
+                        setTimeout(function () {
+                            toastElement.classList.remove('show');
+                        }, 5000);
+                    }
+                }
+            });
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Jquery JS-->
         <script src="assets/vendor/jquery-3.2.1.min.js"></script>
         <!-- Bootstrap JS-->

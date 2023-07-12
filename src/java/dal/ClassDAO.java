@@ -74,6 +74,23 @@ public class ClassDAO extends DBContext {
         return list;
     }
 
+    public ArrayList<Account> getListMemberByClassID(int cid) {
+        ArrayList<Account> list = new ArrayList<>();
+        try {
+            String sql = "SELECT e.AccountID FROM Enroll e WHERE e.ClassID = ?";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, cid);
+            ResultSet rs = st.executeQuery();
+            while(rs.next()) {
+                Account a = cdao.getAccountByAid(rs.getInt(1));
+                list.add(a);
+            }
+        } catch (SQLException e) {
+            System.out.println("getListMemberByClassID -> " + e);
+        }
+        return list;
+    }
+
     public boolean createClass(Classes cla) {
         try {
             String sql = "INSERT INTO [dbo].[Class]\n"

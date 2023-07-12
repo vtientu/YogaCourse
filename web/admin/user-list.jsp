@@ -231,12 +231,6 @@
                 });
             });
 
-            $(document).ready(function () {
-                if (document.getElementById('message').innerHTML !== '') {
-                    $('.toast').toast('show');
-                }
-            });
-
             function onPage(pageNo, search, active, roleID) {
                 let queryString = `user-manager?pageNo=` + pageNo;
                 if (active.length > 0) {

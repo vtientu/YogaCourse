@@ -33,12 +33,16 @@
         <link href="assets/vendor/slick/slick.css" rel="stylesheet" media="all">
         <link href="assets/vendor/select2/select2.min.css" rel="stylesheet" media="all">
         <link href="assets/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
-
         <!-- Main CSS-->
         <link href="assets/css/theme.css" rel="stylesheet" media="all">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
         <style>
             input:focus {
                 outline: none !important;
+            }
+            
+            a {
+                text-decoration: none;
             }
         </style>
     </head>
@@ -89,28 +93,26 @@
                             </div>
                         </div>
                     </div>
-                    <div style="position: absolute; top: 5rem; right: 1.5rem;">
-                        <div id="toasts" class="toast fade" data-delay="5000">
-                            <div class="toast-body" style="background-color: ${sessionScope.messageColor}; color: white">
-                                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                                    <span aria-hidden="true" style="color: white">&times;</span>
-                                </button>
-                                ${sessionScope.message}
-                            </div>
-                        </div>
-                    </div>
-                    <div id="message" hidden="">${sessionScope.message}</div>
-
-                    <%
-                        session.removeAttribute("message");
-                        session.removeAttribute("messageColor");
-                    %>
                 </div>
             </div>
-        </header>
-        <script>
-            $('.toast').toast('show');
-        </script>
+            <div aria-live="polite" aria-atomic="true" style="position: relative;">
+                <div style="position: absolute; right: 2.5rem; top:  5rem; z-index: 100">
+                    <div id="toasts" class="toast fade" data-delay="5000">
+                        <div class="toast-body" style="background-color: ${sessionScope.messageColor}; color: white">
+                            ${message}
+                            <button type="button" class="ml-2 mb-1 btn close" data-dismiss="toast" aria-label="Close">
+                                <span aria-hidden="true" style="color: white">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="message" hidden="">${sessionScope.message}</div>
 
+            <%
+                session.removeAttribute("message");
+                session.removeAttribute("messageColor");
+            %>
+        </header>
     </body>
 </html>

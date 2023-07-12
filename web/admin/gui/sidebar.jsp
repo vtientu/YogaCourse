@@ -3,7 +3,7 @@
     Created on : May 30, 2023, 10:39:49 PM
     Author     : admin
 --%>
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -26,10 +26,12 @@
                             <a href="../home">
                                 <i class="fas fa-tachometer-alt"></i>Home</a>
                         </li>
-                        <li class="${page == 'user'?'active':''} ">
-                            <a href="user-manager">
-                                <i class="fas fa-user"></i>User Manager</a>
-                        </li>
+                        <c:if test="${account.role.rid == 4}">
+                            <li class="${page == 'user'?'active':''} ">
+                                <a href="user-manager">
+                                    <i class="fas fa-user"></i>User Manager</a>
+                            </li>
+                        </c:if>
                         <li class="${page == 'course'?'active':''} ">
                             <a href="course-manager">
                                 <i class="fas fa-book"></i>Course Manager</a>

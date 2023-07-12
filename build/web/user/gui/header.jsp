@@ -66,6 +66,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
         <!-- Top Bar End -->
 
@@ -91,12 +92,16 @@
                                     <a href="home?action=register" class="dropdown-item">Register</a>
                                 </c:if>
                                 <c:if test="${account != null}">
-                                    <c:if test="${account.role.rid > 2}">
+                                    <c:if test="${account.role.rid == 4}">
                                         <a href="admin/user-manager" class="dropdown-item">Dashboard</a>
+                                    </c:if>
+                                    <c:if test="${account.role.rid == 3}">
+                                        <a href="admin/course-manager" class="dropdown-item">Dashboard</a>
                                     </c:if>
                                     <a href="profile?action=profile" class="dropdown-item">Profile</a>
                                     <a href="profile?action=changepassword" class="dropdown-item">Change Password</a>
                                     <a href="home?action=logout" class="dropdown-item">Logout</a>
+                                    <a href="home?action=logout" class="dropdown-item" style="color: ${messageColor}">${message}</a>
                                 </c:if>
                             </div>
                         </div>
@@ -104,13 +109,15 @@
                 </div>
             </div>
         </div>
-        <div style="position: absolute; top: 5rem; right: 1.5rem;">
-            <div id="toasts" class="toast fade" data-delay="5000">
-                <div class="toast-body" style="background-color: ${sessionScope.messageColor}; color: white">
-                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                        <span aria-hidden="true" style="color: white">&times;</span>
-                    </button>
-                    ${sessionScope.message}
+        <div aria-live="polite" aria-atomic="true" style="position: relative;">
+            <div style="position: absolute; right: 0; top: 5rem; z-index: 100">
+                <div id="toasts" class="toast fade" data-delay="5000">
+                    <div class="toast-body" style="background-color: ${sessionScope.messageColor}; color: white">
+                        ${message}
+                        <button type="button" class="ml-2 mb-1 btn close" data-dismiss="toast" aria-label="Close">
+                            <span aria-hidden="true" style="color: white">&times;</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -121,9 +128,6 @@
             session.removeAttribute("messageColor");
         %>
         <!-- Nav Bar End -->
-        
-        <script>
-            $('.toast').toast('show');
-        </script>
+
     </body>
 </html>

@@ -82,8 +82,10 @@ public class ClassDetailsController extends HttpServlet {
                         boolean checked = cdao.checkAccountMemberInClass(a.getAid(), clas.getCourse().getCourseID());
                         request.setAttribute("checkEnroll", checked);
                     }
+                    ArrayList<Account> listMember = cdao.getListMemberByClassID(cid);
                     request.setAttribute("totalMember", cdao.getTotalMemberInClass(cid));
                     request.setAttribute("lesstionList", lessionList);
+                    request.setAttribute("listMember", listMember);
                     ArrayList<Feedback> listFeedback = cdao.getFeedbackListByCid(clas.getCourse().getCourseID());
                     request.setAttribute("listFeed", listFeedback);
                     request.setAttribute("classModule", clas);
@@ -125,6 +127,8 @@ public class ClassDetailsController extends HttpServlet {
             Feedback fb = new Feedback(0, rate, description, a, c);
             ClassDAO cdao = new ClassDAO();
             cdao.addComment(fb);
+            session.setAttribute("message", "Comment successful!");
+            session.setAttribute("messageColor", "green");
             response.sendRedirect("class-details?cid=" + classId);
         }
     }

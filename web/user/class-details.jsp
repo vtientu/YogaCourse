@@ -82,7 +82,7 @@
                                                 </c:if>
                                                 <c:if test="${classModule.trainer.aid == account.aid  && account != null}">
                                                     <td>
-                                                        <button data-toggle="modal" data-target="#ModalAttend" class="btn btn-outline-success">Attendance</button>
+                                                        <button ${lesstionList[i].attend != 0?'disabled':''} data-toggle="modal" data-target="#ModalAttend${i}" class="btn btn-outline-success">Attendance</button>
                                                     </td>
                                                 </c:if>
                                             </tr>
@@ -181,31 +181,54 @@
             </div>
         </div>
 
-        <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="ModalAttend" role="dialog"
-             tabindex="-1">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header" style="background: #304156;">
-                        <h5 class="modal-title" id="exampleModalLabel" style="color: white">
-                            Change Status</h5>
-                        <button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true" style="color: white">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <h4>Are you sure want to change status account?</h4>
-                    </div>
-                    <div class="modal-footer" style="margin: 0 auto; display: flex ; justify-content: space-between">
-                        <a id="deleteLink" class="btn  btn-outline-danger" href="#">
-                            Change
-                        </a>
+        <c:if test="${lesstionList != null && lesstionList.size() > 0}">
+            <c:forEach begin="0" end="${lesstionList.size() - 1}" var="i">
+                <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="ModalAttend${i}" role="dialog"
+                     tabindex="-1">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <form action="attend" method="post">
+                                <input type="text" hidden="" name="lid" value="${lesstionList[i].lession.lessionID}"/>
+                                <div class="modal-header" style="background: #304156;">
+                                    <h5 class="modal-title" id="exampleModalLabel" style="color: white">
+                                        Attendance</h5>
+                                    <button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true" style="color: white">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <table class="w-100 table">
+                                        <thead>
+                                            <tr>
+                                                <th>STT</th>
+                                                <th>Member</th>
+                                                <th>Attend</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach begin="0" end="${listMember.size() - 1}" var="i">
+                                                <tr>
+                                                    <td>${i + 1}</td>
+                                                    <td>${listMember[i].displayName}</td>
+                                                    <td><input type="checkbox" name="attend" value="${listMember[i].aid}"/>  <label>Attended</label></td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn  btn-success mx-auto">
+                                        Save
+                                    </button>
+                                </div>
+
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <!-- Single Post End-->   
-
-
+                <!-- Single Post End-->   
+            </c:forEach>
+        </c:if>
         <!-- Footer Start -->
         <%@include file="gui/footer.jsp" %>
         <!-- Footer End -->

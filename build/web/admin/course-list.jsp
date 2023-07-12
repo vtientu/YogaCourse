@@ -236,11 +236,19 @@
             });
 
             function onPage(pageNo, search, active, cateID) {
-                if (search.length === 0) {
-                    window.location.href = `course-manager?pageNo=` + pageNo + `&status=` + active + `&cateID=` + cateID;
-                } else {
-                    window.location.href = `course-manager?pageNo=` + pageNo + `&status=` + active + `&cateID=` + cateID + `&search=` + search;
+                let sql = `course-manager?pageNo=` + pageNo;
+                if (search.length > 0) {
+                    sql += `&search=` + search;
+                } 
+                
+                if(active.length > 0){
+                    sql += `&status=` + active ;
                 }
+                
+                if(cateID.length > 0) {
+                    sql += `&cateID=` + cateID;
+                }
+                window.location.href = sql;
             }
 
             function search() {

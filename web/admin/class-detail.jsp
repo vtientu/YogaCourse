@@ -68,11 +68,11 @@
                                         <div class="row form-group mx-5 mb-5">
                                             <div class="col-12 col-md-6 row border-right mr-3">
                                                 <label for="startTime">Start Time <i class="text-danger">*</i> </label>
-                                                <input type="time" id="startTime" onblur="validateStartTime()"   name="startTime" class="input form-control" value="${courseModule.discount}" />
+                                                <input type="time" id="startTime" onblur="validateStartTime()"   name="startTime" class="input form-control" value="${classModule.startTime}" />
                                             </div>
                                             <div class="col-12 col-md-6 row">
                                                 <label for="endTime">End Time <i class="text-danger">*</i> </label>
-                                                <input type="time" id="endTime" onblur="validateEndTime()"  name="endTime" class="input form-control" value="${classModule.limitMember}" />
+                                                <input type="time" id="endTime" onblur="validateEndTime()"  name="endTime" class="input form-control" value="${classModule.endTime}" />
                                             </div>
                                         </div>
                                         <div class="d-flex form-group mx-5 mb-5">

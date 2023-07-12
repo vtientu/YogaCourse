@@ -60,17 +60,25 @@
             .is-valid {
                 border: red solid 1px;
             }
+
+            .banner-header {
+                position: relative;
+                margin-bottom: 45px;
+                padding: 50px 0 90px 0;
+                text-align: center;
+                background: #F7CAC9;
+            }
         </style>
     </head>
 
     <body>
 
         <!-- Page Header Start -->
-        <div class="page-header">
+        <div class="banner-header">
             <div class="container">
                 <div class="row">
                     <div class="col-12">
-                        <h2>Profile</h2>
+                        <h1 class="font-weight-bold">Profile</h1>
                     </div>
                 </div>
             </div>
@@ -80,158 +88,143 @@
 
         <!-- Class Start -->
 
-        <div class="d-flex justify-content-center">
-            <div class="card" style="width: 40%">
-                <div class="card-body">
-                    <div class="e-profile">
-                        <div class="">
-                            <div class="col-12 col-sm-auto mb-3 mx-auto">
-                                <div class="mx-auto my-5 " style="width: 140px;">
-                                    <div class="d-flex justify-content-center align-items-center rounded" style="height: 140px;">
-                                        <form action="profile" method="post" enctype="multipart/form-data">
-                                            <input name="action" value="changeavatar" hidden=""/>
-                                            <div class="avatar-upload">
-                                                <div class="avatar-edit">
-                                                    <input onchange="this.form.submit()" name="avatar" type='file' id="imageUpload" accept=".png, .jpg, .jpeg" />
-                                                    <label class="fa fa-edit" for="imageUpload"></label>
-                                                </div>
-                                                <div class="avatar-preview">
-                                                    <div id="imagePreview" style="background-image: url(${account.avatar});">
-                                                    </div>
-                                                </div>
+        <div class="w-75 mx-auto">
+            <div class="row">
+                <div class="col-3">
+                    <div class="">
+                        <div class="mx-auto my-5 " style="width: 140px;">
+                            <div class="d-flex justify-content-center align-items-center rounded" style="height: 140px;">
+                                <form action="profile" method="post" enctype="multipart/form-data">
+                                    <input name="action" value="changeavatar" hidden=""/>
+                                    <div class="avatar-upload">
+                                        <div class="avatar-edit">
+                                            <input onchange="this.form.submit()" name="avatar" type='file' id="imageUpload" accept=".png, .jpg, .jpeg" />
+                                            <label class="fa fa-edit" for="imageUpload"></label>
+                                        </div>
+                                        <div class="avatar-preview">
+                                            <div id="imagePreview" style="background-image: url(${account.avatar});">
                                             </div>
-                                        </form>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="col d-flex flex-column flex-sm-row justify-content-center mb-3">
-                                <div class="text-center text-sm-left mb-2 mb-sm-0">
-                                    <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">${account.displayName}</h4>
-                                    <p class="mb-0">${account.role.roleName}</p>
-                                </div>
+                                </form>
                             </div>
                         </div>
-                        <ul class="nav nav-tabs">
-                            <li class="nav-item"><a data-toggle="tab" href="#profile" class="nav-link ${action == 'profile'?'active':''}">Profile</a></li>
-                            <li class="nav-item"><a data-toggle="tab" href="#changepassword" class="nav-link ${action == 'changepassword'?'active':''}">Change Password</a></li>
-                        </ul>
-                        <div class="tab-content pt-3">
-                            <div class="tab-pane fade ${action == 'profile'?'show active':''}" id="profile">
-                                <form class="form" novalidate="" id="myForm" action="profile" method="post">
-                                    <input type="text" value="profile" name="action" hidden=""/>
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="row my-4">
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label>First Name</label>
-                                                        <input onblur="validateFirstName()" class="form-control" id="fname" type="text" name="firstName" placeholder="First Name" value="${account.firstName}">
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label>Last Name</label>
-                                                        <input onblur="validateLastName()" class="form-control" id="lname" type="text" name="lastName" placeholder="Last Name" value="${account.lastName}">
-                                                    </div>
+                    </div>
+                    <div class="col d-flex flex-column flex-sm-row justify-content-center mb-3">
+                        <div class="text-center text-sm-left mb-2 mb-sm-0">
+                            <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">${account.displayName}</h4>
+                            <p class="mb-0">${account.role.roleName}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-9">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item"><a data-toggle="tab" href="#profile" class="nav-link ${action == 'profile'?'active':''}">Profile</a></li>
+                        <li class="nav-item"><a data-toggle="tab" href="#changepassword" class="nav-link ${action == 'changepassword'?'active':''}">Change Password</a></li>
+                    </ul>
+                    <div class="tab-content pt-3">
+                        <div class="tab-pane fade ${action == 'profile'?'show active':''}" id="profile">
+                            <form class="form" novalidate="" id="myForm" action="profile" method="post">
+                                <input type="text" value="profile" name="action" hidden=""/>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="row my-2">
+                                            <div class="col">
+                                                <div class="form-group">
+                                                    <label>First Name</label>
+                                                    <input onblur="validateFirstName()" class="form-control" id="fname" type="text" name="firstName" placeholder="First Name" value="${account.firstName}">
                                                 </div>
                                             </div>
+                                            <div class="col">
+                                                <div class="form-group">
+                                                    <label>Last Name</label>
+                                                    <input onblur="validateLastName()" class="form-control" id="lname" type="text" name="lastName" placeholder="Last Name" value="${account.lastName}">
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                            <div class="row my-4">
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label>Gender</label>
-                                                        <div class="custom-controls-stacked px-2">
-                                                            <div class="custom-control custom-checkbox"> 
-                                                                <input ${account.gender == 2?'checked':''} class="" name="gender" type="radio"  value="2">
-                                                                <label class="custom-control-label" for="notifications-blog">Male</label>
-                                                            </div>
-
-                                                            <div class="custom-control custom-checkbox"> 
-                                                                <input ${account.gender == 1?'checked':''} class="" name="gender" type="radio" value="1">
-                                                                <label class="custom-control-label" for="notifications-blog">Female</label>
-                                                            </div>
+                                        <div class="row my-2">
+                                            <div class="col">
+                                                <div class="form-group">
+                                                    <label>Gender</label>
+                                                    <div class="custom-controls-stacked px-2">
+                                                        <div class="custom-control custom-checkbox"> 
+                                                            <input ${account.gender == 2?'checked':''} class="" name="gender" type="radio"  value="2">
+                                                            <label class="custom-control-label" for="notifications-blog">Male</label>
+                                                            <input ${account.gender == 1?'checked':''} class="ml-5" name="gender" type="radio" value="1">
+                                                            <label class="custom-control-label" for="notifications-blog">Female</label>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row my-4">
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label>Phone Number</label>
-                                                        <input class="form-control" onchange="validatePhone()" name="phone" id="fphone" type="tel" placeholder="Enter your phone" value="${account.phone}">
-                                                    </div>
+                                        </div>
+                                        <div class="row my-2">
+                                            <div class="col">
+                                                <div class="form-group">
+                                                    <label>Phone Number</label>
+                                                    <input class="form-control" onchange="validatePhone()" name="phone" id="fphone" type="tel" placeholder="Enter your phone" value="${account.phone}">
                                                 </div>
                                             </div>
-                                            <div class="row my-4">
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label>Email</label>
-                                                        <input class="form-control" type="text" placeholder="user@example.com" readonly="" value="${account.email}">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row my-4">
-                                                <div class="col mb-3">
-                                                    <div class="form-group">
-                                                        <label>Address</label>
-                                                        <textarea class="form-control" rows="5" placeholder="Your Address" name="address">${account.address}</textarea>
-                                                    </div>
+                                        </div>
+                                        <div class="row my-2">
+                                            <div class="col">
+                                                <div class="form-group">
+                                                    <label>Address</label>
+                                                    <textarea class="form-control" rows="2" cols="2" placeholder="Your Address" name="address">${account.address}</textarea>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <label id="error">${messageProfile}</label>
-                                    <div class="row">
-                                        <div class="col d-flex justify-content-end">
-                                            <button onclick="validateFormProfile()" class="btn btn-primary" type="submit">Save Changes</button>
-                                        </div>
+                                </div>
+                                <label id="error">${messageProfile}</label>
+                                <div class="row">
+                                    <div class="col d-flex justify-content-end">
+                                        <button onclick="validateFormProfile()" class="btn btn-primary" type="submit">Save Changes</button>
                                     </div>
-                                </form>
-                            </div>
-                            <div class="tab-pane fade ${action == 'changepassword'?'show active':''}" id="changepassword">
-                                <form class="form" novalidate="" id="myForm1" action="profile" method="post">
-                                    <input type="text" value="changepassword" name="action" hidden=""/>
-                                    <div class="row">
-                                        <div class="col-12 col-sm-6 mb-3">
-                                            <div class="mb-2"><b>Change Password</b></div>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label>Current Password</label>
-                                                        <input onchange="validateCurrentPassword()" name="cpassword" id="cpassword" class="form-control" type="password" placeholder="••••••">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label>New Password</label>
-                                                        <input onchange="validateNewPassword()" name="npassword" class="form-control" id="fpassword" type="password" placeholder="••••••">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label>Confirm <span class="d-none d-xl-inline">Password</span></label>
-                                                        <input onchange="validateConfirmPassword()" class="form-control" id="fcpassword" type="password" placeholder="••••••"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <label id="error1">${messagePassword}</label>
-                                    <div class="row">
-                                        <div class="col d-flex justify-content-end">
-                                            <button onclick="validationPassword()" class="btn btn-primary" type="button">Save Changes</button>
-                                        </div>
-                                    </div>
-                                </form>
-
-                            </div>
+                                </div>
+                            </form>
                         </div>
+                        <div class="tab-pane fade ${action == 'changepassword'?'show active':''}" id="changepassword">
+                            <form class="form" novalidate="" id="myForm1" action="profile" method="post">
+                                <input type="text" value="changepassword" name="action" hidden=""/>
+                                <div class="row">
+                                    <div class="col-12 col-sm-6 mb-3">
+                                        <div class="mb-2"><b>Change Password</b></div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="form-group">
+                                                    <label>Current Password</label>
+                                                    <input onchange="validateCurrentPassword()" name="cpassword" id="cpassword" class="form-control" type="password" placeholder="••••••">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="form-group">
+                                                    <label>New Password</label>
+                                                    <input onchange="validateNewPassword()" name="npassword" class="form-control" id="fpassword" type="password" placeholder="••••••">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="form-group">
+                                                    <label>Confirm <span class="d-none d-xl-inline">Password</span></label>
+                                                    <input onchange="validateConfirmPassword()" class="form-control" id="fcpassword" type="password" placeholder="••••••"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <label id="error1">${messagePassword}</label>
+                                <div class="row">
+                                    <div class="col d-flex justify-content-end">
+                                        <button onclick="validationPassword()" class="btn btn-primary" type="button">Save Changes</button>
+                                    </div>
+                                </div>
+                            </form>
 
+                        </div>
                     </div>
-
                 </div>
             </div>
         </div>

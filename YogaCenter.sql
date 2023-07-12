@@ -430,6 +430,7 @@ INSERT INTO [dbo].[Timetable]
 GO
 
 
+
 INSERT INTO [dbo].[Enroll]
            ([EnrollDate]
            ,[totalPrice]
@@ -439,3 +440,20 @@ INSERT INTO [dbo].[Enroll]
      VALUES
            (GETDATE(), 10.0, 1, 1, 2)
 GO
+
+
+INSERT INTO [dbo].[Attend]
+           ([EnrollID]
+           ,[LessionID])
+     VALUES
+           (1, 1),
+		   (1, 2),
+		   (1, 3),
+		   (1, 4),
+		   (1, 5),
+		   (1, 6),
+		   (1, 7),
+		   (1, 8),
+		   (1, 9),
+		   (1, 10),
+		   (1, 11);

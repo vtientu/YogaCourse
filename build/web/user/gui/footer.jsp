@@ -37,21 +37,33 @@
                             <p>&copy; <a href="#">Your Site Name</a>, All Right Reserved.</p>
                         </div>
                         <div class="col-md-6">
-							<!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
                             <p>Designed By <a href="https://htmlcodex.com">HTML Codex</a></p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                if (document.getElementById('message').innerHTML !== '') {
+                    var toastElement = document.querySelector('.toast');
+                    if (toastElement) {
+                        var toast = new bootstrap.Toast(toastElement);
+                        toast.show();
+                    }
+                }
+            });
+        </script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
         <script src="user/assets/lib/easing/easing.min.js"></script>
         <script src="user/assets/lib/wow/wow.min.js"></script>
         <script src="user/assets/lib/owlcarousel/owl.carousel.min.js"></script>
         <script src="user/assets/lib/isotope/isotope.pkgd.min.js"></script>
         <script src="user/assets/lib/lightbox/js/lightbox.min.js"></script>
-        
+
         <!-- Contact Javascript File -->
         <script src="user/assets/mail/jqBootstrapValidation.min.js"></script>
         <script src="user/assets/mail/contact.js"></script>
